@@ -30,7 +30,7 @@ export default function About() {
               Sobre mim
             </span>
             <h2 className="font-serif text-3xl md:text-5xl text-white leading-tight">
-              Design, sistemas e IA aplicados a problemas reais.
+              Webdesign, sistemas e IA aplicados a problemas reais.
             </h2>
           </div>
 
