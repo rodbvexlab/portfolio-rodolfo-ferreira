@@ -4,15 +4,12 @@ export default function WhatsAppFloating() {
       href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[#25d366]/10 border border-[#25d366]/30 backdrop-blur-md shadow-[0_0_20px_rgba(37,211,102,0.15)] hover:shadow-[0_0_25px_rgba(37,211,102,0.3)] transition-all duration-300 hover:scale-110 group"
+      className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white/[0.02] border border-white/10 backdrop-blur-xl shadow-lg hover:border-[#25d366]/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:bg-[#25d366]/5 transition-all duration-500 hover:scale-105 group"
       aria-label="Falar no WhatsApp"
     >
-      {/* Green pulse ring */}
-      <span className="absolute inset-0 rounded-full border border-[#25d366]/40 animate-ping opacity-75" />
-
-      {/* WhatsApp SVG Icon */}
+      {/* WhatsApp SVG Icon - subtle white/50 to green transition */}
       <svg
-        className="w-7 h-7 text-[#25d366] transition-transform duration-300 group-hover:rotate-12"
+        className="w-5 h-5 text-white/50 group-hover:text-[#25d366] transition-all duration-500 group-hover:rotate-6"
         fill="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"

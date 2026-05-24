@@ -6,19 +6,19 @@ export default function About() {
       <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 items-center">
         {/* Left Column: Elegant Photo Card */}
         <div className="md:col-span-5 flex justify-center">
-          <div className="relative w-full max-w-sm aspect-[4/5] rounded-[32px] overflow-hidden liquid-glass border border-white/5 p-3 group">
-            {/* Ambient backlight blur on hover */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          <div className="relative w-full max-w-sm aspect-[4/5] rounded-[32px] overflow-hidden liquid-glass border border-white/10 p-3 group shadow-[0_0_50px_rgba(255,255,255,0.02)] hover:shadow-[0_0_50px_rgba(255,255,255,0.05)] transition-all duration-700">
+            {/* Ambient backlight blur */}
+            <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-1000" />
 
             {/* The Image container */}
-            <div className="w-full h-full rounded-[24px] overflow-hidden relative bg-neutral-900">
+            <div className="w-full h-full rounded-[24px] overflow-hidden relative bg-neutral-900 border border-white/5">
               <img
                 src={rodolfoImg}
                 alt="Rodolfo Ferreira"
                 className="w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700"
               />
               {/* Subtle glass overlay vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@ export default function About() {
             </h2>
           </div>
 
-          <p className="font-sans text-body-lg text-on-surface-variant/80 leading-relaxed max-w-2xl">
+          <p className="font-sans text-body-lg text-on-surface-variant/90 leading-relaxed max-w-2xl">
             Sou Rodolfo Ferreira, webdesigner, desenvolvedor e profissional de tecnologia. Crio
             experiências digitais que unem estética, clareza e função: sites que apresentam
             melhor uma marca, sistemas que organizam processos e automações que reduzem trabalho

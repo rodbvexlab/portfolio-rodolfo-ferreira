@@ -42,7 +42,7 @@ export default function ContactCTA() {
                   required
                   type="text"
                   placeholder="Seu nome"
-                  className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-6 py-4 text-white placeholder:text-white/40 font-sans text-body-md focus:border-white/30 focus:ring-1 focus:ring-white/10 outline-none transition-all"
+                  className="w-full bg-white/[0.02] backdrop-blur-xl border border-white/5 rounded-full px-6 py-4 text-white placeholder:text-white/30 font-sans text-body-md hover:border-white/15 focus:border-primary/40 focus:ring-1 focus:ring-primary/20 outline-none transition-all duration-300"
                 />
               </div>
 
@@ -52,7 +52,7 @@ export default function ContactCTA() {
                   required
                   type="text"
                   placeholder="WhatsApp ou e-mail"
-                  className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-6 py-4 text-white placeholder:text-white/40 font-sans text-body-md focus:border-white/30 focus:ring-1 focus:ring-white/10 outline-none transition-all"
+                  className="w-full bg-white/[0.02] backdrop-blur-xl border border-white/5 rounded-full px-6 py-4 text-white placeholder:text-white/30 font-sans text-body-md hover:border-white/15 focus:border-primary/40 focus:ring-1 focus:ring-primary/20 outline-none transition-all duration-300"
                 />
               </div>
 
@@ -61,7 +61,7 @@ export default function ContactCTA() {
                 <input
                   type="text"
                   placeholder="Tipo de projeto"
-                  className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-6 py-4 text-white placeholder:text-white/40 font-sans text-body-md focus:border-white/30 focus:ring-1 focus:ring-white/10 outline-none transition-all"
+                  className="w-full bg-white/[0.02] backdrop-blur-xl border border-white/5 rounded-full px-6 py-4 text-white placeholder:text-white/30 font-sans text-body-md hover:border-white/15 focus:border-primary/40 focus:ring-1 focus:ring-primary/20 outline-none transition-all duration-300"
                 />
               </div>
 
@@ -70,7 +70,7 @@ export default function ContactCTA() {
                 <textarea
                   rows={3}
                   placeholder="Mensagem curta"
-                  className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl px-6 py-4 text-white placeholder:text-white/40 resize-none font-sans text-body-md focus:border-white/30 focus:ring-1 focus:ring-white/10 outline-none transition-all"
+                  className="w-full bg-white/[0.02] backdrop-blur-xl border border-white/5 rounded-3xl px-6 py-4 text-white placeholder:text-white/30 resize-none font-sans text-body-md hover:border-white/15 focus:border-primary/40 focus:ring-1 focus:ring-primary/20 outline-none transition-all duration-300"
                 />
               </div>
 
@@ -78,7 +78,7 @@ export default function ContactCTA() {
               <div className="md:col-span-2 flex justify-center mt-8">
                 <button
                   type="submit"
-                  className="px-12 py-4 rounded-full bg-white text-black font-sans text-label-sm uppercase tracking-[0.2em] hover:bg-white/90 transition-all duration-300 shadow-xl"
+                  className="px-12 py-4 rounded-full bg-white/10 border border-white/20 hover:border-primary/40 text-on-surface font-sans text-label-sm uppercase tracking-[0.2em] transition-all duration-500 shadow-lg backdrop-blur-xl hover:bg-primary hover:text-black hover:scale-[1.02]"
                 >
                   Enviar ideia
                 </button>
