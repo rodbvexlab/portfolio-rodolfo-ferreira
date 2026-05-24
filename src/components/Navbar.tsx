@@ -1,16 +1,11 @@
-import logoImg from '../assets/logo.png'
-
 export default function Navbar() {
   return (
     <nav className="fixed top-0 left-1/2 -translate-x-1/2 z-50 flex justify-between items-center px-4 md:px-8 py-3 w-[90%] max-w-container-max mt-6 liquid-glass rounded-full bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] transition-all duration-500 hover:scale-[0.99]">
       {/* Logo */}
-      <div className="flex items-center gap-2 md:gap-3">
-        <img
-          src={logoImg}
-          alt="Rodolfo Ferreira Logo"
-          className="w-8 h-8 rounded-full object-cover border border-white/10"
-        />
-        <span className="font-serif text-2xl tracking-tighter text-on-surface">RF</span>
+      <div className="flex items-center">
+        <span className="font-serif text-xl md:text-2xl tracking-tighter text-on-surface whitespace-nowrap">
+          Rodolfo Ferreira
+        </span>
       </div>
 
       {/* Desktop nav links */}
