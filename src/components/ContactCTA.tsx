@@ -26,7 +26,7 @@ export default function ContactCTA() {
         </div>
 
         {/* Glass form card */}
-        <div className="liquid-glass bg-white/[0.03] backdrop-blur-2xl rounded-[40px] border border-white/10 p-8 md:p-16 mt-16">
+        <div className="liquid-glass bg-white/[0.03] backdrop-blur-2xl rounded-[40px] border border-white/10 p-6 md:p-16 mt-16">
           {submitted ? (
             <div className="py-12 text-center space-y-4">
               <span className="material-symbols-outlined text-primary text-5xl">check_circle</span>
@@ -35,7 +35,7 @@ export default function ContactCTA() {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 text-left">
               {/* Name */}
               <div className="space-y-2">
                 <input

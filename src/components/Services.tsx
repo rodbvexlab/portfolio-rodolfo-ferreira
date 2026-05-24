@@ -103,11 +103,11 @@ export default function Services() {
         </div>
 
         {/* Right column: service cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-6">
           {serviceCards.map(({ icon, title, description }) => (
             <div
               key={title}
-              className="liquid-glass p-8 space-y-6 rounded-3xl hover:border-primary/30 transition-all duration-500 group border border-white/5"
+              className="liquid-glass p-6 lg:p-8 space-y-6 rounded-3xl hover:border-primary/30 transition-all duration-500 group border border-white/5"
             >
               <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-primary/10 transition-colors">
                 <span className="material-symbols-outlined text-primary">{icon}</span>

@@ -82,9 +82,9 @@ export default function Process() {
         </div>
 
         {/* Steps container */}
-        <div className="relative grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Decorative SVG connector (desktop only) */}
-          <div className="hidden md:block absolute top-1/2 left-0 w-full h-24 -translate-y-1/2 z-0 pointer-events-none">
+          <div className="hidden lg:block absolute top-1/2 left-0 w-full h-24 -translate-y-1/2 z-0 pointer-events-none">
             <svg
               className="w-full h-24 overflow-visible"
               viewBox="0 0 1000 100"
@@ -116,7 +116,7 @@ export default function Process() {
           {/* Step cards */}
           {steps.map(({ num, title, description }) => (
             <div key={num} className="relative z-10 group">
-              <div className="liquid-glass bg-white/[0.05] backdrop-blur-xl p-8 rounded-3xl h-full border border-white/10 hover:border-primary/30 transition-all duration-500">
+              <div className="liquid-glass bg-white/[0.05] backdrop-blur-xl p-6 lg:p-8 rounded-3xl h-full border border-white/10 hover:border-primary/30 transition-all duration-500">
                 <div className="font-serif text-4xl mb-6 text-primary/60">{num}</div>
                 <h3 className="font-serif text-xl text-white mb-4">{title}</h3>
                 <p className="font-sans text-on-surface-variant/70 text-sm leading-relaxed">

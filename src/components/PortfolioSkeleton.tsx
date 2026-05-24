@@ -90,7 +90,7 @@ function ProjectCardRegular({ project }: { project: ProjectCard }) {
 function ProjectCardWide() {
   return (
     <div className="group cursor-pointer flex flex-col space-y-6 md:col-span-2">
-      <div className="overflow-hidden aspect-[21/9] bg-white/[0.02] border border-white/5 rounded-2xl liquid-glass flex items-center justify-center transition-all duration-700 group-hover:border-primary/20 relative">
+      <div className="overflow-hidden aspect-[16/10] md:aspect-[21/9] bg-white/[0.02] border border-white/5 rounded-2xl liquid-glass flex items-center justify-center transition-all duration-700 group-hover:border-primary/20 relative">
         <div className="relative">
           <div className="absolute -inset-8 bg-primary/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
           <span className="material-symbols-outlined text-white/5 text-8xl group-hover:text-primary/10 transition-colors">
