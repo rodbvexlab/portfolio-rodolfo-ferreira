@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react'
+
 const SERVICES_VIDEO_SRC =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_132944_a0d124bb-eaa1-4082-aa30-2310efb42b4b.mp4'
 
@@ -31,6 +33,31 @@ const serviceCards = [
 const navItems = ['Web Design', 'Sistemas', 'IA Aplicada', 'Automação']
 
 export default function Services() {
+  const [isVisible, setIsVisible] = useState(false)
+  const timelineRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      {
+        threshold: 0.15,
+      }
+    )
+
+    if (timelineRef.current) {
+      observer.observe(timelineRef.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   return (
     <section
       id="services"
@@ -75,24 +102,33 @@ export default function Services() {
             <h2 className="font-serif text-4xl md:text-6xl text-white max-w-lg">
               Soluções digitais para negócios que precisam sair do improviso.
             </h2>
-            <p className="font-sans text-lg text-on-surface-variant/70 max-w-md">
+            <p className="font-sans text-lg text-on-surface-variant/90 max-w-md">
               Crio sites, sistemas e automações com foco em clareza, usabilidade e resultado real —
               unindo design, tecnologia e visão prática de operação.
             </p>
           </div>
 
           {/* Vertical timeline nav */}
-          <div className="relative flex flex-col gap-8 pl-6 border-l border-white/10">
+          <div
+            ref={timelineRef}
+            className="relative flex flex-col gap-8 pl-6 border-l border-white/10"
+          >
             {navItems.map((item, i) => (
-              <div key={item} className="relative flex items-center">
+              <div
+                key={item}
+                className={`relative flex items-center transform transition-all duration-700 ease-out ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                }`}
+                style={{ transitionDelay: isVisible ? `${i * 150}ms` : '0ms' }}
+              >
                 <div
-                  className={`absolute -left-[29px] w-2 h-2 rounded-full ${
+                  className={`absolute -left-[29px] w-2 h-2 rounded-full transition-colors duration-500 ${
                     i === 0 ? 'bg-primary' : 'bg-white/20'
                   }`}
                 />
                 <span
-                  className={`font-sans text-label-sm uppercase tracking-widest ${
-                    i === 0 ? 'text-on-surface' : 'text-on-surface-variant/60'
+                  className={`font-sans text-label-sm uppercase tracking-widest transition-colors duration-500 ${
+                    i === 0 ? 'text-on-surface' : 'text-on-surface-variant/80'
                   }`}
                 >
                   {item}
@@ -114,7 +150,7 @@ export default function Services() {
               </div>
               <div className="space-y-3">
                 <h3 className="font-serif text-2xl text-on-surface">{title}</h3>
-                <p className="font-sans text-body-md text-on-surface-variant/70 leading-relaxed">
+                <p className="font-sans text-body-md text-on-surface-variant/90 leading-relaxed">
                   {description}
                 </p>
               </div>
