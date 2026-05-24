@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import Services from './components/Services'
 import PortfolioSkeleton from './components/PortfolioSkeleton'
 import Process from './components/Process'
+import About from './components/About'
 import ContactCTA from './components/ContactCTA'
 import WhatsAppFloating from './components/WhatsAppFloating'
 
@@ -24,6 +25,7 @@ export default function App() {
       <Services />
       <PortfolioSkeleton />
       <Process />
+      <About />
       <ContactCTA />
 
       {/* Floating WhatsApp CTA */}
