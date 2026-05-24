@@ -31,7 +31,9 @@ const Hero = forwardRef<HTMLElement>((_, ref) => {
         {/* CTAs */}
         <div className="flex flex-col md:flex-row items-center gap-6 mt-8">
           <a
-            href="#contato"
+            href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+            target="_blank"
+            rel="noopener noreferrer"
             className="liquid-glass rounded-full px-8 py-4 flex items-center gap-3 text-on-surface hover:text-primary transition-all duration-300 group"
           >
             <span className="font-sans text-label-sm uppercase tracking-widest">

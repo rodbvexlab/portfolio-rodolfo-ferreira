@@ -42,7 +42,9 @@ export default function Navbar() {
 
       {/* CTA button */}
       <a
-        href="#contato"
+        href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+        target="_blank"
+        rel="noopener noreferrer"
         className="px-4 py-2 md:px-5 md:py-2 rounded-full bg-white/10 border border-white/10 text-on-surface font-sans text-[10px] md:text-label-sm uppercase tracking-widest hover:bg-white/20 hover:border-white/20 transition-all duration-300 flex items-center gap-2"
       >
         Falar comigo

@@ -6,6 +6,7 @@ import Services from './components/Services'
 import PortfolioSkeleton from './components/PortfolioSkeleton'
 import Process from './components/Process'
 import ContactCTA from './components/ContactCTA'
+import WhatsAppFloating from './components/WhatsAppFloating'
 
 export default function App() {
   const heroRef = useRef<HTMLElement>(null)
@@ -25,6 +26,9 @@ export default function App() {
       <Process />
       <ContactCTA />
 
+      {/* Floating WhatsApp CTA */}
+      <WhatsAppFloating />
     </div>
   )
 }
+
