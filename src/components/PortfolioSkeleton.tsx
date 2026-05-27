@@ -107,7 +107,7 @@ function ProjectCardRegular({ project }: { project: ProjectCard }) {
 }
 
 function ProjectCardWide() {
-  const crmLink = "https://crm-criativos-ct67ln942-rodolfoacontrans-5888s-projects.vercel.app/"
+  const crmLink = "https://crm-criativos.vercel.app/login"
   const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(crmLink)}&screenshot=true&embed=screenshot.url`
 
   return (
