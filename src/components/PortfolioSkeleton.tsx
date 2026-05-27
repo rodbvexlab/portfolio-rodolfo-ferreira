@@ -33,7 +33,7 @@ const projects: ProjectCard[] = [
     year: '2024',
     tags: ['Web Design', '3D / Art', 'Creative'],
     icon: 'auto_awesome',
-    link: 'https://aetheria-3d3l-h8usd510f-rodolfoacontrans-5888s-projects.vercel.app/',
+    link: 'https://aetheria-3d3l.vercel.app/',
   },
 ]
 
