@@ -4,7 +4,6 @@ interface ProjectCard {
   tags: string[]
   icon: string
   link: string
-  decoration?: React.ReactNode
 }
 
 const projects: ProjectCard[] = [
@@ -14,13 +13,6 @@ const projects: ProjectCard[] = [
     tags: ['Sistemas', 'Cloud Run', 'UX'],
     icon: 'database',
     link: 'https://asme-714655608194.us-east1.run.app',
-    decoration: (
-      <div className="grid grid-cols-3 gap-2 w-1/3 opacity-20">
-        <div className="h-2 bg-white/40 rounded-full" />
-        <div className="h-2 bg-white/40 rounded-full" />
-        <div className="h-2 bg-white/40 rounded-full" />
-      </div>
-    ),
   },
   {
     title: 'Bonitos Car',
@@ -28,9 +20,6 @@ const projects: ProjectCard[] = [
     tags: ['Web Design', 'Landing Page', 'SEO'],
     icon: 'directions_car',
     link: 'https://www.bonitoscar.com.br/',
-    decoration: (
-      <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-    ),
   },
   {
     title: 'Être Creative',
@@ -38,28 +27,19 @@ const projects: ProjectCard[] = [
     tags: ['Design', 'Branding', 'Web'],
     icon: 'brush',
     link: 'https://www.etrecreative.com.br/',
-    decoration: (
-      <div className="w-1/2 h-[1px] bg-white/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-    ),
   },
   {
-    title: 'Stefani Papelaria',
+    title: 'Aetheria',
     year: '2024',
-    tags: ['E-commerce', 'UX/UI', 'Web'],
-    icon: 'shopping_bag',
-    link: 'https://www.stefanipapelaria.com.br/',
-    decoration: (
-      <div className="w-full h-full flex flex-col p-8 space-y-4 opacity-5">
-        <div className="h-4 w-3/4 bg-white rounded-full" />
-        <div className="h-4 w-1/2 bg-white rounded-full" />
-        <div className="h-32 w-full border border-white rounded-xl" />
-      </div>
-    ),
+    tags: ['Web Design', '3D / Art', 'Creative'],
+    icon: 'auto_awesome',
+    link: 'https://aetheria-3d3l-h8usd510f-rodolfoacontrans-5888s-projects.vercel.app/',
   },
 ]
 
 function ProjectCardRegular({ project }: { project: ProjectCard }) {
-  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(project.link)}&screenshot=true&embed=screenshot.url`
+  // Microlink screenshot URL with wait=3 to allow dynamic React SPA content to fully render
+  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(project.link)}&screenshot=true&embed=screenshot.url&wait=3`
 
   return (
     <a
@@ -78,11 +58,6 @@ function ProjectCardRegular({ project }: { project: ProjectCard }) {
         />
         {/* Hover overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none" />
-
-        {/* Center fallback icon overlay */}
-        <span className="material-symbols-outlined absolute text-white/10 text-6xl group-hover:scale-110 group-hover:text-primary/20 transition-all duration-700 pointer-events-none">
-          {project.icon}
-        </span>
       </div>
       <div className="space-y-4">
         <div className="flex justify-between items-baseline">
@@ -108,7 +83,8 @@ function ProjectCardRegular({ project }: { project: ProjectCard }) {
 
 function ProjectCardWide() {
   const crmLink = "https://crm-criativos.vercel.app/login"
-  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(crmLink)}&screenshot=true&embed=screenshot.url`
+  // Microlink screenshot URL with wait=3 to allow dynamic React SPA content to fully render
+  const screenshotUrl = `https://api.microlink.io/?url=${encodeURIComponent(crmLink)}&screenshot=true&embed=screenshot.url&wait=3`
 
   return (
     <a
@@ -130,11 +106,6 @@ function ProjectCardWide() {
 
         {/* Hover overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none" />
-
-        {/* Center fallback icon overlay */}
-        <span className="material-symbols-outlined absolute text-white/10 text-8xl group-hover:scale-110 group-hover:text-primary/20 transition-all duration-700 pointer-events-none">
-          dashboard
-        </span>
       </div>
       <div className="space-y-4">
         <div className="flex justify-between items-baseline">
