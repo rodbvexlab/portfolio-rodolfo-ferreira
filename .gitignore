@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Raw video source folder (videos served from public/video/)
+/video/
+
+# Claude Code agent artifacts
+.agents/
+skills-lock.json

@@ -85,6 +85,23 @@ export default {
         'body-md': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
         'label-sm': ['12px', { lineHeight: '1.0', letterSpacing: '0.1em', fontWeight: '600' }],
       },
+      animation: {
+        'fade-in': 'fadeIn 0.7s ease forwards',
+        'slide-up': 'slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        slideUp: {
+          from: { opacity: '0', transform: 'translateY(24px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      transitionDuration: {
+        400: '400ms',
+      },
     },
   },
   plugins: [],

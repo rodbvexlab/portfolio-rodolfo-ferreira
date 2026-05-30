@@ -14,9 +14,17 @@
   }
 
   body {
-    @apply text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col;
+    @apply antialiased overflow-x-hidden min-h-screen flex flex-col;
     font-family: var(--font-sans);
     background-color: #000;
+    color: #e8e6e3;
+    cursor: none;
+  }
+
+  /* Hide default cursor on desktop, show on mobile */
+  @media (hover: none) {
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none !important; }
   }
 
   ::selection {
@@ -61,6 +69,33 @@
   /* .video-container and .video-element are now handled with inline styles in VideoBackground.tsx */
 
   /* ─── Material Symbols helper ─── */
+  /* ─── Dot grid background ─── */
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* ─── Noise grain overlay (pure CSS) ─── */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9000;
+    opacity: 0.35;
+  }
+
+  /* ─── Smooth page scroll ─── */
+  * {
+    scroll-behavior: smooth;
+  }
+
+  /* ─── Link cursor ─── */
+  a, button {
+    cursor: none;
+  }
+
   .material-symbols-outlined {
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
