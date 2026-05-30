@@ -10,6 +10,87 @@ const DottedSurface = lazy(() =>
   import('./ui/dotted-surface').then((m) => ({ default: m.DottedSurface }))
 )
 
+// ── Cyan bloom / lens-flare layers ──────────────────────────────────
+// Four concentric layers of light + a thin horizontal flare streak.
+// All opacities are deliberately low so the effect reads as "ambient"
+// rather than decorative — a cinematographer would call it "motivated light."
+function CyanBloom({ reduced }: { reduced: boolean }) {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+
+      {/* Layer 1 — wide, diffused bloom from slightly above center */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 85% 55% at 50% 38%, rgba(76,215,246,0.055) 0%, rgba(76,215,246,0.015) 45%, transparent 70%)',
+        }}
+      />
+
+      {/* Layer 2 — tighter focused glow, the "source" of the light */}
+      <div
+        className="absolute"
+        style={{
+          top: '18%', left: '50%',
+          transform: 'translate(-50%, 0)',
+          width: '520px', height: '380px',
+          background:
+            'radial-gradient(ellipse at center, rgba(76,215,246,0.09) 0%, rgba(76,215,246,0.03) 45%, transparent 75%)',
+          filter: 'blur(32px)',
+        }}
+      />
+
+      {/* Layer 3 — hot core: small, bright, heavily blurred */}
+      <motion.div
+        className="absolute"
+        style={{
+          top: '22%', left: '50%',
+          transform: 'translate(-50%, 0)',
+          width: '180px', height: '120px',
+          background: 'radial-gradient(circle, rgba(180,240,255,0.18) 0%, transparent 70%)',
+          filter: 'blur(18px)',
+        }}
+        {...(!reduced && {
+          animate: { opacity: [0.6, 1, 0.6], scale: [0.95, 1.05, 0.95] },
+          transition: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
+        })}
+      />
+
+      {/* Layer 4 — very subtle bloom on the bottom half (light bouncing back) */}
+      <div
+        className="absolute inset-x-0 bottom-0"
+        style={{
+          height: '50%',
+          background:
+            'radial-gradient(ellipse 60% 40% at 50% 100%, rgba(76,215,246,0.025) 0%, transparent 70%)',
+        }}
+      />
+
+      {/* Horizontal flare streak — ultra-thin, fades to edges */}
+      <div
+        className="absolute inset-x-0"
+        style={{
+          top: '28%',
+          height: '1px',
+          background:
+            'linear-gradient(to right, transparent 0%, rgba(76,215,246,0.04) 20%, rgba(180,240,255,0.10) 50%, rgba(76,215,246,0.04) 80%, transparent 100%)',
+        }}
+      />
+
+      {/* Secondary micro-streak slightly offset */}
+      <div
+        className="absolute inset-x-0"
+        style={{
+          top: 'calc(28% + 3px)',
+          height: '1px',
+          background:
+            'linear-gradient(to right, transparent 10%, rgba(76,215,246,0.025) 35%, rgba(76,215,246,0.05) 50%, rgba(76,215,246,0.025) 65%, transparent 90%)',
+        }}
+      />
+    </div>
+  )
+}
+
 const iconMap: Record<string, string> = {
   'Web Design': 'design_services',
   'Sistemas Internos': 'terminal',
@@ -151,19 +232,17 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
         </motion.div>
       )}
 
-      {/* Radial vignette so dots don't bleed to edges */}
+      {/* ── Cyan bloom / lens flare — sits above dots, below vignette ── */}
+      <CyanBloom reduced={reducedMotion} />
+
+      {/* Radial vignette — darkens edges so dots & bloom stay contained */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, rgba(0,0,0,0.65) 100%)',
+            'radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, rgba(0,0,0,0.60) 100%)',
         }}
       />
-
-      {/* Radial glow at center */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[600px] h-[600px] rounded-full bg-cyan-400/[0.04] blur-[120px]" />
-      </div>
 
       {/* ── Content ── */}
       <div className="relative z-10 w-full max-w-container-max mx-auto lg:grid lg:grid-cols-[1fr_380px] lg:gap-12 lg:items-center">
