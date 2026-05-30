@@ -102,7 +102,6 @@ export const projects: Project[] = [
     tags: ['Web Design', '3D / Art', 'Creative'],
     link: 'https://aetheria-3d3l.vercel.app/',
     video: '/video/aetheria.mp4',
-    wide: true,
     description: {
       pt: 'Projeto criativo experimental unindo web design, arte 3D e experiências digitais imersivas.',
       en: 'Experimental creative project combining web design, 3D art, and immersive digital experiences.',
