@@ -112,27 +112,30 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
         </div>
 
         {/* Meta */}
-        <div className="mt-5 flex items-start justify-between gap-4">
-          <div className="space-y-1.5">
-            <h3 className="font-sans text-[13px] uppercase tracking-[0.14em] text-white/70
+        <div className="mt-5 space-y-2">
+          {/* Primary — project name dominates */}
+          <div className="flex items-baseline justify-between gap-4">
+            <h3 className="font-serif text-[22px] leading-tight text-white/85
               group-hover:text-white transition-colors duration-300">
               {project.title}
             </h3>
-            <p className="font-sans text-[13px] text-white/30 leading-snug max-w-xs">
-              {project.description[lang]}
-            </p>
+            <span className="font-mono text-[11px] text-white/25 shrink-0">{project.year}</span>
           </div>
-          <span className="font-mono text-[11px] text-white/20 shrink-0 mt-0.5">{project.year}</span>
+
+          {/* Secondary — description */}
+          <p className="font-sans text-[13px] text-white/50 leading-snug max-w-xs">
+            {project.description[lang]}
+          </p>
         </div>
 
-        {/* Tags */}
+        {/* Tags — tertiary */}
         <div className="mt-3 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
             <span
               key={tag}
               className="font-sans text-[10px] uppercase tracking-widest
-                text-white/25 border border-white/[0.07] px-2.5 py-1 rounded-full
-                group-hover:border-white/[0.12] group-hover:text-white/40
+                text-white/30 border border-white/[0.08] px-2.5 py-1 rounded-full
+                group-hover:border-white/[0.14] group-hover:text-white/45
                 transition-all duration-300"
             >
               {tag}

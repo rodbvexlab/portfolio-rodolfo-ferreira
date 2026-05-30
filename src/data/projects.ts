@@ -74,7 +74,7 @@ export const projects: Project[] = [
     title: 'Barbearia Marques',
     year: '2025',
     tags: ['Web Design', 'Landing Page', 'Branding'],
-    link: '#',
+    link: 'https://barber-marques.vercel.app',
     video: '/video/barbearia-marques.mp4',
     description: {
       pt: 'Landing page premium para barbearia, com identidade visual forte, agendamento integrado e foco em experiência do cliente.',

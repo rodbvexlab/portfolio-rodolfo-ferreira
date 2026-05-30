@@ -58,7 +58,7 @@ export default function CaseStudy() {
             {project.title}
           </motion.h1>
 
-          <motion.p variants={fadeUp(0.15)} className="font-sans text-[17px] text-white/50 max-w-2xl leading-relaxed">
+          <motion.p variants={fadeUp(0.15)} className="font-sans text-[17px] text-white/60 max-w-2xl leading-relaxed">
             {project.description[lang]}
           </motion.p>
 
@@ -113,7 +113,7 @@ export default function CaseStudy() {
                   {t.case[key as keyof typeof t.case]}
                 </span>
               </div>
-              <p className="font-sans text-[16px] text-white/65 leading-relaxed">
+              <p className="font-sans text-[16px] text-white/70 leading-relaxed">
                 {project.case[key as keyof typeof project.case][lang]}
               </p>
             </motion.div>

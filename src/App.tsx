@@ -10,6 +10,7 @@ import ContactCTA from './components/ContactCTA'
 import WhatsAppFloating from './components/WhatsAppFloating'
 import CustomCursor from './components/CustomCursor'
 import CaseStudy from './pages/CaseStudy'
+import NotFound from './pages/NotFound'
 
 function SiteFooter() {
   const { t } = useLanguage()
@@ -98,6 +99,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/case/:slug" element={<CaseStudyPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )
@@ -109,6 +111,15 @@ function CaseStudyPage() {
       <Navbar />
       <CaseStudy />
       <WhatsAppFloating />
+    </div>
+  )
+}
+
+function NotFoundPage() {
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navbar />
+      <NotFound />
     </div>
   )
 }

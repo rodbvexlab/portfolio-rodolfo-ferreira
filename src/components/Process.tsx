@@ -95,7 +95,7 @@ export default function Process() {
                 {num}
               </div>
               <h3 className="font-serif text-[17px] md:text-[20px] text-white mb-2">{title}</h3>
-              <p className="font-sans text-[12px] md:text-[13px] text-white/40 leading-relaxed">{description}</p>
+              <p className="font-sans text-[12px] md:text-[13px] text-white/55 leading-relaxed">{description}</p>
             </motion.div>
           ))}
         </motion.div>

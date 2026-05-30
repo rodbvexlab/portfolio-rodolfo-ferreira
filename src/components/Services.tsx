@@ -105,7 +105,7 @@ export default function Services() {
               <motion.h2 variants={fadeUp(0.05)} className="font-serif text-[38px] md:text-[52px] lg:text-[56px] leading-[1.05] text-white max-w-lg">
                 {services.headline}
               </motion.h2>
-              <motion.p variants={fadeUp(0.1)} className="font-sans text-[16px] text-white/50 max-w-md leading-relaxed">
+              <motion.p variants={fadeUp(0.1)} className="font-sans text-[16px] text-white/60 max-w-md leading-relaxed">
                 {services.body}
               </motion.p>
             </div>
@@ -141,7 +141,7 @@ export default function Services() {
                     <span className="material-symbols-outlined text-cyan-400 text-[18px]">{icon}</span>
                   </div>
                   <h3 className="font-serif text-[22px] text-white mb-3">{title}</h3>
-                  <p className="font-sans text-[14px] text-white/45 leading-relaxed">{description}</p>
+                  <p className="font-sans text-[14px] text-white/55 leading-relaxed">{description}</p>
                 </TiltCard>
               </motion.div>
             ))}
@@ -216,7 +216,7 @@ export default function Services() {
                     className="group flex items-center justify-between py-5
                       hover:bg-white/[0.02] transition-colors duration-300 px-4 -mx-4 rounded-xl cursor-default"
                   >
-                    <span className="font-sans text-[15px] text-white/60 group-hover:text-white/85 transition-colors">
+                    <span className="font-sans text-[15px] text-white/70 group-hover:text-white/90 transition-colors">
                       {service}
                     </span>
                     <span className={`font-mono text-[13px] tracking-tight transition-colors ${isConsult ? 'text-white/25 italic' : 'text-cyan-400/70 group-hover:text-cyan-300'}`}>

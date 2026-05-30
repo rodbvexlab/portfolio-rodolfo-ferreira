@@ -290,7 +290,7 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="font-sans text-[17px] text-white/50 max-w-lg leading-relaxed"
+            className="font-sans text-[17px] text-white/60 max-w-lg leading-relaxed"
           >
             {hero.body}
           </motion.p>
