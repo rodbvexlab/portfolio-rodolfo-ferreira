@@ -34,6 +34,8 @@ export default function About() {
             <img
               src={rodolfoImg}
               alt="Rodolfo Ferreira"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.04] transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />

@@ -2,15 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Google Fonts custom properties ─── */
+/* ─── Design tokens ───────────────────────────────────────────── */
 @layer base {
   :root {
-    --font-serif: 'Instrument Serif', serif;
-    --font-sans: 'Geist', sans-serif;
+    --font-serif: 'Instrument Serif', Georgia, serif;
+    --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
   }
 
   html {
     @apply scroll-smooth;
+    /* Improve momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -19,27 +23,25 @@
     background-color: #000;
     color: #e8e6e3;
     cursor: none;
+    /* Prevent layout shift from scrollbar */
+    scrollbar-gutter: stable;
   }
 
-  /* Hide default cursor on desktop, show on mobile */
-  @media (hover: none) {
+  /* Restore default cursor + hide custom cursor on touch devices */
+  @media (hover: none), (pointer: coarse) {
     body { cursor: auto; }
-    .cursor-dot, .cursor-ring { display: none !important; }
+    .cursor-dot,
+    .cursor-ring { display: none !important; }
+    a, button { cursor: auto; }
   }
 
   ::selection {
-    @apply bg-primary text-on-primary;
-  }
-
-  .font-serif {
-    font-family: var(--font-serif);
-  }
-  .font-sans {
-    font-family: var(--font-sans);
+    background: rgba(76, 215, 246, 0.25);
+    color: #fff;
   }
 }
 
-/* ─── Liquid Glass ─── */
+/* ─── Liquid Glass ──────────────────────────────────────────────── */
 @layer components {
   .liquid-glass {
     background: rgba(255, 255, 255, 0.01);
@@ -57,7 +59,7 @@
     padding: 1px;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.12) 0%,
       rgba(255, 255, 255, 0) 100%
     );
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -66,36 +68,13 @@
     pointer-events: none;
   }
 
-  /* .video-container and .video-element are now handled with inline styles in VideoBackground.tsx */
-
-  /* ─── Material Symbols helper ─── */
-  /* ─── Dot grid background ─── */
+  /* ─── Dot grid background (hero) ─── */
   .dot-grid {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
     background-size: 28px 28px;
   }
 
-  /* ─── Noise grain overlay (pure CSS) ─── */
-  .grain::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9000;
-    opacity: 0.35;
-  }
-
-  /* ─── Smooth page scroll ─── */
-  * {
-    scroll-behavior: smooth;
-  }
-
-  /* ─── Link cursor ─── */
-  a, button {
-    cursor: none;
-  }
-
+  /* ─── Material Symbols ─── */
   .material-symbols-outlined {
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
@@ -108,8 +87,105 @@
     white-space: nowrap;
     word-wrap: normal;
     direction: ltr;
-    -webkit-font-feature-settings: 'liga';
     font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MOBILE PERFORMANCE LAYER
+   All rules below fire only on touch / coarse-pointer devices.
+   The biggest wins:
+   1. backdrop-filter disabled  → no GPU compositing cost
+   2. animations simplified     → no jank on 60Hz budget displays
+   3. content-visibility        → skip offscreen layout/paint
+   4. heavy shadows removed     → cheaper paint
+───────────────────────────────────────────────────────────────── */
+
+/* 1 — Kill backdrop-filter on touch devices.
+   Replace blur compositing with a solid dark background.
+   This is the single biggest mobile perf win on this site. */
+@media (pointer: coarse) {
+  *,
+  *::before,
+  *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Compensate: give glass-style elements a solid dark fill */
+  .liquid-glass,
+  [class*="backdrop-blur"] {
+    background-color: rgba(10, 10, 10, 0.88) !important;
+  }
+
+  /* Navbar needs slightly more opacity without blur */
+  nav {
+    background-color: rgba(6, 6, 6, 0.92) !important;
+  }
+}
+
+/* 2 — content-visibility: skip layout + paint for below-fold sections.
+   The browser skips rendering until the section is near the viewport. */
+@media (pointer: coarse) {
+  #services,
+  #projects,
+  #process,
+  #about,
+  #contato {
+    content-visibility: auto;
+    /* Reserve approximate height so layout doesn't jump */
+    contain-intrinsic-size: 0 600px;
+  }
+}
+
+/* 3 — Respect prefers-reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 4 — Simplify heavy shadows on mobile (cheaper paint) */
+@media (pointer: coarse) {
+  [class*="shadow-[0_0_"] {
+    box-shadow: none !important;
+  }
+}
+
+/* 5 — Ensure all interactive elements meet 44px touch target minimum */
+@media (pointer: coarse) {
+  a,
+  button,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Pill-shaped small buttons get extra padding on touch */
+  nav a,
+  nav button {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+}
+
+/* 6 — Smooth scroll container for horizontal scrolling elements */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll-x::-webkit-scrollbar { display: none; }
+
+/* 7 — Prevent text flash while fonts load (system fallback is already set in CSS vars) */
+@font-face {
+  font-family: 'Geist';
+  font-display: swap;
+  src: local('Geist');
 }

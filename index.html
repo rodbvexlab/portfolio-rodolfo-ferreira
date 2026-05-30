@@ -23,12 +23,19 @@
     <meta name="theme-color" content="#000000" />
     <meta name="color-scheme" content="dark" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts — preconnect first to reduce DNS lookup latency -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@100..900&display=swap" rel="stylesheet" />
-    <!-- Material Symbols -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <!-- Core fonts: swap so text renders immediately in fallback -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icons: swap prevents icon-flash from blocking render; subset to Outlined only -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

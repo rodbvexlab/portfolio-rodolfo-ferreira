@@ -3,8 +3,9 @@ import { ease } from '../lib/motion'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import MagneticButton from './MagneticButton'
+import { useIsTouch, usePrefersReducedMotion } from '../hooks/useMediaQuery'
 
-// Lazy-load Three.js so it doesn't block the initial JS parse
+// Lazy-load Three.js — only on non-touch devices (saves 136KB on mobile)
 const DottedSurface = lazy(() =>
   import('./ui/dotted-surface').then((m) => ({ default: m.DottedSurface }))
 )
@@ -102,19 +103,17 @@ function TechMockup({ m }: { m: ReturnType<typeof useLanguage>['t']['hero']['moc
 const Hero = forwardRef<HTMLElement>((_, _ref) => {
   const { t } = useLanguage()
   const { hero } = t
+  const isTouch = useIsTouch()
+  const reducedMotion = usePrefersReducedMotion()
 
   // ── Scroll-based fade for the dots background ──────────────────────
-  // Track scroll relative to this section: start → end of hero viewport
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start start', 'end start'], // 0 when top of section at top of viewport, 1 when bottom of section at top
+    offset: ['start start', 'end start'],
   })
-
-  // Fade out dots over the first 70% of the scroll-out distance
   const dotsOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0])
-  // Subtle upward parallax on the entire dots layer
-  const dotsY = useTransform(scrollYProgress, [0, 1], ['0%', '-18%'])
+  const dotsY = useTransform(scrollYProgress, [0, 1], ['0%', reducedMotion ? '0%' : '-18%'])
 
   return (
     <main
@@ -128,16 +127,29 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
       className="relative flex-grow flex items-center justify-center min-h-screen px-6 md:px-20 overflow-hidden"
       style={{ zIndex: 10 }}
     >
-      {/* ── Three.js animated dot wave — lazy loaded, fades on scroll ── */}
-      <motion.div
-        style={{ opacity: dotsOpacity, y: dotsY }}
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden
-      >
-        <Suspense fallback={null}>
-          <DottedSurface />
-        </Suspense>
-      </motion.div>
+      {/* ── Background: Three.js on desktop, CSS grid on mobile ── */}
+      {isTouch ? (
+        /* Mobile: lightweight CSS dot grid — zero JS/GPU cost */
+        <div
+          className="absolute inset-0 pointer-events-none opacity-25"
+          style={{
+            backgroundImage: 'radial-gradient(rgba(76,215,246,0.12) 1px, transparent 1px)',
+            backgroundSize: '28px 28px',
+          }}
+          aria-hidden
+        />
+      ) : (
+        /* Desktop: Three.js animated wave, fades + parallax on scroll */
+        <motion.div
+          style={{ opacity: dotsOpacity, y: dotsY }}
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden
+        >
+          <Suspense fallback={null}>
+            <DottedSurface />
+          </Suspense>
+        </motion.div>
+      )}
 
       {/* Radial vignette so dots don't bleed to edges */}
       <div

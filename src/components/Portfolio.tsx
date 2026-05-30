@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { projects } from '../data/projects'
 import ScrambleText from './ScrambleText'
+import { useIsTouch } from '../hooks/useMediaQuery'
 
 const stagger = {
   hidden: {},
@@ -40,17 +41,14 @@ function VideoPlaceholder({ title }: { title: string }) {
 
 function ProjectCard({ project, wide = false }: { project: typeof projects[0]; wide?: boolean }) {
   const { lang, t } = useLanguage()
+  const isTouch = useIsTouch()
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const handleMouseEnter = () => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {})
-    }
+    if (videoRef.current) videoRef.current.play().catch(() => {})
   }
   const handleMouseLeave = () => {
-    if (videoRef.current) {
-      videoRef.current.pause()
-    }
+    if (videoRef.current) videoRef.current.pause()
   }
 
   return (
@@ -58,26 +56,26 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
       <Link
         to={`/case/${project.slug}`}
         className="group block"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={!isTouch ? handleMouseEnter : undefined}
+        onMouseLeave={!isTouch ? handleMouseLeave : undefined}
       >
         {/* Visual container */}
         <div
           className={`relative overflow-hidden rounded-2xl bg-[#0a0a0a] border border-white/[0.05]
-            transition-all duration-700 group-hover:border-white/[0.10]
+            transition-all duration-500 group-hover:border-white/[0.10]
             ${wide ? 'aspect-[21/9]' : 'aspect-[16/10]'}`}
         >
-          {project.video ? (
+          {/* Video: desktop hover-play only. Mobile: always show placeholder (no bandwidth waste) */}
+          {project.video && !isTouch ? (
             <video
               ref={videoRef}
               src={project.video}
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"       /* Don't preload — loads only on mouseEnter */
               className="absolute inset-0 w-full h-full object-cover opacity-40
-                group-hover:opacity-85 transition-opacity duration-700 ease-out
-                scale-[1.02] group-hover:scale-100 transition-transform"
+                group-hover:opacity-85 transition-opacity duration-700 ease-out"
             />
           ) : (
             <VideoPlaceholder title={project.title} />

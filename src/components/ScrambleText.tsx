@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
+import { usePrefersReducedMotion } from '../hooks/useMediaQuery'
 
 const CHARS = '!<>-_\\/[]{}—=+*^?#@$%'
 
@@ -13,18 +14,20 @@ interface Props {
 }
 
 /**
- * Renders text that scrambles through random characters on viewport entry,
- * then resolves to the final string. Left-to-right resolution.
+ * Scrambles through random characters on viewport entry, resolves left-to-right.
+ * Skips animation when `prefers-reduced-motion: reduce` is set — renders text instantly.
  */
 export default function ScrambleText({ text, className = '', delay = 0, tag }: Props) {
   const Tag = (tag ?? 'span') as HTMLTag
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.8 })
-  const [output, setOutput] = useState(text)
+  const reducedMotion = usePrefersReducedMotion()
+  const [output, setOutput] = useState(reducedMotion ? text : text) // always start resolved
   const hasRun = useRef(false)
 
   useEffect(() => {
-    if (!inView || hasRun.current) return
+    // Skip scramble if user prefers reduced motion
+    if (reducedMotion || !inView || hasRun.current) return
     hasRun.current = true
 
     const timeout = setTimeout(() => {
@@ -37,8 +40,7 @@ export default function ScrambleText({ text, className = '', delay = 0, tag }: P
             .split('')
             .map((char, i) => {
               if (char === ' ') return ' '
-              const resolved = frame / totalFrames > i / text.length
-              return resolved
+              return frame / totalFrames > i / text.length
                 ? char
                 : CHARS[Math.floor(Math.random() * CHARS.length)]
             })
@@ -55,7 +57,7 @@ export default function ScrambleText({ text, className = '', delay = 0, tag }: P
     }, delay)
 
     return () => clearTimeout(timeout)
-  }, [inView, text, delay])
+  }, [inView, text, delay, reducedMotion])
 
   const El = Tag as React.ElementType
   return (

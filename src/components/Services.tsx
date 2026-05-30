@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { ease } from '../lib/motion'
 import ScrambleText from './ScrambleText'
 import MagneticButton from './MagneticButton'
+import { useIsTouch } from '../hooks/useMediaQuery'
 
 const SERVICES_VIDEO_SRC =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_132944_a0d124bb-eaa1-4082-aa30-2310efb42b4b.mp4'
@@ -59,6 +60,7 @@ function TiltCard({ children, className }: { children: React.ReactNode; classNam
 export default function Services() {
   const { t } = useLanguage()
   const { services } = t
+  const isTouch = useIsTouch()
 
   return (
     <section id="services" className="relative z-10 overflow-hidden" style={{
@@ -71,15 +73,17 @@ export default function Services() {
 
       {/* ── Service cards block ── */}
       <div className="relative px-6 md:px-20 py-28 md:py-36">
-        {/* Video background */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-20">
-            <source src={SERVICES_VIDEO_SRC} type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/70" />
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
-        </div>
+        {/* Video background — desktop only (saves bandwidth on mobile) */}
+        {!isTouch && (
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-20">
+              <source src={SERVICES_VIDEO_SRC} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-black/70" />
+            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
+          </div>
+        )}
 
         <div className="relative z-10 max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Left column */}
@@ -125,7 +129,7 @@ export default function Services() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             {services.cards.map(({ icon, title, description }) => (
               <motion.div key={title} variants={cardAnim}>
