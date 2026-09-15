@@ -204,9 +204,11 @@ export default function Portfolio() {
           variants={stagger}
           className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-14 md:gap-y-20"
         >
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} wide={project.wide} />
-          ))}
+          {projects
+            .filter((project) => project.inGrid !== false)
+            .map((project) => (
+              <ProjectCard key={project.slug} project={project} wide={project.wide} />
+            ))}
         </motion.div>
       </div>
     </section>

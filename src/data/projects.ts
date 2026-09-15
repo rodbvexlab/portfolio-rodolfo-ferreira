@@ -10,8 +10,14 @@ export interface Project {
   year: string
   tags: string[]
   link: string
-  video?: string          // path relative to /public — e.g. "/video/bonitos-car.mp4"
-  wide?: boolean
+  video?: string          // legacy hover-video field (existing 4 projects) — consumed by the current ProjectCard
+  wide?: boolean          // consumed by the current ProjectCard (21/9 + col-span-2) — leave unset until the bento layout replaces it
+  inGrid?: boolean        // false hides the project from the Portfolio grid while keeping its /case/:slug route. Not read by Portfolio.tsx yet — prepared for that filter. Omitted = true.
+  mediaAspect?: '21/9' | '4/3' | '4/5'  // desktop bento aspect approved for Portfolio V2 — not yet consumed by any component
+  poster?: string         // key-visual image, desktop — path relative to /public. Not yet consumed by Portfolio.tsx
+  posterMobile?: string   // optional mobile-specific poster/crop
+  videoPreview?: string   // preview video, desktop — path relative to /public. Not yet consumed by Portfolio.tsx
+  videoPreviewMobile?: string  // optional mobile-specific preview cut
   description: { pt: string; en: string }
   case: CaseStudy
 }
@@ -127,6 +133,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['Sistema', 'Cloud Run', 'UX'],
     link: 'https://asme-714655608194.us-east1.run.app',
+    inGrid: false,
     description: {
       pt: 'Sistema de gestão operacional para associação, com painel administrativo, controle de membros e relatórios em tempo real.',
       en: 'Operational management system for an association, featuring an admin panel, member control, and real-time reports.',
@@ -152,6 +159,7 @@ export const projects: Project[] = [
     year: '2024',
     tags: ['CRM', 'Next.js', 'Dashboard'],
     link: 'https://crm-criativos.vercel.app/login',
+    inGrid: false,
     description: {
       pt: 'Sistema CRM completo para agências e profissionais criativos, com gestão de clientes, projetos, pipeline e métricas em tempo real.',
       en: 'Complete CRM system for agencies and creative professionals, with client management, project tracking, pipeline, and real-time metrics.',
@@ -169,6 +177,70 @@ export const projects: Project[] = [
         pt: 'Substituição de 4 ferramentas por uma plataforma. Visibilidade total do pipeline em tempo real. Redução de ~3h semanais de trabalho administrativo por usuário.',
         en: 'Replacement of 4 tools with one platform. Full real-time pipeline visibility. Reduction of ~3 weekly hours of administrative work per user.',
       },
+    },
+  },
+  // ── Portfolio V2 pilots — data prepared ahead of the bento redesign ──
+  // year, tags and case copy below are placeholders pending confirmation;
+  // inGrid stays false until Portfolio.tsx is redesigned to render them.
+  {
+    slug: 'origens',
+    title: 'Ori.gens',
+    year: '2026',
+    tags: ['Web Design', 'Branding', 'Editorial'],
+    link: 'https://origens-six.vercel.app/',
+    inGrid: false,
+    mediaAspect: '21/9',
+    poster: '/portfolio/origens/origens-transicao-urbana.webp',
+    videoPreview: '/portfolio/origens/hero-desktop.mp4',
+    videoPreviewMobile: '/portfolio/origens/hero-mobile.mp4',
+    description: {
+      pt: 'Site institucional para clínica de psicoterapia, com direção editorial cinematográfica e identidade visual própria.',
+      en: 'Institutional website for a psychotherapy practice, with cinematic editorial direction and a dedicated visual identity.',
+    },
+    case: {
+      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+    },
+  },
+  {
+    slug: 'poliana',
+    title: 'Casa de Parafusos Poliana',
+    year: '2026',
+    tags: ['Web Design', 'Institucional', 'Catálogo'],
+    link: 'https://poliana-parafusos-site.vercel.app/',
+    inGrid: false,
+    mediaAspect: '4/3',
+    poster: '/portfolio/poliana/universo-poliana-editorial.webp',
+    description: {
+      pt: 'Site institucional e catálogo para loja de ferragens e fixadores, com direção editorial técnica.',
+      en: 'Institutional website and catalog for a hardware and fasteners store, with technical editorial direction.',
+    },
+    case: {
+      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+    },
+  },
+  {
+    slug: 'laris30',
+    title: 'LARIS30',
+    year: '2026',
+    tags: ['Web Design', 'Mobile', 'Interativo'],
+    link: 'https://laris-30.vercel.app/',
+    inGrid: false,
+    mediaAspect: '4/5',
+    // poster: still pending — laris-fashion.png is staged as source material in
+    // public/portfolio/laris30/ but the approved poster is its own composition
+    // (protagonist + safe graphic elements), not this raw asset as-is.
+    description: {
+      pt: 'Experiência web mobile para convite de aniversário, com direção Y2K/disco e identidade visual própria.',
+      en: 'Mobile web experience for a birthday invitation, with Y2K/disco art direction and a dedicated visual identity.',
+    },
+    case: {
+      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
     },
   },
 ]
