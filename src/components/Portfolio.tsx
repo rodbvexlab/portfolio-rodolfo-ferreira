@@ -1,11 +1,11 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ease } from '../lib/motion'
 import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { projects } from '../data/projects'
 import ScrambleText from './ScrambleText'
-import { useIsTouch } from '../hooks/useMediaQuery'
+import { useIsTouch, usePrefersReducedMotion } from '../hooks/useMediaQuery'
 
 const stagger = {
   hidden: {},
@@ -39,16 +39,131 @@ function VideoPlaceholder({ title }: { title: string }) {
   )
 }
 
-function ProjectCard({ project, wide = false }: { project: typeof projects[0]; wide?: boolean }) {
+/**
+ * ProjectMedia — poster→video for the new media path (projects with a `poster`).
+ * Owns everything about whether the preview is actually allowed to play:
+ * viewport presence, single-active arbitration (via `isActivePreview`,
+ * arbitrated by the parent Portfolio), reduced-motion/touch eligibility,
+ * and graceful fallback on a decode/network error. The poster is always
+ * rendered underneath and is the only thing required to understand the card.
+ */
+function ProjectMedia({
+  project,
+  isActivePreview,
+}: {
+  project: typeof projects[0]
+  isActivePreview: boolean
+}) {
+  const isTouch = useIsTouch()
+  const reducedMotion = usePrefersReducedMotion()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isIntersecting, setIsIntersecting] = useState(false)
+  const [videoReady, setVideoReady] = useState(false)
+  const [hasErrored, setHasErrored] = useState(false)
+
+  const canPreview = !isTouch && !reducedMotion && !!project.videoPreview
+  // The single boolean that actually drives playback — every exit path
+  // (mouseleave, blur, scroll-out, tab hidden, single-active arbitration,
+  // reduced-motion, error) just needs to flip one of its inputs.
+  const shouldPlay = canPreview && isActivePreview && isIntersecting && !hasErrored
+
+  // Viewport gate — native IntersectionObserver only, no scroll listeners, no rAF.
+  useEffect(() => {
+    if (!canPreview) return
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsIntersecting(entry.isIntersecting),
+      { threshold: 0.3 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [canPreview])
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    if (shouldPlay) {
+      v.play().catch(() => {})
+    } else {
+      v.pause()
+      v.currentTime = 0
+    }
+  }, [shouldPlay])
+
+  return (
+    <div ref={containerRef} className="absolute inset-0">
+      {/* Poster — the real experience. Always visible, full quality, no JS required. */}
+      <img
+        src={project.poster}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out
+          ${canPreview
+            ? (shouldPlay ? 'scale-[1.02]' : 'scale-100')
+            : 'scale-100 group-hover:scale-[1.02] group-focus-visible:scale-[1.02]'}`}
+      />
+      {/* Preview video — crossfades in only once it can actually show a frame */}
+      {canPreview && (
+        <video
+          ref={videoRef}
+          src={project.videoPreview}
+          muted
+          loop
+          playsInline
+          preload="none"
+          onPlaying={() => setVideoReady(true)}
+          onPause={() => setVideoReady(false)}
+          onError={() => setHasErrored(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out
+            ${shouldPlay && videoReady ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+    </div>
+  )
+}
+
+function ProjectCard({
+  project,
+  wide = false,
+  isActivePreview,
+  onActivate,
+  onDeactivate,
+}: {
+  project: typeof projects[0]
+  wide?: boolean
+  isActivePreview: boolean
+  onActivate: () => void
+  onDeactivate: () => void
+}) {
   const { lang, t } = useLanguage()
   const isTouch = useIsTouch()
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const legacyVideoRef = useRef<HTMLVideoElement>(null)
 
-  const handleMouseEnter = () => {
-    if (videoRef.current) videoRef.current.play().catch(() => {})
+  // Poster→video path (projects with a `poster`) vs. the legacy hover-video
+  // path (existing projects with only `video`) — both keep working as-is.
+  const isNewMedia = !!project.poster
+  // Poster-only projects (poster, no videoPreview) have nothing to play, so
+  // they must not claim the single global preview slot — hover/focus still
+  // gets its visual response (CSS group-hover/focus-visible), just without
+  // touching activePreviewSlug.
+  const hasVideoPreview = isNewMedia && !!project.videoPreview
+
+  const handleEnter = () => {
+    if (hasVideoPreview) {
+      onActivate()
+    } else if (legacyVideoRef.current) {
+      legacyVideoRef.current.play().catch(() => {})
+    }
   }
-  const handleMouseLeave = () => {
-    if (videoRef.current) videoRef.current.pause()
+  const handleLeave = () => {
+    if (hasVideoPreview) {
+      onDeactivate()
+    } else if (legacyVideoRef.current) {
+      legacyVideoRef.current.pause()
+    }
   }
 
   return (
@@ -56,19 +171,22 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
       <Link
         to={`/case/${project.slug}`}
         className="group block"
-        onMouseEnter={!isTouch ? handleMouseEnter : undefined}
-        onMouseLeave={!isTouch ? handleMouseLeave : undefined}
+        onMouseEnter={!isTouch ? handleEnter : undefined}
+        onMouseLeave={!isTouch ? handleLeave : undefined}
+        onFocus={hasVideoPreview ? handleEnter : undefined}
+        onBlur={hasVideoPreview ? handleLeave : undefined}
       >
         {/* Visual container */}
         <div
           className={`relative overflow-hidden rounded-2xl bg-[#0a0a0a] border border-white/[0.05]
             transition-all duration-500 group-hover:border-white/[0.10]
-            ${wide ? 'aspect-[21/9]' : 'aspect-[16/10]'}`}
+            ${wide ? 'aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/9]' : 'aspect-[16/10]'}`}
         >
-          {/* Video: desktop hover-play only. Mobile: always show placeholder (no bandwidth waste) */}
-          {project.video && !isTouch ? (
+          {isNewMedia ? (
+            <ProjectMedia project={project} isActivePreview={isActivePreview} />
+          ) : project.video && !isTouch ? (
             <video
-              ref={videoRef}
+              ref={legacyVideoRef}
               src={project.video}
               muted
               loop
@@ -81,27 +199,33 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
             <VideoPlaceholder title={project.title} />
           )}
 
-          {/* Gradient overlay — thins on hover */}
-          <div
-            className="absolute inset-0 transition-opacity duration-700 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%)',
-              opacity: 1,
-            }}
-          />
-          <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)',
-            }}
-          />
+          {/* Gradient overlay — legacy media path only. The poster/video path
+              above stays fully visible on its own; the CTA chip below already
+              self-contrasts, so it needs no darkening layer behind it. */}
+          {!isNewMedia && (
+            <>
+              <div
+                className="absolute inset-0 transition-opacity duration-700 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%)',
+                  opacity: 1,
+                }}
+              />
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)',
+                }}
+              />
+            </>
+          )}
 
-          {/* "Ver case" chip — slides in on hover */}
+          {/* "Ver case" chip — slides in on hover, and on keyboard focus too */}
           <div
             className="absolute bottom-4 right-4 flex items-center gap-2 px-3.5 py-2 rounded-full
               bg-black/70 backdrop-blur-md border border-white/10
-              opacity-0 group-hover:opacity-100
-              translate-y-2 group-hover:translate-y-0
+              opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100
+              translate-y-2 group-hover:translate-y-0 group-focus-visible:translate-y-0
               transition-all duration-400"
           >
             <span className="font-sans text-[11px] uppercase tracking-widest text-white/80">
@@ -150,6 +274,18 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
 export default function Portfolio() {
   const { t } = useLanguage()
   const { portfolio } = t
+  // Arbitrates which single project (if any) is allowed to play its preview.
+  const [activePreviewSlug, setActivePreviewSlug] = useState<string | null>(null)
+
+  // Tab hidden → drop whatever preview is active. Coming back never
+  // resumes it on its own; that requires a fresh hover/focus.
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.hidden) setActivePreviewSlug(null)
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange)
+  }, [])
 
   return (
     <section
@@ -204,9 +340,20 @@ export default function Portfolio() {
           variants={stagger}
           className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-14 md:gap-y-20"
         >
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} wide={project.wide} />
-          ))}
+          {projects
+            .filter((project) => project.inGrid !== false)
+            .map((project) => (
+              <ProjectCard
+                key={project.slug}
+                project={project}
+                wide={project.wide}
+                isActivePreview={activePreviewSlug === project.slug}
+                onActivate={() => setActivePreviewSlug(project.slug)}
+                onDeactivate={() =>
+                  setActivePreviewSlug((current) => (current === project.slug ? null : current))
+                }
+              />
+            ))}
         </motion.div>
       </div>
     </section>
