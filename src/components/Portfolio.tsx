@@ -101,7 +101,9 @@ function ProjectMedia({
         loading="lazy"
         decoding="async"
         className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out
-          ${shouldPlay ? 'scale-[1.02]' : 'scale-100'}`}
+          ${canPreview
+            ? (shouldPlay ? 'scale-[1.02]' : 'scale-100')
+            : 'scale-100 group-hover:scale-[1.02] group-focus-visible:scale-[1.02]'}`}
       />
       {/* Preview video — crossfades in only once it can actually show a frame */}
       {canPreview && (
@@ -143,16 +145,21 @@ function ProjectCard({
   // Poster→video path (projects with a `poster`) vs. the legacy hover-video
   // path (existing projects with only `video`) — both keep working as-is.
   const isNewMedia = !!project.poster
+  // Poster-only projects (poster, no videoPreview) have nothing to play, so
+  // they must not claim the single global preview slot — hover/focus still
+  // gets its visual response (CSS group-hover/focus-visible), just without
+  // touching activePreviewSlug.
+  const hasVideoPreview = isNewMedia && !!project.videoPreview
 
   const handleEnter = () => {
-    if (isNewMedia) {
+    if (hasVideoPreview) {
       onActivate()
     } else if (legacyVideoRef.current) {
       legacyVideoRef.current.play().catch(() => {})
     }
   }
   const handleLeave = () => {
-    if (isNewMedia) {
+    if (hasVideoPreview) {
       onDeactivate()
     } else if (legacyVideoRef.current) {
       legacyVideoRef.current.pause()
@@ -166,8 +173,8 @@ function ProjectCard({
         className="group block"
         onMouseEnter={!isTouch ? handleEnter : undefined}
         onMouseLeave={!isTouch ? handleLeave : undefined}
-        onFocus={isNewMedia ? handleEnter : undefined}
-        onBlur={isNewMedia ? handleLeave : undefined}
+        onFocus={hasVideoPreview ? handleEnter : undefined}
+        onBlur={hasVideoPreview ? handleLeave : undefined}
       >
         {/* Visual container */}
         <div

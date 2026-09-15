@@ -210,7 +210,7 @@ export const projects: Project[] = [
     year: '2026',
     tags: ['Web Design', 'Institucional', 'Catálogo'],
     link: 'https://poliana-parafusos-site.vercel.app/',
-    inGrid: false,
+    inGrid: true, // Fase 2C — piloto poster-only
     mediaAspect: '4/3',
     poster: '/portfolio/poliana/universo-poliana-editorial.webp',
     description: {
