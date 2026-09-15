@@ -1,11 +1,11 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ease } from '../lib/motion'
 import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { projects } from '../data/projects'
 import ScrambleText from './ScrambleText'
-import { useIsTouch } from '../hooks/useMediaQuery'
+import { useIsTouch, usePrefersReducedMotion } from '../hooks/useMediaQuery'
 
 const stagger = {
   hidden: {},
@@ -42,13 +42,39 @@ function VideoPlaceholder({ title }: { title: string }) {
 function ProjectCard({ project, wide = false }: { project: typeof projects[0]; wide?: boolean }) {
   const { lang, t } = useLanguage()
   const isTouch = useIsTouch()
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const reducedMotion = usePrefersReducedMotion()
+  const legacyVideoRef = useRef<HTMLVideoElement>(null)
+  const newVideoRef = useRef<HTMLVideoElement>(null)
+  const [isActive, setIsActive] = useState(false)
+  const [videoReady, setVideoReady] = useState(false)
 
-  const handleMouseEnter = () => {
-    if (videoRef.current) videoRef.current.play().catch(() => {})
+  // Poster→video path (projects with a `poster`) vs. the legacy hover-video
+  // path (existing projects with only `video`) — both keep working as-is.
+  const isNewMedia = !!project.poster
+  const canPreview = isNewMedia && !isTouch && !reducedMotion && !!project.videoPreview
+
+  const handleEnter = () => {
+    if (isNewMedia) {
+      if (!canPreview) return
+      setIsActive(true)
+      newVideoRef.current?.play().catch(() => {})
+    } else if (legacyVideoRef.current) {
+      legacyVideoRef.current.play().catch(() => {})
+    }
   }
-  const handleMouseLeave = () => {
-    if (videoRef.current) videoRef.current.pause()
+  const handleLeave = () => {
+    if (isNewMedia) {
+      if (!canPreview) return
+      setIsActive(false)
+      setVideoReady(false)
+      const v = newVideoRef.current
+      if (v) {
+        v.pause()
+        v.currentTime = 0
+      }
+    } else if (legacyVideoRef.current) {
+      legacyVideoRef.current.pause()
+    }
   }
 
   return (
@@ -56,19 +82,46 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
       <Link
         to={`/case/${project.slug}`}
         className="group block"
-        onMouseEnter={!isTouch ? handleMouseEnter : undefined}
-        onMouseLeave={!isTouch ? handleMouseLeave : undefined}
+        onMouseEnter={!isTouch ? handleEnter : undefined}
+        onMouseLeave={!isTouch ? handleLeave : undefined}
+        onFocus={isNewMedia ? handleEnter : undefined}
+        onBlur={isNewMedia ? handleLeave : undefined}
       >
         {/* Visual container */}
         <div
           className={`relative overflow-hidden rounded-2xl bg-[#0a0a0a] border border-white/[0.05]
             transition-all duration-500 group-hover:border-white/[0.10]
-            ${wide ? 'aspect-[21/9]' : 'aspect-[16/10]'}`}
+            ${wide ? 'aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/9]' : 'aspect-[16/10]'}`}
         >
-          {/* Video: desktop hover-play only. Mobile: always show placeholder (no bandwidth waste) */}
-          {project.video && !isTouch ? (
+          {isNewMedia ? (
+            <>
+              {/* Poster — the real experience. Always visible, full quality, no JS required. */}
+              <img
+                src={project.poster}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out
+                  ${isActive ? 'scale-[1.02]' : 'scale-100'}`}
+              />
+              {/* Preview video — crossfades in only once it can actually show a frame */}
+              {canPreview && (
+                <video
+                  ref={newVideoRef}
+                  src={project.videoPreview}
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  onPlaying={() => setVideoReady(true)}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out
+                    ${isActive && videoReady ? 'opacity-100' : 'opacity-0'}`}
+                />
+              )}
+            </>
+          ) : project.video && !isTouch ? (
             <video
-              ref={videoRef}
+              ref={legacyVideoRef}
               src={project.video}
               muted
               loop
@@ -81,27 +134,33 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
             <VideoPlaceholder title={project.title} />
           )}
 
-          {/* Gradient overlay — thins on hover */}
-          <div
-            className="absolute inset-0 transition-opacity duration-700 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%)',
-              opacity: 1,
-            }}
-          />
-          <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)',
-            }}
-          />
+          {/* Gradient overlay — legacy media path only. The poster/video path
+              above stays fully visible on its own; the CTA chip below already
+              self-contrasts, so it needs no darkening layer behind it. */}
+          {!isNewMedia && (
+            <>
+              <div
+                className="absolute inset-0 transition-opacity duration-700 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%)',
+                  opacity: 1,
+                }}
+              />
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)',
+                }}
+              />
+            </>
+          )}
 
-          {/* "Ver case" chip — slides in on hover */}
+          {/* "Ver case" chip — slides in on hover, and on keyboard focus too */}
           <div
             className="absolute bottom-4 right-4 flex items-center gap-2 px-3.5 py-2 rounded-full
               bg-black/70 backdrop-blur-md border border-white/10
-              opacity-0 group-hover:opacity-100
-              translate-y-2 group-hover:translate-y-0
+              opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100
+              translate-y-2 group-hover:translate-y-0 group-focus-visible:translate-y-0
               transition-all duration-400"
           >
             <span className="font-sans text-[11px] uppercase tracking-widest text-white/80">

@@ -188,7 +188,8 @@ export const projects: Project[] = [
     year: '2026',
     tags: ['Web Design', 'Branding', 'Editorial'],
     link: 'https://origens-six.vercel.app/',
-    inGrid: false,
+    inGrid: true, // Fase 2A — piloto do sistema poster→vídeo
+    wide: true,   // flagship full-width, em avaliação nesta fase
     mediaAspect: '21/9',
     poster: '/portfolio/origens/origens-transicao-urbana.webp',
     videoPreview: '/portfolio/origens/hero-desktop.mp4',
