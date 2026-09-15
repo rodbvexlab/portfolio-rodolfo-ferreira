@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ease } from '../lib/motion'
 import { motion } from 'framer-motion'
@@ -39,39 +39,121 @@ function VideoPlaceholder({ title }: { title: string }) {
   )
 }
 
-function ProjectCard({ project, wide = false }: { project: typeof projects[0]; wide?: boolean }) {
-  const { lang, t } = useLanguage()
+/**
+ * ProjectMedia — poster→video for the new media path (projects with a `poster`).
+ * Owns everything about whether the preview is actually allowed to play:
+ * viewport presence, single-active arbitration (via `isActivePreview`,
+ * arbitrated by the parent Portfolio), reduced-motion/touch eligibility,
+ * and graceful fallback on a decode/network error. The poster is always
+ * rendered underneath and is the only thing required to understand the card.
+ */
+function ProjectMedia({
+  project,
+  isActivePreview,
+}: {
+  project: typeof projects[0]
+  isActivePreview: boolean
+}) {
   const isTouch = useIsTouch()
   const reducedMotion = usePrefersReducedMotion()
-  const legacyVideoRef = useRef<HTMLVideoElement>(null)
-  const newVideoRef = useRef<HTMLVideoElement>(null)
-  const [isActive, setIsActive] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isIntersecting, setIsIntersecting] = useState(false)
   const [videoReady, setVideoReady] = useState(false)
+  const [hasErrored, setHasErrored] = useState(false)
+
+  const canPreview = !isTouch && !reducedMotion && !!project.videoPreview
+  // The single boolean that actually drives playback — every exit path
+  // (mouseleave, blur, scroll-out, tab hidden, single-active arbitration,
+  // reduced-motion, error) just needs to flip one of its inputs.
+  const shouldPlay = canPreview && isActivePreview && isIntersecting && !hasErrored
+
+  // Viewport gate — native IntersectionObserver only, no scroll listeners, no rAF.
+  useEffect(() => {
+    if (!canPreview) return
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsIntersecting(entry.isIntersecting),
+      { threshold: 0.3 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [canPreview])
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    if (shouldPlay) {
+      v.play().catch(() => {})
+    } else {
+      v.pause()
+      v.currentTime = 0
+    }
+  }, [shouldPlay])
+
+  return (
+    <div ref={containerRef} className="absolute inset-0">
+      {/* Poster — the real experience. Always visible, full quality, no JS required. */}
+      <img
+        src={project.poster}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out
+          ${shouldPlay ? 'scale-[1.02]' : 'scale-100'}`}
+      />
+      {/* Preview video — crossfades in only once it can actually show a frame */}
+      {canPreview && (
+        <video
+          ref={videoRef}
+          src={project.videoPreview}
+          muted
+          loop
+          playsInline
+          preload="none"
+          onPlaying={() => setVideoReady(true)}
+          onPause={() => setVideoReady(false)}
+          onError={() => setHasErrored(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out
+            ${shouldPlay && videoReady ? 'opacity-100' : 'opacity-0'}`}
+        />
+      )}
+    </div>
+  )
+}
+
+function ProjectCard({
+  project,
+  wide = false,
+  isActivePreview,
+  onActivate,
+  onDeactivate,
+}: {
+  project: typeof projects[0]
+  wide?: boolean
+  isActivePreview: boolean
+  onActivate: () => void
+  onDeactivate: () => void
+}) {
+  const { lang, t } = useLanguage()
+  const isTouch = useIsTouch()
+  const legacyVideoRef = useRef<HTMLVideoElement>(null)
 
   // Poster→video path (projects with a `poster`) vs. the legacy hover-video
   // path (existing projects with only `video`) — both keep working as-is.
   const isNewMedia = !!project.poster
-  const canPreview = isNewMedia && !isTouch && !reducedMotion && !!project.videoPreview
 
   const handleEnter = () => {
     if (isNewMedia) {
-      if (!canPreview) return
-      setIsActive(true)
-      newVideoRef.current?.play().catch(() => {})
+      onActivate()
     } else if (legacyVideoRef.current) {
       legacyVideoRef.current.play().catch(() => {})
     }
   }
   const handleLeave = () => {
     if (isNewMedia) {
-      if (!canPreview) return
-      setIsActive(false)
-      setVideoReady(false)
-      const v = newVideoRef.current
-      if (v) {
-        v.pause()
-        v.currentTime = 0
-      }
+      onDeactivate()
     } else if (legacyVideoRef.current) {
       legacyVideoRef.current.pause()
     }
@@ -94,31 +176,7 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
             ${wide ? 'aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/9]' : 'aspect-[16/10]'}`}
         >
           {isNewMedia ? (
-            <>
-              {/* Poster — the real experience. Always visible, full quality, no JS required. */}
-              <img
-                src={project.poster}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out
-                  ${isActive ? 'scale-[1.02]' : 'scale-100'}`}
-              />
-              {/* Preview video — crossfades in only once it can actually show a frame */}
-              {canPreview && (
-                <video
-                  ref={newVideoRef}
-                  src={project.videoPreview}
-                  muted
-                  loop
-                  playsInline
-                  preload="none"
-                  onPlaying={() => setVideoReady(true)}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out
-                    ${isActive && videoReady ? 'opacity-100' : 'opacity-0'}`}
-                />
-              )}
-            </>
+            <ProjectMedia project={project} isActivePreview={isActivePreview} />
           ) : project.video && !isTouch ? (
             <video
               ref={legacyVideoRef}
@@ -209,6 +267,18 @@ function ProjectCard({ project, wide = false }: { project: typeof projects[0]; w
 export default function Portfolio() {
   const { t } = useLanguage()
   const { portfolio } = t
+  // Arbitrates which single project (if any) is allowed to play its preview.
+  const [activePreviewSlug, setActivePreviewSlug] = useState<string | null>(null)
+
+  // Tab hidden → drop whatever preview is active. Coming back never
+  // resumes it on its own; that requires a fresh hover/focus.
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (document.hidden) setActivePreviewSlug(null)
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange)
+  }, [])
 
   return (
     <section
@@ -266,7 +336,16 @@ export default function Portfolio() {
           {projects
             .filter((project) => project.inGrid !== false)
             .map((project) => (
-              <ProjectCard key={project.slug} project={project} wide={project.wide} />
+              <ProjectCard
+                key={project.slug}
+                project={project}
+                wide={project.wide}
+                isActivePreview={activePreviewSlug === project.slug}
+                onActivate={() => setActivePreviewSlug(project.slug)}
+                onDeactivate={() =>
+                  setActivePreviewSlug((current) => (current === project.slug ? null : current))
+                }
+              />
             ))}
         </motion.div>
       </div>
