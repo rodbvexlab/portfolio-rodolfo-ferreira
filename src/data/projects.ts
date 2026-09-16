@@ -10,78 +10,117 @@ export interface Project {
   year: string
   tags: string[]
   link: string
-  video?: string          // legacy hover-video field (existing 4 projects) — consumed by the current ProjectCard
-  wide?: boolean          // consumed by the current ProjectCard (21/9 + col-span-2) — leave unset until the bento layout replaces it
-  inGrid?: boolean        // false hides the project from the Portfolio grid while keeping its /case/:slug route. Not read by Portfolio.tsx yet — prepared for that filter. Omitted = true.
-  mediaAspect?: '21/9' | '4/3' | '4/5'  // desktop bento aspect approved for Portfolio V2 — not yet consumed by any component
-  poster?: string         // key-visual image, desktop — path relative to /public. Not yet consumed by Portfolio.tsx
+  video?: string          // legacy hover-video field — consumed by the current ProjectCard when there's no `poster`
+  wide?: boolean          // legacy flagship flag, superseded by `gridSpan` — no longer consumed by Portfolio.tsx
+  inGrid?: boolean        // false hides the project from the Portfolio grid while keeping its /case/:slug route. Omitted = true.
+  gridSpan?: 12 | 7 | 5   // desktop (lg:) bento column span out of 12. Omitted = default 1-col mobile / balanced 2-col tablet.
+  desktopOrder?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+  mediaAspect?: '21/9' | '4/3' | '4/5' | '5/4'  // desktop aspect for non-flagship (gridSpan !== 12) poster cards
+  poster?: string         // key-visual image, desktop — path relative to /public
   posterMobile?: string   // optional mobile-specific poster/crop
-  videoPreview?: string   // preview video, desktop — path relative to /public. Not yet consumed by Portfolio.tsx
+  videoPreview?: string   // preview video, desktop — path relative to /public
   videoPreviewMobile?: string  // optional mobile-specific preview cut
   description: { pt: string; en: string }
   case: CaseStudy
 }
 
 export const projects: Project[] = [
+  // Array order is the mobile reading order; desktopOrder preserves the bento pairs.
+  {
+    slug: 'origens',
+    desktopOrder: 1,
+    title: 'Ori.gens',
+    year: '2026',
+    tags: ['Web Design', 'Branding', 'Editorial'],
+    link: 'https://origens-six.vercel.app/',
+    inGrid: true,
+    gridSpan: 12,
+    mediaAspect: '21/9',
+    poster: '/portfolio/origens/origens-transicao-urbana.webp',
+    videoPreview: '/portfolio/origens/hero-desktop.mp4',
+    videoPreviewMobile: '/portfolio/origens/hero-mobile.mp4',
+    description: {
+      pt: 'Site institucional para clínica de psicoterapia, com direção editorial cinematográfica e identidade visual própria.',
+      en: 'Institutional website for a psychotherapy practice, with cinematic editorial direction and a dedicated visual identity.',
+    },
+    case: {
+      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+    },
+  },
   {
     slug: 'bonitos-car',
+    desktopOrder: 2,
     title: 'Bonitos Car',
     year: '2025',
-    tags: ['Web Design', 'Landing Page', 'SEO'],
+    tags: ['Web Design', 'Automotivo', 'Institucional'],
     link: 'https://www.bonitoscar.com.br/',
-    video: '/video/bonitos-car.mp4',
+    video: '/video/bonitos-car.mp4', // preserved for a future videoPreview — not wired yet
+    inGrid: true,
+    gridSpan: 7,
+    poster: '/portfolio/bonitos/poster-editorial.webp',
     description: {
-      pt: 'Site institucional para revendedora de veículos, com estética premium e foco em conversão de leads qualificados.',
-      en: 'Institutional website for a car dealership, with a premium aesthetic and focus on qualified lead conversion.',
+      pt: 'Site institucional para funilaria e pintura automotiva, com jornadas separadas para veículos leves e pesados e foco em orçamento.',
+      en: 'Institutional website for an auto body and paint shop, with separate journeys for light and heavy vehicles and a focus on quote requests.',
     },
     case: {
       challenge: {
-        pt: 'A Bonitos Car não tinha presença digital própria e dependia de marketplaces para geração de leads, pagando comissões altas e perdendo o controle sobre a experiência do cliente.',
-        en: 'Bonitos Car had no owned digital presence and relied on marketplaces for leads, paying high commissions and losing control over the customer experience.',
+        pt: 'Apresentar os serviços de funilaria e pintura da Bonitos Car para dois públicos: proprietários de veículos leves e responsáveis por caminhões e frotas. A navegação precisava distinguir essas necessidades e conduzir à solicitação de orçamento.',
+        en: 'Present the auto body and paint services of Bonitos Car to two audiences: light vehicle owners and those responsible for trucks and fleets. Navigation needed to distinguish their needs and guide visitors to a quote request.',
       },
       solution: {
-        pt: 'Criação de site institucional com identidade visual refinada, galeria de veículos, integração com WhatsApp para contato direto, SEO on-page e estrutura de landing page pensada para conversão.',
-        en: 'Institutional website with refined visual identity, vehicle gallery, WhatsApp integration for direct contact, on-page SEO, and a landing page structure built for conversion.',
+        pt: 'Site institucional com páginas próprias para leves e pesados, apresentação dos serviços e formulário de orçamento. A solicitação reúne categoria do veículo, contato e descrição do serviço em uma mensagem enviada pelo WhatsApp.',
+        en: 'An institutional website with dedicated pages for light and heavy vehicles, service information, and a quote form. Requests collect the vehicle category, contact details, and service description into a message sent through WhatsApp.',
       },
       result: {
-        pt: 'Canal próprio de captação de leads, redução de dependência dos marketplaces e melhora significativa na percepção de profissionalismo da marca junto aos clientes.',
-        en: 'Owned lead generation channel, reduced dependency on marketplaces, and a significant improvement in brand professionalism perception among clients.',
+        pt: 'Uma presença digital que organiza as duas frentes de atendimento e oferece um caminho direto entre a consulta aos serviços e o pedido de avaliação.',
+        en: 'A digital presence that organizes both service areas and offers a direct path from exploring services to requesting an assessment.',
       },
     },
   },
   {
-    slug: 'etre-creative',
-    title: 'Être Creative',
-    year: '2025',
-    tags: ['Design', 'Branding', 'Web'],
-    link: 'https://www.etrecreative.com.br/',
-    video: '/video/etre-creative.mp4',
+    slug: 'plataforma-asme',
+    desktopOrder: 4,
+    title: 'ASME',
+    year: '2024',
+    tags: ['Web Design', 'Portfólio', 'Experiência'],
+    link: 'https://asme-714655608194.us-east1.run.app',
+    inGrid: true,
+    gridSpan: 12,
+    mediaAspect: '5/4',
+    poster: '/portfolio/asme/asme-poster.webp',
     description: {
-      pt: 'Site institucional para estúdio criativo, com linguagem editorial e identidade visual sofisticada alinhada ao posicionamento premium da marca.',
-      en: 'Institutional website for a creative studio, with an editorial tone and sophisticated visual identity aligned with the brand\'s premium positioning.',
+      pt: 'Portfólio digital com tipografia editorial, imagens em movimento e apresentação de abordagem e serviços criativos.',
+      en: 'Digital portfolio with editorial typography, moving imagery, and an introduction to its creative approach and services.',
     },
     case: {
       challenge: {
-        pt: 'O estúdio tinha um portfólio forte mas um site genérico que não refletia o nível criativo do trabalho, dificultando a atração de clientes no segmento premium.',
-        en: 'The studio had a strong portfolio but a generic website that didn\'t reflect the creative level of their work, making it harder to attract premium-segment clients.',
+        pt: 'A proposta apresentada no site é reunir projetos, estudos e soluções digitais com atenção à clareza visual, à funcionalidade e à experiência de navegação.',
+        en: 'The website presents a proposal to bring together projects, studies, and digital solutions with attention to visual clarity, functionality, and the browsing experience.',
       },
       solution: {
-        pt: 'Redesign completo com direção editorial, tipografia expressiva, grid assimétrico e animações refinadas que traduzem o DNA criativo da marca.',
-        en: 'Complete redesign with editorial direction, expressive typography, asymmetric grid, and refined animations that translate the brand\'s creative DNA.',
+        pt: 'Interface com abertura audiovisual, tipografia serifada, alternância de idioma e seções sobre abordagem, estratégia, identidade visual, estrutura e execução.',
+        en: 'An interface with an audiovisual opening, serif typography, language switching, and sections covering approach, strategy, visual identity, structure, and execution.',
       },
       result: {
-        pt: 'Site reconhecido pela equipe e clientes como verdadeiramente representativo do nível do estúdio, com aumento direto na qualidade dos projetos recebidos via contato digital.',
-        en: 'Website recognized by the team and clients as truly representative of the studio\'s level, with a direct increase in the quality of projects received via digital contact.',
+        pt: 'O site publicado apresenta a direção visual e a abordagem criativa da ASME. O próprio conteúdo identifica o portfólio como em construção.',
+        en: 'The published website presents the visual direction and creative approach of ASME. Its own content describes the portfolio as under construction.',
       },
     },
   },
   {
     slug: 'barbearia-marques',
+    desktopOrder: 7,
     title: 'Barbearia Marques',
     year: '2025',
     tags: ['Web Design', 'Landing Page', 'Branding'],
     link: 'https://barber-marques.vercel.app',
-    video: '/video/barbearia-marques.mp4',
+    video: '/video/barbearia-marques.mp4', // preserved for a future videoPreview — not wired yet
+    inGrid: true,
+    gridSpan: 5,
+    mediaAspect: '5/4',
+    poster: '/portfolio/marques/poster-editorial.webp',
     description: {
       pt: 'Landing page premium para barbearia, com identidade visual forte, agendamento integrado e foco em experiência do cliente.',
       en: 'Premium landing page for a barbershop, with a strong visual identity, integrated booking, and a focus on client experience.',
@@ -103,105 +142,114 @@ export const projects: Project[] = [
   },
   {
     slug: 'aetheria',
+    desktopOrder: 5,
     title: 'Aetheria',
     year: '2025',
-    tags: ['Web Design', '3D / Art', 'Creative'],
-    link: 'https://aetheria-3d3l.vercel.app/',
-    video: '/video/aetheria.mp4',
+    tags: ['Web Design', 'Estética', 'Experiência'],
+    link: 'https://aetheria-alpha-five.vercel.app/',
+    video: '/video/aetheria.mp4', // preserved for a future videoPreview — not wired yet
+    inGrid: true,
+    gridSpan: 7,
+    mediaAspect: '5/4',
+    poster: '/portfolio/aetheria/poster-editorial.webp',
     description: {
-      pt: 'Projeto criativo experimental unindo web design, arte 3D e experiências digitais imersivas.',
-      en: 'Experimental creative project combining web design, 3D art, and immersive digital experiences.',
+      pt: 'Site para marca de estética e bem-estar, com experiência editorial e apresentação de tratamentos como Revive e Glow.',
+      en: 'Website for a beauty and wellness brand, with an editorial experience and presentation of treatments such as Revive and Glow.',
     },
     case: {
       challenge: {
-        pt: 'Criar uma experiência digital que vai além do convencional, explorando o limite entre arte, tecnologia e web — funcionando como showcase de capacidades técnicas e criativas.',
-        en: 'Create a digital experience that goes beyond the conventional, exploring the boundary between art, technology, and the web — as a showcase of technical and creative capabilities.',
+        pt: 'Traduzir a proposta de estética e bem-estar da Aetheria em uma experiência digital que apresente os tratamentos e convide a conhecer o studio.',
+        en: 'Translate the beauty and wellness approach of Aetheria into a digital experience that introduces its treatments and invites visitors to explore the studio.',
       },
       solution: {
-        pt: 'Desenvolvimento de um ambiente web imersivo com elementos 3D, animações cinematográficas, interações baseadas em scroll e uma estética que mistura o orgânico com o tecnológico.',
-        en: 'Development of an immersive web environment with 3D elements, cinematic animations, scroll-based interactions, and an aesthetic that blends the organic with the technological.',
+        pt: 'Site com direção editorial, apresentação do studio, cards de tratamentos como Revive e Glow e um fluxo de agendamento com escolha de tratamento, data e horário.',
+        en: 'A website with editorial art direction, a studio introduction, treatment cards such as Revive and Glow, and a booking flow with treatment, date, and time selection.',
       },
       result: {
-        pt: 'Projeto que demonstra a capacidade de criar experiências digitais de alto impacto, servindo como referência para apresentação de capacidades criativas e técnicas a novos clientes.',
-        en: 'A project that demonstrates the ability to create high-impact digital experiences, serving as a reference for presenting creative and technical capabilities to new clients.',
+        pt: 'Uma experiência que reúne a identidade da marca, a descoberta dos tratamentos e o acesso ao agendamento em uma mesma jornada.',
+        en: 'An experience that brings together the brand identity, treatment discovery, and access to booking in one journey.',
       },
     },
   },
   {
-    slug: 'plataforma-asme',
-    title: 'Plataforma ASME',
-    year: '2024',
-    tags: ['Sistema', 'Cloud Run', 'UX'],
-    link: 'https://asme-714655608194.us-east1.run.app',
-    inGrid: false,
-    description: {
-      pt: 'Sistema de gestão operacional para associação, com painel administrativo, controle de membros e relatórios em tempo real.',
-      en: 'Operational management system for an association, featuring an admin panel, member control, and real-time reports.',
-    },
-    case: {
-      challenge: {
-        pt: 'A ASME gerenciava associados e documentos via planilhas e e-mails, gerando retrabalho, erros de dados e dificuldade de acompanhamento em tempo real pela diretoria.',
-        en: 'ASME managed members and documents through spreadsheets and emails, leading to rework, data errors, and difficulty for leadership to track operations in real time.',
-      },
-      solution: {
-        pt: 'Plataforma web full-stack com autenticação de roles, painel administrativo responsivo, módulo de membros com histórico, e relatórios exportáveis. Deploy via Google Cloud Run.',
-        en: 'Full-stack web platform with role-based authentication, responsive admin panel, member management with history, and exportable reports. Deployed on Google Cloud Run.',
-      },
-      result: {
-        pt: 'Eliminação total de planilhas manuais. Tempo de geração de relatórios reduzido de 4 horas para menos de 2 minutos.',
-        en: 'Complete elimination of manual spreadsheets. Report generation time reduced from 4 hours to under 2 minutes.',
-      },
-    },
-  },
-  {
-    slug: 'crm-criativos',
-    title: 'CRM Criativos',
-    year: '2024',
-    tags: ['CRM', 'Next.js', 'Dashboard'],
-    link: 'https://crm-criativos.vercel.app/login',
-    inGrid: false,
-    description: {
-      pt: 'Sistema CRM completo para agências e profissionais criativos, com gestão de clientes, projetos, pipeline e métricas em tempo real.',
-      en: 'Complete CRM system for agencies and creative professionals, with client management, project tracking, pipeline, and real-time metrics.',
-    },
-    case: {
-      challenge: {
-        pt: 'Agências criativas usavam ferramentas genéricas que não refletiam o fluxo de trabalho criativo, causando desorganização de pipeline, perda de follow-ups e dificuldade de visualizar receita.',
-        en: 'Creative agencies used generic tools that didn\'t reflect the creative workflow, causing pipeline disorganization, missed follow-ups, and difficulty visualizing revenue.',
-      },
-      solution: {
-        pt: 'CRM web completo em Next.js com pipeline Kanban customizável, histórico de comunicações por cliente, dashboard de métricas e módulo financeiro — UX pensada para o fluxo criativo.',
-        en: 'Full web CRM built in Next.js with customizable Kanban pipeline, per-client communication history, metrics dashboard, and financial module — UX designed for the creative workflow.',
-      },
-      result: {
-        pt: 'Substituição de 4 ferramentas por uma plataforma. Visibilidade total do pipeline em tempo real. Redução de ~3h semanais de trabalho administrativo por usuário.',
-        en: 'Replacement of 4 tools with one platform. Full real-time pipeline visibility. Reduction of ~3 weekly hours of administrative work per user.',
-      },
-    },
-  },
-  // ── Portfolio V2 pilots — data prepared ahead of the bento redesign ──
-  // year, tags and case copy below are placeholders pending confirmation;
-  // inGrid stays false until Portfolio.tsx is redesigned to render them.
-  {
-    slug: 'origens',
-    title: 'Ori.gens',
+    slug: 'laris30',
+    desktopOrder: 3,
+    title: 'LARIS30',
     year: '2026',
-    tags: ['Web Design', 'Branding', 'Editorial'],
-    link: 'https://origens-six.vercel.app/',
-    inGrid: true, // Fase 2A — piloto do sistema poster→vídeo
-    wide: true,   // flagship full-width, em avaliação nesta fase
-    mediaAspect: '21/9',
-    poster: '/portfolio/origens/origens-transicao-urbana.webp',
-    videoPreview: '/portfolio/origens/hero-desktop.mp4',
-    videoPreviewMobile: '/portfolio/origens/hero-mobile.mp4',
+    tags: ['Web Design', 'Mobile', 'Interativo'],
+    link: 'https://laris-30.vercel.app/',
+    inGrid: true,
+    gridSpan: 5,
+    mediaAspect: '5/4',
+    // SUMMER VIBES confirmed as part of LARIS30 by the project owner.
+    poster: '/portfolio/laris30/poster-editorial.webp',
     description: {
-      pt: 'Site institucional para clínica de psicoterapia, com direção editorial cinematográfica e identidade visual própria.',
-      en: 'Institutional website for a psychotherapy practice, with cinematic editorial direction and a dedicated visual identity.',
+      pt: 'Experiência web mobile para convite de aniversário, com direção Y2K/disco e identidade visual própria.',
+      en: 'Mobile web experience for a birthday invitation, with Y2K/disco art direction and a dedicated visual identity.',
     },
     case: {
       challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
       solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
       result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+    },
+  },
+  {
+    slug: 'etre-creative',
+    desktopOrder: 6,
+    title: 'Être Creative',
+    year: '2025',
+    tags: ['Design', 'Branding', 'Web'],
+    link: 'https://www.etrecreative.com.br/',
+    video: '/video/etre-creative.mp4',
+    inGrid: true,
+    gridSpan: 5,
+    description: {
+      pt: 'Site institucional para estúdio criativo, com linguagem editorial e identidade visual sofisticada alinhada ao posicionamento premium da marca.',
+      en: 'Institutional website for a creative studio, with an editorial tone and sophisticated visual identity aligned with the brand\'s premium positioning.',
+    },
+    case: {
+      challenge: {
+        pt: 'O estúdio tinha um portfólio forte mas um site genérico que não refletia o nível criativo do trabalho, dificultando a atração de clientes no segmento premium.',
+        en: 'The studio had a strong portfolio but a generic website that didn\'t reflect the creative level of their work, making it harder to attract premium-segment clients.',
+      },
+      solution: {
+        pt: 'Redesign completo com direção editorial, tipografia expressiva, grid assimétrico e animações refinadas que traduzem o DNA criativo da marca.',
+        en: 'Complete redesign with editorial direction, expressive typography, asymmetric grid, and refined animations that translate the brand\'s creative DNA.',
+      },
+      result: {
+        pt: 'Site reconhecido pela equipe e clientes como verdadeiramente representativo do nível do estúdio, com aumento direto na qualidade dos projetos recebidos via contato digital.',
+        en: 'Website recognized by the team and clients as truly representative of the studio\'s level, with a direct increase in the quality of projects received via digital contact.',
+      },
+    },
+  },
+  {
+    slug: 'stefani-amorim',
+    desktopOrder: 8,
+    title: 'Stefani Amorim',
+    year: '2026',
+    tags: ['Web Design', 'Catálogo', 'Varejo'],
+    link: 'https://www.stefanipapelaria.com.br/',
+    inGrid: true,
+    gridSpan: 7,
+    mediaAspect: '5/4',
+    poster: '/portfolio/stefani-amorim/poster-editorial.webp',
+    description: {
+      pt: 'Site para loja de brinquedos educativos e papelaria afetiva, com catálogo e atendimento pelo WhatsApp.',
+      en: 'Website for an educational toy and stationery store, with a product catalog and service through WhatsApp.',
+    },
+    case: {
+      challenge: {
+        pt: 'Levar a curadoria de brinquedos educativos e papelaria afetiva da Stefani Amorim para uma experiência digital que apresente os produtos e a história da loja.',
+        en: 'Bring the educational toy and stationery selection of Stefani Amorim into a digital experience that presents the products and the story behind the store.',
+      },
+      solution: {
+        pt: 'Site com linguagem visual lúdica, seções de brinquedos e papelaria, orientações de escolha e acesso ao atendimento personalizado pelo WhatsApp.',
+        en: 'A website with a playful visual identity, toy and stationery sections, selection guidance, and access to personalized service through WhatsApp.',
+      },
+      result: {
+        pt: 'Uma vitrine digital que reúne produtos, curadoria e informações de contato, conectando a descoberta do catálogo à conversa com a loja.',
+        en: 'A digital storefront that brings together products, curation, and contact information, connecting catalog discovery to a conversation with the store.',
+      },
     },
   },
   {
@@ -210,33 +258,13 @@ export const projects: Project[] = [
     year: '2026',
     tags: ['Web Design', 'Institucional', 'Catálogo'],
     link: 'https://poliana-parafusos-site.vercel.app/',
-    inGrid: true, // Fase 2C — piloto poster-only
+    inGrid: false,
+    gridSpan: 7,
     mediaAspect: '4/3',
     poster: '/portfolio/poliana/universo-poliana-editorial.webp',
     description: {
       pt: 'Site institucional e catálogo para loja de ferragens e fixadores, com direção editorial técnica.',
       en: 'Institutional website and catalog for a hardware and fasteners store, with technical editorial direction.',
-    },
-    case: {
-      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-    },
-  },
-  {
-    slug: 'laris30',
-    title: 'LARIS30',
-    year: '2026',
-    tags: ['Web Design', 'Mobile', 'Interativo'],
-    link: 'https://laris-30.vercel.app/',
-    inGrid: false,
-    mediaAspect: '4/5',
-    // poster: still pending — laris-fashion.png is staged as source material in
-    // public/portfolio/laris30/ but the approved poster is its own composition
-    // (protagonist + safe graphic elements), not this raw asset as-is.
-    description: {
-      pt: 'Experiência web mobile para convite de aniversário, com direção Y2K/disco e identidade visual própria.',
-      en: 'Mobile web experience for a birthday invitation, with Y2K/disco art direction and a dedicated visual identity.',
     },
     case: {
       challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },

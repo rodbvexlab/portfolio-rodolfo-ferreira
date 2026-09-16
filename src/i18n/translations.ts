@@ -9,20 +9,20 @@ export const pt = {
   hero: {
     available: 'Disponível para novos projetos',
     headline: ['Web Design,', 'Sistemas & IA', 'para negócios reais.'],
-    body: 'Crio sites, sistemas internos e automações com foco em clareza, usabilidade e resultado real — unindo design, tecnologia e visão prática de operação.',
+    body: 'Crio sites para apresentar sua marca, sistemas para organizar a operação e automações para reduzir o trabalho manual.',
     cta_primary: 'Falar sobre um projeto',
     cta_secondary: 'Ver serviços',
     pills: ['Web Design', 'Sistemas Internos', 'IA Aplicada'],
     mockup: {
       filename: 'dashboard.tsx',
-      comment1: '// métricas ao vivo',
+      comment1: '// exemplo ilustrativo',
       label1: 'conversão',
       val1: '+34%',
       label2: 'sessões',
       val2: '12.847',
       label3: 'receita',
       val3: 'R$ 87.2k',
-      status: 'sistema online',
+      status: 'demonstração de interface',
     },
   },
   services: {
@@ -47,7 +47,7 @@ export const pt = {
         icon: 'psychology',
         title: 'IA Aplicada',
         description:
-          'Uso estratégico de inteligência artificial para acelerar rotinas, criar fluxos inteligentes e melhorar produtividade.',
+          'IA aplicada à consulta de informações, organização de conteúdo e apoio às rotinas da equipe.',
       },
       {
         icon: 'bolt',
@@ -72,20 +72,20 @@ export const pt = {
     },
   },
   portfolio: {
-    label: 'Projetos Selecionados',
-    headline: 'Design, tecnologia e resultado real — em cada projeto.',
+    label: 'Projetos selecionados',
+    headline: 'Cada projeto pede um caminho diferente.',
     available: 'Disponível para novos projetos',
     view_case: 'Ver case',
     back: '← Voltar',
   },
   process: {
     label: 'Processo',
-    headline: 'Um fluxo claro para transformar ideias em soluções bem pensadas, funcionais e bonitas.',
+    headline: 'Do primeiro diagnóstico à entrega.',
     steps: [
       {
         num: '01',
         title: 'Diagnóstico',
-        description: 'Mergulho no problema, análise de mercado e definição clara de objetivos reais.',
+        description: 'Entendemos o problema, o público e o que o projeto precisa resolver.',
       },
       {
         num: '02',
@@ -95,7 +95,7 @@ export const pt = {
       {
         num: '03',
         title: 'Design',
-        description: 'Interface de alto impacto, tipografia refinada e estética que comunica valor.',
+        description: 'Definição da linguagem visual, da tipografia e das interações.',
       },
       {
         num: '04',
@@ -118,13 +118,13 @@ export const pt = {
   },
   contact: {
     label: 'Contato',
-    headline: 'Vamos transformar sua ideia em algo real?',
+    headline: 'O que você precisa construir?',
     body: 'Conte um pouco sobre o que você precisa: site, landing page, sistema, automação ou IA aplicada ao seu negócio.',
     name: 'Seu nome',
     contact_field: 'WhatsApp ou e-mail',
     project_type: 'Tipo de projeto',
-    message: 'Mensagem curta',
-    submit: 'Enviar ideia',
+    message: 'Conte sobre o projeto',
+    submit: 'Enviar mensagem',
     success: 'Mensagem enviada! Em breve entrarei em contato.',
     whatsapp: 'Falar pelo WhatsApp',
   },
@@ -157,20 +157,20 @@ export const en: typeof pt = {
   hero: {
     available: 'Available for new projects',
     headline: ['Web Design,', 'Systems & AI', 'for real businesses.'],
-    body: 'I build websites, internal systems, and automations focused on clarity, usability, and real results — combining design, technology, and operational thinking.',
+    body: 'I build websites to present your brand, systems to organize your operations, and automations to reduce manual work.',
     cta_primary: 'Talk about a project',
     cta_secondary: 'View services',
     pills: ['Web Design', 'Internal Systems', 'Applied AI'],
     mockup: {
       filename: 'dashboard.tsx',
-      comment1: '// live metrics',
+      comment1: '// illustrative example',
       label1: 'conversion',
       val1: '+34%',
       label2: 'sessions',
       val2: '12,847',
       label3: 'revenue',
       val3: 'R$ 87.2k',
-      status: 'system online',
+      status: 'interface demo',
     },
   },
   services: {
@@ -195,7 +195,7 @@ export const en: typeof pt = {
         icon: 'psychology',
         title: 'Applied AI',
         description:
-          'Strategic use of artificial intelligence to accelerate routines, create smart flows, and boost productivity.',
+          'AI for finding information, organizing content, and supporting everyday team tasks.',
       },
       {
         icon: 'bolt',
@@ -220,20 +220,20 @@ export const en: typeof pt = {
     },
   },
   portfolio: {
-    label: 'Selected Projects',
-    headline: 'Design, technology, and real results — in every project.',
+    label: 'Selected projects',
+    headline: 'Each project calls for a different path.',
     available: 'Available for new projects',
     view_case: 'View case',
     back: '← Back',
   },
   process: {
     label: 'Process',
-    headline: 'A clear flow to transform ideas into well-thought-out, functional, beautiful digital solutions.',
+    headline: 'From the first conversation to delivery.',
     steps: [
       {
         num: '01',
         title: 'Diagnosis',
-        description: 'Deep dive into the problem, market analysis, and clear definition of real objectives.',
+        description: 'We identify the problem, the audience, and what the project needs to solve.',
       },
       {
         num: '02',
@@ -243,7 +243,7 @@ export const en: typeof pt = {
       {
         num: '03',
         title: 'Design',
-        description: 'High-impact interface, refined typography, and an aesthetic that communicates value.',
+        description: 'Defining the visual language, typography, and interactions.',
       },
       {
         num: '04',
@@ -266,13 +266,13 @@ export const en: typeof pt = {
   },
   contact: {
     label: 'Contact',
-    headline: "Let's turn your idea into something real?",
+    headline: 'What do you need to build?',
     body: 'Tell me a bit about what you need: website, landing page, system, automation, or AI applied to your business.',
     name: 'Your name',
     contact_field: 'WhatsApp or e-mail',
     project_type: 'Project type',
-    message: 'Short message',
-    submit: 'Send idea',
+    message: 'Tell me about the project',
+    submit: 'Send message',
     success: "Message sent! I'll get back to you soon.",
     whatsapp: 'Message on WhatsApp',
   },

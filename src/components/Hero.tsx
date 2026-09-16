@@ -247,7 +247,7 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
       {/* ── Content ── */}
       <div className="relative z-10 w-full max-w-container-max mx-auto lg:grid lg:grid-cols-[1fr_380px] lg:gap-12 lg:items-center">
         {/* Left: text */}
-        <div className="flex flex-col items-start gap-8 pt-28 lg:py-0">
+        <div className="flex flex-col items-start gap-8 pt-28 lg:py-28">
           {/* Status chip */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
