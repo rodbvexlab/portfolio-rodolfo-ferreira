@@ -78,38 +78,14 @@ export default function About() {
                 className="text-[11px] uppercase tracking-[0.2em] text-cyan-400/80 block"
                 delay={100}
               />
-              <h2 className="font-serif text-[28px] md:text-[40px] lg:text-[44px] text-white leading-tight">
+              <h2 className="font-serif text-[34px] md:text-[40px] lg:text-[48px] text-white leading-[1.1] whitespace-pre-line max-w-[38rem]">
                 {about.headline}
               </h2>
             </div>
 
-            <p className="font-sans text-[16px] text-white/55 leading-relaxed max-w-2xl">
-              {about.body}
-            </p>
-
-            {/* Philosophy line */}
-            <div className="flex items-start gap-3 py-5 border-t border-b border-white/[0.07]">
-              <span className="text-cyan-400/60 mt-0.5 shrink-0 material-symbols-outlined text-[16px]">
-                format_quote
-              </span>
-              <p className="font-serif text-[18px] md:text-[20px] text-white/65 leading-snug italic">
-                {about.philosophy}
-              </p>
-            </div>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2">
-              {about.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="font-sans text-[12px] text-white/50
-                    bg-black/40 border border-white/[0.10]
-                    px-4 py-2 rounded-full
-                    hover:border-cyan-400/25 hover:text-white/75
-                    transition-all duration-300 cursor-default backdrop-blur-sm"
-                >
-                  {tag}
-                </span>
+            <div className="space-y-5 font-sans text-[16px] text-white/65 leading-relaxed max-w-[36rem]">
+              {about.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
           </motion.div>

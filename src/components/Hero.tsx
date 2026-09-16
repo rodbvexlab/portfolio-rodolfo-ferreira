@@ -91,14 +91,6 @@ function CyanBloom({ reduced }: { reduced: boolean }) {
   )
 }
 
-const iconMap: Record<string, string> = {
-  'Web Design': 'design_services',
-  'Sistemas Internos': 'terminal',
-  'Internal Systems': 'terminal',
-  'IA Aplicada': 'psychology',
-  'Applied AI': 'psychology',
-}
-
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12, delayChildren: 0.3 } },
@@ -112,71 +104,34 @@ const fadeUp = {
   show: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.7, ease: ease, delay: d } }),
 }
 
-/* Animated metrics mockup card */
+/** A small project outline, without simulated business metrics. */
 function TechMockup({ m }: { m: ReturnType<typeof useLanguage>['t']['hero']['mockup'] }) {
-  const metrics = [
-    { label: m.label1, val: m.val1, color: '#4cd7f6' },
-    { label: m.label2, val: m.val2, color: '#a3e635' },
-    { label: m.label3, val: m.val3, color: '#f59e0b' },
+  const rows = [
+    { label: m.label1, value: m.val1 },
+    { label: m.label2, value: m.val2 },
+    { label: m.label3, value: m.val3 },
   ]
   return (
     <motion.div
-      initial={{ opacity: 0, x: 0, y: 20 }}
-      animate={{ opacity: 1, x: 0, y: 0 }}
-      transition={{ duration: 1, ease: ease, delay: 1 }}
-      className="w-full lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 lg:w-[340px] select-none"
-      style={{ willChange: 'transform' }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease, delay: 0.8 }}
+      className="relative w-full max-w-sm rounded-2xl border border-white/10 bg-black/70 p-6 md:p-7"
     >
-      {/* Glow */}
-      <div className="absolute inset-0 bg-cyan-400/5 blur-3xl rounded-3xl pointer-events-none" />
-
-      {/* Card */}
-      <div className="relative rounded-2xl border border-white/10 bg-black/60 backdrop-blur-2xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.6)]">
-        {/* Title bar */}
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
-          <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-          <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-          <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-          <span className="ml-3 font-mono text-[11px] text-white/30">{m.filename}</span>
-        </div>
-
-        {/* Code body */}
-        <div className="px-5 py-5 font-mono text-[12px] leading-7 space-y-1">
-          <div className="text-white/20">{m.comment1}</div>
-          <div className="text-white/40">const metrics = {'{'}</div>
-          {metrics.map(({ label, val, color }, i) => (
-            <motion.div
-              key={label}
-              className="pl-4 flex items-center gap-2"
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.4 + i * 0.15, duration: 0.5, ease: 'easeOut' }}
-            >
-              <span className="text-white/30">{label}:</span>
-              <motion.span
-                style={{ color }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.6 + i * 0.15 }}
-                className="font-semibold"
-              >
-                "{val}"
-              </motion.span>
-            </motion.div>
-          ))}
-          <div className="text-white/40">{'}'}</div>
-        </div>
-
-        {/* Status bar */}
-        <div className="px-5 py-3 border-t border-white/[0.06] bg-white/[0.02] flex items-center gap-2">
-          <motion.span
-            animate={{ opacity: [1, 0.3, 1] }}
-            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-            className="w-1.5 h-1.5 rounded-full bg-green-400"
-          />
-          <span className="font-mono text-[10px] text-white/30">{m.status}</span>
-        </div>
+      <div className="flex items-center gap-3 pb-5 border-b border-white/10">
+        <span aria-hidden="true" className="material-symbols-outlined text-cyan-300/70 text-[20px]">code</span>
+        <span className="font-mono text-[14px] text-white/80">{m.filename}</span>
       </div>
+      <p className="font-mono text-[12px] text-white/55 mt-5 mb-6">{m.comment1}</p>
+      <dl className="space-y-5">
+        {rows.map(({ label, value }) => (
+          <div key={label} className="space-y-1">
+            <dt className="font-mono text-[12px] text-cyan-300/70">{label}</dt>
+            <dd className="font-sans text-[15px] text-white/80">{value}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-6 pt-5 border-t border-white/10 font-mono text-[12px] text-white/55">{m.status}</p>
     </motion.div>
   )
 }
@@ -245,38 +200,29 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
       />
 
       {/* ── Content ── */}
-      <div className="relative z-10 w-full max-w-container-max mx-auto lg:grid lg:grid-cols-[1fr_380px] lg:gap-12 lg:items-center">
+      <div className="relative z-10 w-full max-w-container-max mx-auto lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16 lg:items-center">
         {/* Left: text */}
-        <div className="flex flex-col items-start gap-8 pt-28 lg:py-28">
-          {/* Status chip */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+        <div className="flex flex-col items-start gap-7 pt-32 lg:py-36">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full
-              border border-cyan-400/20 bg-cyan-400/5 backdrop-blur-sm"
+            className="font-sans text-[11px] md:text-[12px] leading-relaxed tracking-[0.08em] text-cyan-300/80"
           >
-            <motion.span
-              animate={{ opacity: [1, 0.4, 1] }}
-              transition={{ repeat: Infinity, duration: 2.5 }}
-              className="w-1.5 h-1.5 rounded-full bg-cyan-400"
-            />
-            <span className="font-sans text-[11px] uppercase tracking-[0.18em] text-cyan-300/80">
-              {hero.available}
-            </span>
-          </motion.div>
+            {hero.label}
+          </motion.p>
 
           {/* Headline — staggered words */}
           <motion.h1
             variants={container}
             initial="hidden"
             animate="show"
-            className="font-serif text-[52px] md:text-[72px] lg:text-[80px] leading-[1.0] tracking-tight text-white"
+            className="font-serif text-[44px] sm:text-[60px] md:text-[68px] lg:text-[76px] xl:text-[80px] leading-[1.06] tracking-tight text-white"
           >
             {hero.headline.map((line, li) => (
               <span key={li} className="block overflow-hidden">
                 {line.split(' ').map((w, wi) => (
-                  <motion.span key={wi} variants={word} className="inline-block mr-[0.25em]">
+                  <motion.span key={wi} variants={word} className="inline-block mr-[0.2em] last:mr-0">
                     {w}
                   </motion.span>
                 ))}
@@ -290,7 +236,7 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="font-sans text-[17px] text-white/60 max-w-lg leading-relaxed"
+            className="font-sans text-[17px] text-white/65 max-w-[32rem] leading-relaxed"
           >
             {hero.body}
           </motion.p>
@@ -301,13 +247,11 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mt-2"
+            className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-2"
           >
             <MagneticButton>
               <a
-                href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#projects"
                 className="group flex items-center gap-3 px-7 py-3.5 rounded-full
                   bg-white text-black font-sans text-[12px] uppercase tracking-widest
                   hover:bg-cyan-300 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
@@ -319,50 +263,28 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
               </a>
             </MagneticButton>
             <a
-              href="#services"
-              className="font-sans text-[12px] uppercase tracking-widest text-white/40
+              href="#contato"
+              className="font-sans text-[12px] uppercase tracking-widest text-white/70
                 hover:text-white/80 transition-colors border-b border-white/10 hover:border-white/30 pb-0.5"
             >
               {hero.cta_secondary}
             </a>
           </motion.div>
 
-          {/* Service pills */}
-          <motion.div
-            custom={1.2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            className="flex flex-wrap gap-3 mt-4"
-          >
-            {hero.pills.map((label) => (
-              <div
-                key={label}
-                className="flex items-center gap-2 px-4 py-2 rounded-full
-                  border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm"
-              >
-                <span className="material-symbols-outlined text-cyan-400 text-[15px]">
-                  {iconMap[label] ?? 'star'}
-                </span>
-                <span className="font-sans text-[11px] text-white/60 tracking-wide">{label}</span>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Mobile: tech mockup inline below pills */}
+          {/* Mobile: project outline after the introduction */}
           <motion.div
             custom={1.4}
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="lg:hidden w-full mt-2 pb-10"
+            className="lg:hidden w-full mt-5 pb-16"
           >
             <TechMockup m={hero.mockup} />
           </motion.div>
         </div>
 
         {/* Desktop: tech mockup in grid column */}
-        <div className="hidden lg:block relative h-full">
+        <div className="hidden lg:flex relative items-center justify-end">
           <TechMockup m={hero.mockup} />
         </div>
       </div>

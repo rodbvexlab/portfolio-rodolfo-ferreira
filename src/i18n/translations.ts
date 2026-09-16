@@ -7,54 +7,51 @@ export const pt = {
     cta: 'Falar comigo',
   },
   hero: {
-    available: 'Disponível para novos projetos',
-    headline: ['Web Design,', 'Sistemas & IA', 'para negócios reais.'],
-    body: 'Crio sites para apresentar sua marca, sistemas para organizar a operação e automações para reduzir o trabalho manual.',
-    cta_primary: 'Falar sobre um projeto',
-    cta_secondary: 'Ver serviços',
-    pills: ['Web Design', 'Sistemas Internos', 'IA Aplicada'],
-    mockup: {
-      filename: 'dashboard.tsx',
-      comment1: '// exemplo ilustrativo',
-      label1: 'conversão',
-      val1: '+34%',
-      label2: 'sessões',
-      val2: '12.847',
-      label3: 'receita',
-      val3: 'R$ 87.2k',
-      status: 'demonstração de interface',
-    },
+    "label": "RODOLFO FERREIRA · DESIGN + DEVELOPMENT",
+    "headline": [
+      "Faço sites e sistemas",
+      "com cara própria."
+    ],
+    "body": "Do primeiro rascunho ao código no ar, eu cuido do projeto inteiro — visual, experiência e desenvolvimento.",
+    "cta_primary": "Ver projetos",
+    "cta_secondary": "Falar comigo",
+    "mockup": {
+      "filename": "projeto.web",
+      "comment1": "// do rascunho ao código",
+      "label1": "estrutura",
+      "val1": "conteúdo + navegação",
+      "label2": "interface",
+      "val2": "forma + interação",
+      "label3": "código",
+      "val3": "React + TypeScript",
+      "status": "design + desenvolvimento"
+    }
   },
   services: {
-    label: 'Serviços',
-    headline: 'Soluções digitais para negócios que precisam sair do improviso.',
-    body: 'Sites, sistemas e automações com foco em clareza, usabilidade e resultado real.',
-    nav: ['Web Design', 'Sistemas', 'IA Aplicada', 'Automação'],
-    cards: [
+    "label": "Serviços",
+    "headline": "Design e desenvolvimento\nsem receita pronta.",
+    "body": "Cada projeto começa pelo que precisa resolver. Da interface ao código, escolho o caminho que faz sentido para cada caso.",
+    "cards": [
       {
-        icon: 'dashboard',
-        title: 'Web Design',
-        description:
-          'Sites institucionais e landing pages com estética premium, navegação clara e estrutura pensada para conversão.',
+        "icon": "dashboard",
+        "title": "Web Design",
+        "description": "Sites institucionais, landing pages e experiências digitais com identidade própria."
       },
       {
-        icon: 'database',
-        title: 'Sistemas Internos',
-        description:
-          'Ferramentas sob medida para organizar processos, reduzir retrabalho e dar mais controle à operação.',
+        "icon": "database",
+        "title": "Sistemas Web",
+        "description": "Interfaces e ferramentas feitas para organizar processos e facilitar o trabalho."
       },
       {
-        icon: 'psychology',
-        title: 'IA Aplicada',
-        description:
-          'IA aplicada à consulta de informações, organização de conteúdo e apoio às rotinas da equipe.',
+        "icon": "bolt",
+        "title": "Automação",
+        "description": "Fluxos e integrações para tirar tarefas repetitivas do caminho."
       },
       {
-        icon: 'bolt',
-        title: 'Automação',
-        description:
-          'Integrações, dashboards e soluções práticas para transformar tarefas manuais em fluxos eficientes.',
-      },
+        "icon": "construction",
+        "title": "Soluções sob medida",
+        "description": "Quando o problema não cabe em uma ferramenta pronta, construo uma solução específica."
+      }
     ],
     pricing: {
       label: 'Investimento',
@@ -79,42 +76,45 @@ export const pt = {
     back: '← Voltar',
   },
   process: {
-    label: 'Processo',
-    headline: 'Do primeiro diagnóstico à entrega.',
-    steps: [
+    "label": "Processo",
+    "headline": "Do primeiro diagnóstico\nà entrega.",
+    "body": "Sem processo engessado. Primeiro entendo o problema, depois desenho e construo o que realmente precisa existir.",
+    "steps": [
       {
-        num: '01',
-        title: 'Diagnóstico',
-        description: 'Entendemos o problema, o público e o que o projeto precisa resolver.',
+        "num": "01",
+        "title": "Diagnóstico",
+        "description": "Entender o contexto, o problema e o que precisa mudar."
       },
       {
-        num: '02',
-        title: 'Estrutura',
-        description: 'Organização da informação, fluxos de usuário e wireframes funcionais.',
+        "num": "02",
+        "title": "Direção",
+        "description": "Definir estrutura, referências e o caminho visual."
       },
       {
-        num: '03',
-        title: 'Design',
-        description: 'Definição da linguagem visual, da tipografia e das interações.',
+        "num": "03",
+        "title": "Design",
+        "description": "Transformar a ideia em interface e experiência."
       },
       {
-        num: '04',
-        title: 'Desenvolvimento',
-        description: 'Transformação do design em código limpo, rápido e focado em performance.',
+        "num": "04",
+        "title": "Desenvolvimento",
+        "description": "Levar o projeto para o código com atenção aos detalhes."
       },
       {
-        num: '05',
-        title: 'Entrega',
-        description: 'Lançamento, ajustes baseados no uso real e acompanhamento contínuo.',
-      },
-    ],
+        "num": "05",
+        "title": "Entrega",
+        "description": "Publicar, revisar e deixar tudo pronto para uso."
+      }
+    ]
   },
   about: {
-    label: 'Sobre mim',
-    headline: 'Não crio sites bonitos. Crio ferramentas que trabalham pelo seu negócio.',
-    body: 'Sou Rodolfo Ferreira, webdesigner, desenvolvedor e profissional de tecnologia. Crio experiências digitais que unem estética, clareza e função — sites que apresentam melhor uma marca, sistemas que organizam processos e automações que reduzem trabalho manual.',
-    philosophy: 'Design com propósito. Código com precisão. Resultado que permanece.',
-    tags: ['Web Design', 'Sistemas Web', 'IA Aplicada', 'Automação & Processos'],
+    "label": "Sobre mim",
+    "headline": "Eu trabalho entre\ndesign e desenvolvimento.",
+    "paragraphs": [
+      "Sou Rodolfo Ferreira. Projeto e desenvolvo sites, sistemas e experiências digitais do início ao fim.",
+      "Gosto de entender o problema antes de abrir o código. Isso me permite cuidar tanto da parte visual quanto da estrutura que faz o projeto funcionar de verdade.",
+      "Hoje meu trabalho passa por design, desenvolvimento, automação e tecnologia aplicada a projetos digitais."
+    ]
   },
   contact: {
     label: 'Contato',
@@ -155,54 +155,51 @@ export const en: typeof pt = {
     cta: 'Talk to me',
   },
   hero: {
-    available: 'Available for new projects',
-    headline: ['Web Design,', 'Systems & AI', 'for real businesses.'],
-    body: 'I build websites to present your brand, systems to organize your operations, and automations to reduce manual work.',
-    cta_primary: 'Talk about a project',
-    cta_secondary: 'View services',
-    pills: ['Web Design', 'Internal Systems', 'Applied AI'],
-    mockup: {
-      filename: 'dashboard.tsx',
-      comment1: '// illustrative example',
-      label1: 'conversion',
-      val1: '+34%',
-      label2: 'sessions',
-      val2: '12,847',
-      label3: 'revenue',
-      val3: 'R$ 87.2k',
-      status: 'interface demo',
-    },
+    "label": "RODOLFO FERREIRA · DESIGN + DEVELOPMENT",
+    "headline": [
+      "I make websites and systems",
+      "with their own character."
+    ],
+    "body": "From the first sketch to the live code, I take care of the whole project — visuals, experience, and development.",
+    "cta_primary": "View projects",
+    "cta_secondary": "Talk to me",
+    "mockup": {
+      "filename": "project.web",
+      "comment1": "// from sketch to code",
+      "label1": "structure",
+      "val1": "content + navigation",
+      "label2": "interface",
+      "val2": "form + interaction",
+      "label3": "code",
+      "val3": "React + TypeScript",
+      "status": "design + development"
+    }
   },
   services: {
-    label: 'Services',
-    headline: 'Digital solutions for businesses that need to move beyond improvisation.',
-    body: 'Websites, systems, and automations focused on clarity, usability, and real results.',
-    nav: ['Web Design', 'Systems', 'Applied AI', 'Automation'],
-    cards: [
+    "label": "Services",
+    "headline": "Design and development\nwithout a fixed formula.",
+    "body": "Every project starts with what it needs to solve. From interface to code, I choose the approach that fits each case.",
+    "cards": [
       {
-        icon: 'dashboard',
-        title: 'Web Design',
-        description:
-          'Premium websites and landing pages with clear navigation and conversion-focused structure.',
+        "icon": "dashboard",
+        "title": "Web Design",
+        "description": "Business websites, landing pages, and digital experiences with their own identity."
       },
       {
-        icon: 'database',
-        title: 'Internal Systems',
-        description:
-          'Custom-built tools to organize workflows, reduce rework, and give your operation more control.',
+        "icon": "database",
+        "title": "Web Systems",
+        "description": "Interfaces and tools built to organize processes and make work easier."
       },
       {
-        icon: 'psychology',
-        title: 'Applied AI',
-        description:
-          'AI for finding information, organizing content, and supporting everyday team tasks.',
+        "icon": "bolt",
+        "title": "Automation",
+        "description": "Workflows and integrations that take repetitive tasks off your hands."
       },
       {
-        icon: 'bolt',
-        title: 'Automation',
-        description:
-          'Integrations, dashboards, and practical solutions to turn manual tasks into efficient automated workflows.',
-      },
+        "icon": "construction",
+        "title": "Custom Solutions",
+        "description": "When an off-the-shelf tool does not fit the problem, I build a solution for it."
+      }
     ],
     pricing: {
       label: 'Investment',
@@ -227,42 +224,45 @@ export const en: typeof pt = {
     back: '← Back',
   },
   process: {
-    label: 'Process',
-    headline: 'From the first conversation to delivery.',
-    steps: [
+    "label": "Process",
+    "headline": "From the first diagnosis\nto delivery.",
+    "body": "No rigid process. First I understand the problem, then I design and build what actually needs to exist.",
+    "steps": [
       {
-        num: '01',
-        title: 'Diagnosis',
-        description: 'We identify the problem, the audience, and what the project needs to solve.',
+        "num": "01",
+        "title": "Diagnosis",
+        "description": "Understand the context, the problem, and what needs to change."
       },
       {
-        num: '02',
-        title: 'Structure',
-        description: 'Information architecture, user flows, and functional wireframes.',
+        "num": "02",
+        "title": "Direction",
+        "description": "Define the structure, references, and visual approach."
       },
       {
-        num: '03',
-        title: 'Design',
-        description: 'Defining the visual language, typography, and interactions.',
+        "num": "03",
+        "title": "Design",
+        "description": "Turn the idea into an interface and an experience."
       },
       {
-        num: '04',
-        title: 'Development',
-        description: 'Turning design into clean, fast, performance-focused code.',
+        "num": "04",
+        "title": "Development",
+        "description": "Bring the project into code with attention to detail."
       },
       {
-        num: '05',
-        title: 'Delivery',
-        description: 'Launch, real-usage refinements, and ongoing support.',
-      },
-    ],
+        "num": "05",
+        "title": "Delivery",
+        "description": "Publish, review, and get everything ready to use."
+      }
+    ]
   },
   about: {
-    label: 'About me',
-    headline: "I don't build pretty websites. I build tools that work for your business.",
-    body: "I'm Rodolfo Ferreira, a web designer, developer, and technology professional. I create digital experiences that combine aesthetics, clarity, and function — websites that better represent a brand, systems that organize workflows, and automations that reduce manual work.",
-    philosophy: 'Design with purpose. Code with precision. Results that last.',
-    tags: ['Web Design', 'Web Systems', 'Applied AI', 'Automation & Processes'],
+    "label": "About me",
+    "headline": "I work between\ndesign and development.",
+    "paragraphs": [
+      "I am Rodolfo Ferreira. I design and build websites, systems, and digital experiences from start to finish.",
+      "I like to understand the problem before opening the code. That lets me take care of both the visuals and the structure that makes the project work.",
+      "My work today spans design, development, automation, and technology applied to digital projects."
+    ]
   },
   contact: {
     label: 'Contact',
