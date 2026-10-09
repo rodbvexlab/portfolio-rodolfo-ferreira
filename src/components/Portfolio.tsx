@@ -175,7 +175,7 @@ function ProjectCard({
   }
 
   return (
-    <motion.div variants={cardAnim} className={`${spanClass} ${project.desktopOrder ? desktopOrderClasses[project.desktopOrder] : ''}`}>
+    <motion.div id={`project-${project.slug}`} variants={cardAnim} className={`scroll-mt-32 ${spanClass} ${project.desktopOrder ? desktopOrderClasses[project.desktopOrder] : ''}`}>
       <Link
         to={`/case/${project.slug}`}
         className="group block"

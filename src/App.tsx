@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom'
 import { useLanguage } from './context/LanguageContext'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -9,6 +9,7 @@ import About from './components/About'
 import ContactCTA from './components/ContactCTA'
 import WhatsAppFloating from './components/WhatsAppFloating'
 import CustomCursor from './components/CustomCursor'
+import ScrollManager from './components/ScrollManager'
 import CaseStudy from './pages/CaseStudy'
 import NotFound from './pages/NotFound'
 
@@ -69,7 +70,7 @@ function SiteFooter() {
           </div>
 
           {/* Right: copyright */}
-          <span className="font-sans text-[11px] text-white/15">{t.footer.copy}</span>
+          <span className="font-sans text-[11px] text-white/15">© {new Date().getFullYear()} {t.footer.copy}</span>
         </div>
       </div>
     </footer>
@@ -95,6 +96,7 @@ function HomePage() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollManager />
       <CustomCursor />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -106,10 +108,12 @@ export default function App() {
 }
 
 function CaseStudyPage() {
+  const { slug } = useParams<{ slug: string }>()
   return (
     <div className="min-h-screen bg-black text-white">
       <Navbar />
-      <CaseStudy />
+      {/* key → entrance animations replay when jumping between cases */}
+      <CaseStudy key={slug} />
       <WhatsAppFloating />
     </div>
   )

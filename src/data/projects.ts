@@ -44,9 +44,18 @@ export const projects: Project[] = [
       en: 'Institutional website for a psychotherapy practice, with cinematic editorial direction and a dedicated visual identity.',
     },
     case: {
-      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      challenge: {
+        pt: 'Dar a uma clínica de psicoterapia uma presença digital que transmita acolhimento e seriedade, longe da estética genérica da área da saúde, e que ajude o visitante a entender a proposta antes do primeiro contato.',
+        en: 'Give a psychotherapy practice a digital presence that conveys warmth and seriousness, far from generic healthcare aesthetics, and that helps visitors understand the approach before the first contact.',
+      },
+      solution: {
+        pt: 'Site institucional com direção editorial cinematográfica e identidade visual própria: abertura em vídeo com versões para desktop e mobile, tipografia editorial e uma narrativa em ritmo calmo que apresenta a clínica e sua abordagem.',
+        en: 'An institutional website with cinematic editorial direction and a dedicated visual identity: a video opening with desktop and mobile cuts, editorial typography, and a calm narrative that introduces the practice and its approach.',
+      },
+      result: {
+        pt: 'Uma experiência que traduz o cuidado da prática clínica em linguagem visual e conduz o visitante da apresentação ao contato com clareza.',
+        en: 'An experience that translates the care of clinical practice into visual language and guides visitors from introduction to contact with clarity.',
+      },
     },
   },
   {
@@ -188,9 +197,18 @@ export const projects: Project[] = [
       en: 'Mobile web experience for a birthday invitation, with Y2K/disco art direction and a dedicated visual identity.',
     },
     case: {
-      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      challenge: {
+        pt: 'Transformar um convite de aniversário em algo que as pessoas quisessem abrir, explorar e compartilhar — direto no celular, sem instalar nada.',
+        en: 'Turn a birthday invitation into something people would want to open, explore, and share — right on their phones, with nothing to install.',
+      },
+      solution: {
+        pt: 'Experiência web pensada primeiro para o mobile, com direção Y2K/disco, identidade visual própria (incluindo a linha Summer Vibes) e interações desenhadas para o toque.',
+        en: 'A mobile-first web experience with Y2K/disco art direction, a dedicated visual identity (including the Summer Vibes line), and interactions designed for touch.',
+      },
+      result: {
+        pt: 'Um convite com personalidade, acessível por um link e fiel ao clima da festa da primeira à última tela.',
+        en: 'An invitation with personality, reachable through a single link and true to the mood of the party from the first screen to the last.',
+      },
     },
   },
   {
@@ -267,9 +285,18 @@ export const projects: Project[] = [
       en: 'Institutional website and catalog for a hardware and fasteners store, with technical editorial direction.',
     },
     case: {
-      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      challenge: {
+        pt: 'Apresentar uma loja de ferragens e fixadores com a mesma clareza técnica que o cliente encontra no balcão, organizando um mix amplo de produtos de forma fácil de consultar.',
+        en: 'Present a hardware and fasteners store with the same technical clarity customers find at the counter, organizing a wide product mix in a way that is easy to browse.',
+      },
+      solution: {
+        pt: 'Site institucional com catálogo e direção editorial técnica: tipografia firme, hierarquia clara entre linhas de produto e caminhos curtos até o atendimento.',
+        en: 'An institutional website with a catalog and technical editorial direction: solid typography, clear hierarchy across product lines, and short paths to customer service.',
+      },
+      result: {
+        pt: 'Uma presença digital que reforça a credibilidade da loja e ajuda o cliente a encontrar o que procura antes de entrar em contato.',
+        en: 'A digital presence that reinforces the store’s credibility and helps customers find what they need before getting in touch.',
+      },
     },
   },
 ]
