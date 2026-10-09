@@ -7,24 +7,29 @@ export const pt = {
     cta: 'Falar comigo',
   },
   hero: {
-    "label": "RODOLFO FERREIRA · DESIGN + DEVELOPMENT",
+    "label": "Web design · Sistemas · Automação com IA",
     "headline": [
-      "Faço sites e sistemas",
-      "com cara própria."
+      "Sites e sistemas",
+      "à altura do seu negócio."
     ],
-    "body": "Do primeiro rascunho ao código no ar, eu cuido do projeto inteiro — visual, experiência e desenvolvimento.",
+    "body": "Desenho e desenvolvo sites, landing pages e sistemas internos para empresas que querem parecer mais profissionais, vender melhor e trabalhar com menos retrabalho.",
     "cta_primary": "Ver projetos",
-    "cta_secondary": "Falar comigo",
+    "cta_secondary": "Pedir uma proposta",
+    "proof": [
+      "Direto com quem desenha e programa",
+      "Escopo e prazo definidos por escrito",
+      "Do briefing ao site no ar"
+    ],
     "mockup": {
-      "filename": "projeto.web",
-      "comment1": "// do rascunho ao código",
-      "label1": "estrutura",
-      "val1": "conteúdo + navegação",
-      "label2": "interface",
-      "val2": "forma + interação",
+      "filename": "proposta.md",
+      "comment1": "// o que entra em todo projeto",
+      "label1": "diagnóstico",
+      "val1": "o problema antes da solução",
+      "label2": "design",
+      "val2": "interface com identidade própria",
       "label3": "código",
-      "val3": "React + TypeScript",
-      "status": "design + desenvolvimento"
+      "val3": "rápido, responsivo e publicado",
+      "status": "agenda aberta para novos projetos"
     }
   },
   services: {
@@ -170,24 +175,29 @@ export const en: typeof pt = {
     cta: 'Talk to me',
   },
   hero: {
-    "label": "RODOLFO FERREIRA · DESIGN + DEVELOPMENT",
+    "label": "Web design · Systems · AI automation",
     "headline": [
-      "I make websites and systems",
-      "with their own character."
+      "Websites and systems",
+      "that match your business."
     ],
-    "body": "From the first sketch to the live code, I take care of the whole project — visuals, experience, and development.",
+    "body": "I design and build websites, landing pages, and internal systems for companies that want to look more professional, sell better, and work with less rework.",
     "cta_primary": "View projects",
-    "cta_secondary": "Talk to me",
+    "cta_secondary": "Request a proposal",
+    "proof": [
+      "Straight to the person who designs and codes",
+      "Scope and timeline agreed in writing",
+      "From briefing to live site"
+    ],
     "mockup": {
-      "filename": "project.web",
-      "comment1": "// from sketch to code",
-      "label1": "structure",
-      "val1": "content + navigation",
-      "label2": "interface",
-      "val2": "form + interaction",
+      "filename": "proposal.md",
+      "comment1": "// what every project includes",
+      "label1": "diagnosis",
+      "val1": "the problem before the solution",
+      "label2": "design",
+      "val2": "an interface with its own identity",
       "label3": "code",
-      "val3": "React + TypeScript",
-      "status": "design + development"
+      "val3": "fast, responsive, and shipped",
+      "status": "open for new projects"
     }
   },
   services: {

@@ -131,7 +131,13 @@ function TechMockup({ m }: { m: ReturnType<typeof useLanguage>['t']['hero']['moc
           </div>
         ))}
       </dl>
-      <p className="mt-6 pt-5 border-t border-white/10 font-mono text-[12px] text-white/55">{m.status}</p>
+      <p className="mt-6 pt-5 border-t border-white/10 flex items-center gap-2 font-mono text-[12px] text-white/55">
+        <span aria-hidden className="relative flex w-1.5 h-1.5">
+          <span className="absolute inset-0 rounded-full bg-emerald-400/60 animate-ping" />
+          <span className="relative w-1.5 h-1.5 rounded-full bg-emerald-400" />
+        </span>
+        {m.status}
+      </p>
     </motion.div>
   )
 }
@@ -207,8 +213,9 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="font-sans text-[11px] md:text-[12px] leading-relaxed tracking-[0.08em] text-cyan-300/80"
+            className="flex items-center gap-3 font-sans text-[10px] sm:text-[11px] md:text-[12px] uppercase leading-relaxed tracking-[0.14em] sm:tracking-[0.16em] text-cyan-300/80"
           >
+            <span aria-hidden className="hidden sm:block h-px w-8 bg-cyan-300/50" />
             {hero.label}
           </motion.p>
 
@@ -217,12 +224,12 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
             variants={container}
             initial="hidden"
             animate="show"
-            className="font-serif text-[44px] sm:text-[60px] md:text-[68px] lg:text-[76px] xl:text-[80px] leading-[1.06] tracking-tight text-white"
+            className="text-balance font-serif text-[42px] sm:text-[60px] md:text-[68px] lg:text-[76px] xl:text-[80px] leading-[1.06] tracking-tight text-white"
           >
             {hero.headline.map((line, li) => (
-              <span key={li} className="block overflow-hidden">
+              <span key={li} className={`block overflow-hidden pb-[0.08em] ${li > 0 ? 'italic text-white/60' : ''}`}>
                 {line.split(' ').map((w, wi) => (
-                  <motion.span key={wi} variants={word} className="inline-block mr-[0.2em] last:mr-0">
+                  <motion.span key={wi} variants={word} className="inline-block mr-[0.22em] last:mr-0">
                     {w}
                   </motion.span>
                 ))}
@@ -264,12 +271,29 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
             </MagneticButton>
             <a
               href="#contato"
-              className="font-sans text-[12px] uppercase tracking-widest text-white/70
-                hover:text-white/80 transition-colors border-b border-white/10 hover:border-white/30 pb-0.5"
+              className="py-2 font-sans text-[12px] uppercase tracking-widest text-white/70
+                underline decoration-white/20 underline-offset-[6px]
+                hover:text-white hover:decoration-cyan-300/60 transition-colors"
             >
               {hero.cta_secondary}
             </a>
           </motion.div>
+
+          {/* Proof points — concrete working terms instead of vanity metrics */}
+          <motion.ul
+            custom={1.2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-2.5 mt-3 sm:pt-6 sm:border-t border-white/[0.07] max-w-[46rem]"
+          >
+            {hero.proof.map((item) => (
+              <li key={item} className="flex items-center gap-2 font-sans text-[13px] text-white/45">
+                <span aria-hidden className="material-symbols-outlined text-[15px] text-cyan-300/60">check</span>
+                {item}
+              </li>
+            ))}
+          </motion.ul>
 
           {/* Mobile: project outline after the introduction */}
           <motion.div
