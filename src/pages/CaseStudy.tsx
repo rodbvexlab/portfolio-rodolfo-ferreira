@@ -16,7 +16,7 @@ const sections = [
   { key: 'result', icon: 'trending_up', color: 'text-green-400/70', border: 'border-green-400/15' },
 ] as const
 
-const WHATSAPP_URL = 'https://wa.me/5511924796028?text=Ol%C3%A1%21%20Vi%20seus%20cases%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto.'
+const WHATSAPP_URL = 'https://wa.me/5511924796028?text=Oi%2C%20Rodolfo%21%20Vi%20seus%20cases%20e%20quero%20conversar%20sobre%20um%20projeto.'
 
 // Unwritten case copy is stored as "[PENDENTE …]" — never render it publicly.
 const isWritten = (text: string) => text.trim().length > 0 && !text.trim().startsWith('[')

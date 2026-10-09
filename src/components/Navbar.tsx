@@ -120,10 +120,10 @@ export default function Navbar() {
 
             {/* CTA */}
             <a
-              href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+              href="https://wa.me/5511924796028?text=Oi%2C%20Rodolfo%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%20um%20projeto."
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-1.5 rounded-lg font-sans text-[11px] uppercase tracking-widest
+              className="whitespace-nowrap px-4 py-1.5 rounded-lg font-sans text-[11px] uppercase tracking-widest
                 text-white/70 hover:text-white
                 bg-white/[0.05] border border-white/[0.09]
                 hover:bg-white/[0.10] hover:border-white/[0.15]
@@ -198,7 +198,7 @@ export default function Navbar() {
                 ))}
                 <div className="mt-4 pt-4 border-t border-white/[0.07]">
                   <a
-                    href="https://wa.me/5511924796028"
+                    href="https://wa.me/5511924796028?text=Oi%2C%20Rodolfo%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%20um%20projeto."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full text-center px-4 py-3 rounded-xl

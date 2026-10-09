@@ -1,11 +1,11 @@
 export default function WhatsAppFloating() {
   return (
     <a
-      href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+      href="https://wa.me/5511924796028?text=Oi%2C%20Rodolfo%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%20um%20projeto."
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white/[0.02] border border-white/10 backdrop-blur-xl shadow-lg hover:border-[#25d366]/40 hover:shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:bg-[#25d366]/5 transition-all duration-500 hover:scale-105 group"
-      aria-label="Falar no WhatsApp"
+      aria-label="Conversar no WhatsApp"
     >
       {/* WhatsApp SVG Icon - subtle white/50 to green transition */}
       <svg
