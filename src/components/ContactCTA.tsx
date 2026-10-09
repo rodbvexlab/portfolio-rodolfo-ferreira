@@ -178,7 +178,7 @@ export default function ContactCTA() {
 
               {status === 'error' && (
                 <p className="md:col-span-2 text-center font-sans text-[13px] text-red-400/80">
-                  Algo deu errado. Tente pelo WhatsApp acima.
+                  {contact.error}
                 </p>
               )}
 
@@ -202,7 +202,7 @@ export default function ContactCTA() {
                       >
                         progress_activity
                       </motion.span>
-                      Enviando...
+                      {contact.sending}
                     </span>
                   ) : contact.submit}
                 </button>

@@ -40,7 +40,7 @@ export const projects: Project[] = [
     videoPreview: '/portfolio/origens/hero-desktop.mp4',
     videoPreviewMobile: '/portfolio/origens/hero-mobile.mp4',
     description: {
-      pt: 'Site pra uma clínica de psicoterapia, com direção editorial de cinema e identidade visual própria.',
+      pt: 'Site para uma clínica de psicoterapia, com direção editorial de cinema e identidade visual própria.',
       en: 'Website for a psychotherapy practice, with cinematic editorial direction and its own visual identity.',
     },
     case: {
@@ -49,7 +49,7 @@ export const projects: Project[] = [
         en: 'Therapy calls for a site that feels welcoming without looking like a clinic brochure. The challenge was to convey care and seriousness, skip the generic healthcare look, and make the approach clear before the first contact.',
       },
       solution: {
-        pt: 'Direção editorial cinematográfica e identidade própria: abertura em vídeo com cortes pra desktop e mobile, tipografia editorial e uma narrativa em ritmo calmo, que apresenta a clínica e sua abordagem sem pressa.',
+        pt: 'Direção editorial cinematográfica e identidade própria: abertura em vídeo com cortes para desktop e mobile, tipografia editorial e uma narrativa em ritmo calmo, que apresenta a clínica e sua abordagem sem pressa.',
         en: 'Cinematic editorial direction and a dedicated identity: a video opening with desktop and mobile cuts, editorial typography, and a calm narrative that introduces the practice and its approach at an unhurried pace.',
       },
       result: {
@@ -70,7 +70,7 @@ export const projects: Project[] = [
     gridSpan: 7,
     poster: '/portfolio/bonitos/poster-editorial.webp',
     description: {
-      pt: 'Site pra uma funilaria e pintura automotiva, com caminhos separados pra leves e pesados e tudo levando ao orçamento.',
+      pt: 'Site para uma funilaria e pintura automotiva, com caminhos separados para leves e pesados e tudo levando ao orçamento.',
       en: 'Website for an auto body and paint shop, with separate paths for cars and heavy vehicles, all leading to a quote.',
     },
     case: {
@@ -79,7 +79,7 @@ export const projects: Project[] = [
         en: 'Bonitos Car serves two very different audiences: car owners and people who manage trucks and fleets. The site had to split those journeys without confusing anyone — and get everyone to a quote request.',
       },
       solution: {
-        pt: 'Páginas próprias pra leves e pesados, apresentação dos serviços e um formulário de orçamento que junta categoria do veículo, contato e descrição numa mensagem pronta no WhatsApp.',
+        pt: 'Páginas próprias para leves e pesados, apresentação dos serviços e um formulário de orçamento que junta categoria do veículo, contato e descrição numa mensagem pronta no WhatsApp.',
         en: 'Dedicated pages for cars and heavy vehicles, a clear services overview, and a quote form that bundles vehicle type, contact, and description into a ready-to-send WhatsApp message.',
       },
       result: {
@@ -105,7 +105,7 @@ export const projects: Project[] = [
     },
     case: {
       challenge: {
-        pt: 'Reunir projetos, estudos e soluções digitais num só lugar, com clareza visual, funcionalidade e uma navegação gostosa de explorar.',
+        pt: 'Reunir projetos, estudos e soluções digitais num só lugar, com clareza visual, funcionalidade e uma navegação agradável de explorar.',
         en: 'Bring projects, studies, and digital solutions together in one place, with visual clarity, functionality, and browsing that is a pleasure to explore.',
       },
       solution: {
@@ -131,7 +131,7 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/marques/poster-editorial.webp',
     description: {
-      pt: 'Landing page pra uma barbearia, com identidade forte, agendamento integrado e a experiência do cliente no centro.',
+      pt: 'Landing page para uma barbearia, com identidade forte, agendamento integrado e a experiência do cliente no centro.',
       en: 'Landing page for a barbershop, with a strong identity, built-in booking, and the client experience front and center.',
     },
     case: {
@@ -162,7 +162,7 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/aetheria/poster-editorial.webp',
     description: {
-      pt: 'Site pra uma marca de estética e bem-estar, com clima editorial e tratamentos como Revive e Glow.',
+      pt: 'Site para uma marca de estética e bem-estar, com clima editorial e tratamentos como Revive e Glow.',
       en: 'Website for a beauty and wellness brand, with an editorial mood and treatments such as Revive and Glow.',
     },
     case: {
@@ -202,7 +202,7 @@ export const projects: Project[] = [
         en: 'Turn a birthday invitation into something people would want to open, explore, and send to friends — right on their phones, nothing to install.',
       },
       solution: {
-        pt: 'Experiência mobile-first com direção Y2K/disco, identidade visual própria (incluindo a linha Summer Vibes) e interações desenhadas pro toque.',
+        pt: 'Experiência mobile-first com direção Y2K/disco, identidade visual própria (incluindo a linha Summer Vibes) e interações desenhadas para o toque.',
         en: 'A mobile-first experience with Y2K/disco art direction, its own visual identity (including the Summer Vibes line), and interactions designed for touch.',
       },
       result: {
@@ -222,12 +222,12 @@ export const projects: Project[] = [
     inGrid: true,
     gridSpan: 5,
     description: {
-      pt: 'Site pra um estúdio criativo, com linguagem editorial e uma identidade sofisticada à altura do posicionamento da marca.',
+      pt: 'Site para um estúdio criativo, com linguagem editorial e uma identidade sofisticada à altura do posicionamento da marca.',
       en: 'Website for a creative studio, with an editorial voice and a sophisticated identity that matches the brand’s positioning.',
     },
     case: {
       challenge: {
-        pt: 'O estúdio tinha um portfólio forte e um site genérico, que não mostrava o nível criativo do trabalho — justo pra quem eles mais queriam atrair.',
+        pt: 'O estúdio tinha um portfólio forte e um site genérico, que não mostrava o nível criativo do trabalho — justo para quem eles mais queriam atrair.',
         en: 'The studio had a strong portfolio and a generic website that didn’t show the creative level of its work — exactly to the clients it most wanted to attract.',
       },
       solution: {
@@ -252,16 +252,16 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/stefani-amorim/poster-editorial.webp',
     description: {
-      pt: 'Site pra uma loja de brinquedos educativos e papelaria afetiva, com catálogo e atendimento pelo WhatsApp.',
+      pt: 'Site para uma loja de brinquedos educativos e papelaria afetiva, com catálogo e atendimento pelo WhatsApp.',
       en: 'Website for an educational toy and stationery store, with a product catalog and service through WhatsApp.',
     },
     case: {
       challenge: {
-        pt: 'Levar a curadoria de brinquedos educativos e papelaria afetiva da Stefani Amorim pro digital, mostrando os produtos e a história por trás da loja.',
+        pt: 'Levar a curadoria de brinquedos educativos e papelaria afetiva da Stefani Amorim para o digital, mostrando os produtos e a história por trás da loja.',
         en: 'Bring Stefani Amorim’s curated educational toys and stationery online, showing the products and the story behind the store.',
       },
       solution: {
-        pt: 'Visual lúdico, seções de brinquedos e papelaria, dicas pra escolher o presente certo e atendimento personalizado a um toque, pelo WhatsApp.',
+        pt: 'Visual lúdico, seções de brinquedos e papelaria, dicas para escolher o presente certo e atendimento personalizado a um toque, pelo WhatsApp.',
         en: 'A playful look, toy and stationery sections, tips for picking the right gift, and personal service one tap away on WhatsApp.',
       },
       result: {
@@ -281,7 +281,7 @@ export const projects: Project[] = [
     mediaAspect: '4/3',
     poster: '/portfolio/poliana/universo-poliana-editorial.webp',
     description: {
-      pt: 'Site institucional e catálogo pra uma loja de ferragens e fixadores, com direção editorial técnica.',
+      pt: 'Site institucional e catálogo para uma loja de ferragens e fixadores, com direção editorial técnica.',
       en: 'Business website and catalog for a hardware and fasteners store, with technical editorial direction.',
     },
     case: {
