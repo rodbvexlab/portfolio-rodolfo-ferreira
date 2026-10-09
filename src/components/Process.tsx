@@ -65,37 +65,38 @@ export default function Process() {
             className="text-[11px] uppercase tracking-[0.2em] text-cyan-400/80 block"
             delay={100}
           />
-          <h2 className="font-serif text-[30px] md:text-[52px] text-white max-w-3xl leading-tight">
+          <h2 className="font-serif text-[38px] md:text-[52px] text-white max-w-3xl leading-[1.1] whitespace-pre-line">
             {process.headline}
           </h2>
+          <p className="font-sans text-[16px] text-white/65 max-w-[35rem] leading-relaxed">
+            {process.body}
+          </p>
         </motion.div>
 
-        {/* Steps — 2-col on mobile, 5-col on desktop */}
+        {/* Steps — full-width reading on mobile, five columns on desktop */}
         <motion.div
           variants={stagger}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.08 }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4"
         >
           {process.steps.map(({ num, title, description }, i) => (
             <motion.div
               key={num}
               variants={item}
-              className={`group relative p-5 md:p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02]
-                hover:border-cyan-400/20 hover:bg-white/[0.03] transition-colors duration-300 cursor-default
-                ${i === 4 ? 'col-span-2 md:col-span-1' : ''}` /* Last step full-width on mobile 2-col */
-              }
+              className="group relative p-5 md:p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02]
+                hover:border-cyan-400/20 hover:bg-white/[0.03] transition-colors duration-300 cursor-default"
             >
               {/* Desktop connector */}
               {i < process.steps.length - 1 && (
                 <div className="hidden lg:block absolute top-10 left-full w-5 h-px bg-white/[0.06] z-0" />
               )}
-              <div className="font-serif text-[32px] md:text-[40px] text-cyan-400/25 mb-4 leading-none">
+              <div className="font-serif text-[32px] md:text-[40px] text-cyan-400/55 mb-4 leading-none">
                 {num}
               </div>
-              <h3 className="font-serif text-[17px] md:text-[20px] text-white mb-2">{title}</h3>
-              <p className="font-sans text-[12px] md:text-[13px] text-white/55 leading-relaxed">{description}</p>
+              <h3 className="font-serif text-[22px] text-white mb-2">{title}</h3>
+              <p className="font-sans text-[15px] text-white/65 leading-relaxed">{description}</p>
             </motion.div>
           ))}
         </motion.div>

@@ -33,7 +33,7 @@ export default function ContactCTA() {
   const [status, setStatus] = useState<Status>('idle')
 
   const inputClass = `w-full bg-white/[0.03] border border-white/[0.08] rounded-full px-6 py-4
-    text-white/85 placeholder:text-white/25 font-sans text-[15px]
+    text-white/85 placeholder:text-white/55 font-sans text-[15px]
     hover:border-white/[0.15] focus:border-cyan-400/30 focus:ring-1 focus:ring-cyan-400/10
     outline-none transition-all duration-300`
 
@@ -80,7 +80,7 @@ export default function ContactCTA() {
       }}
     >
       {/* Ambient glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-cyan-400/[0.04] blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] max-w-full h-[500px] bg-cyan-400/[0.04] blur-[140px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] bg-white/[0.02] blur-[80px] rounded-full pointer-events-none" />
 
       <div className="relative max-w-[780px] mx-auto">

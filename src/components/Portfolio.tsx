@@ -16,6 +16,11 @@ const cardAnim = {
   show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: ease } },
 }
 
+const desktopOrderClasses = {
+  1: 'lg:order-1', 2: 'lg:order-2', 3: 'lg:order-3', 4: 'lg:order-4',
+  5: 'lg:order-5', 6: 'lg:order-6', 7: 'lg:order-7', 8: 'lg:order-8',
+}
+
 /** Elegant placeholder for projects without a video */
 function VideoPlaceholder({ title }: { title: string }) {
   return (
@@ -127,13 +132,13 @@ function ProjectMedia({
 
 function ProjectCard({
   project,
-  wide = false,
+  gridSpan,
   isActivePreview,
   onActivate,
   onDeactivate,
 }: {
   project: typeof projects[0]
-  wide?: boolean
+  gridSpan?: 12 | 7 | 5
   isActivePreview: boolean
   onActivate: () => void
   onDeactivate: () => void
@@ -142,14 +147,17 @@ function ProjectCard({
   const isTouch = useIsTouch()
   const legacyVideoRef = useRef<HTMLVideoElement>(null)
 
-  // Poster→video path (projects with a `poster`) vs. the legacy hover-video
-  // path (existing projects with only `video`) — both keep working as-is.
-  const isNewMedia = !!project.poster
+  // Poster→video path (projects with a `poster`) skips the legacy
+  // overlay/placeholder treatment. The legacy hover-video path (existing
+  // projects with only `video`) keeps working as-is.
+  const hasPoster = !!project.poster
   // Poster-only projects (poster, no videoPreview) have nothing to play, so
   // they must not claim the single global preview slot — hover/focus still
   // gets its visual response (CSS group-hover/focus-visible), just without
   // touching activePreviewSlug.
-  const hasVideoPreview = isNewMedia && !!project.videoPreview
+  const hasVideoPreview = hasPoster && !!project.videoPreview
+  const spanClass =
+    gridSpan === 12 ? 'lg:col-span-12' : gridSpan === 7 ? 'lg:col-span-7' : gridSpan === 5 ? 'lg:col-span-5' : ''
 
   const handleEnter = () => {
     if (hasVideoPreview) {
@@ -167,7 +175,7 @@ function ProjectCard({
   }
 
   return (
-    <motion.div variants={cardAnim} className={wide ? 'md:col-span-2' : ''}>
+    <motion.div variants={cardAnim} className={`${spanClass} ${project.desktopOrder ? desktopOrderClasses[project.desktopOrder] : ''}`}>
       <Link
         to={`/case/${project.slug}`}
         className="group block"
@@ -180,9 +188,12 @@ function ProjectCard({
         <div
           className={`relative overflow-hidden rounded-2xl bg-[#0a0a0a] border border-white/[0.05]
             transition-all duration-500 group-hover:border-white/[0.10]
-            ${wide ? 'aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/9]' : 'aspect-[16/10]'}`}
+            ${project.mediaAspect === '5/4' ? 'aspect-[5/4]' : gridSpan === 12
+              ? 'aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/9]'
+              : project.mediaAspect === '4/5' ? 'aspect-[4/5]'
+              : 'aspect-[16/10]'}`}
         >
-          {isNewMedia ? (
+          {hasPoster ? (
             <ProjectMedia project={project} isActivePreview={isActivePreview} />
           ) : project.video && !isTouch ? (
             <video
@@ -202,7 +213,7 @@ function ProjectCard({
           {/* Gradient overlay — legacy media path only. The poster/video path
               above stays fully visible on its own; the CTA chip below already
               self-contrasts, so it needs no darkening layer behind it. */}
-          {!isNewMedia && (
+          {!hasPoster && (
             <>
               <div
                 className="absolute inset-0 transition-opacity duration-700 pointer-events-none"
@@ -338,7 +349,7 @@ export default function Portfolio() {
           whileInView="show"
           viewport={{ once: true, amount: 0.05 }}
           variants={stagger}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-14 md:gap-y-20"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-14 lg:gap-y-16"
         >
           {projects
             .filter((project) => project.inGrid !== false)
@@ -346,7 +357,7 @@ export default function Portfolio() {
               <ProjectCard
                 key={project.slug}
                 project={project}
-                wide={project.wide}
+                gridSpan={project.gridSpan}
                 isActivePreview={activePreviewSlug === project.slug}
                 onActivate={() => setActivePreviewSlug(project.slug)}
                 onDeactivate={() =>

@@ -230,7 +230,6 @@ scrollYProgress [0, 1]    → y ['0%', '-18%']  (parallax)
 | Barbearia Marques | Web Design, Landing Page, Branding | ✅ | barber-marques.vercel.app |
 | Aetheria | Web Design, 3D / Art, Creative | ✅ | aetheria-3d3l.vercel.app |
 | Plataforma ASME | Sistema, Cloud Run, UX | ❌ placeholder | asme-714655608194.us-east1.run.app |
-| CRM Criativos | CRM, Next.js, Dashboard | ❌ placeholder | crm-criativos.vercel.app |
 
 ---
 

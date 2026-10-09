@@ -84,9 +84,9 @@ export default function CaseStudy() {
           className="w-full aspect-[16/9] rounded-2xl overflow-hidden border border-white/[0.07] bg-white/[0.02] mb-20"
         >
           <img
-            src={screenshotUrl}
-            alt={`Screenshot ${project.title}`}
-            className="w-full h-full object-cover object-top"
+            src={project.poster ?? screenshotUrl}
+            alt={project.title}
+            className={`w-full h-full ${project.poster ? 'object-contain' : 'object-cover object-top'}`}
           />
         </motion.div>
 

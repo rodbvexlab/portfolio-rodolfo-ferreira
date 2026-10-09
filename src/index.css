@@ -39,6 +39,15 @@
     background: rgba(76, 215, 246, 0.25);
     color: #fff;
   }
+
+  :where(a, button, input, textarea, select):focus-visible {
+    outline: 2px solid #4cd7f6;
+    outline-offset: 4px;
+  }
+
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
 }
 
 /* ─── Liquid Glass ──────────────────────────────────────────────── */

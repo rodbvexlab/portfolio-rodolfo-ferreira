@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { ease } from '../lib/motion'
@@ -21,40 +20,6 @@ const stagger = {
 const cardAnim = {
   hidden: { opacity: 0, y: 28 },
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: ease } },
-}
-
-/** Subtle 3D tilt on mouse move — the expensive-feeling hover */
-function TiltCard({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null)
-
-  const handleMove = (e: React.MouseEvent) => {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    el.style.transform = `perspective(900px) rotateX(${y * -7}deg) rotateY(${x * 7}deg) translateZ(4px)`
-    el.style.transition = 'transform 0.1s ease-out'
-  }
-
-  const handleLeave = () => {
-    const el = ref.current
-    if (!el) return
-    el.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0)'
-    el.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)'
-  }
-
-  return (
-    <div
-      ref={ref}
-      className={className}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      style={{ willChange: 'transform', transformStyle: 'preserve-3d' }}
-    >
-      {children}
-    </div>
-  )
 }
 
 export default function Services() {
@@ -102,28 +67,17 @@ export default function Services() {
                   delay={200}
                 />
               </motion.div>
-              <motion.h2 variants={fadeUp(0.05)} className="font-serif text-[38px] md:text-[52px] lg:text-[56px] leading-[1.05] text-white max-w-lg">
+              <motion.h2 variants={fadeUp(0.05)} className="font-serif text-[38px] md:text-[52px] lg:text-[56px] leading-[1.1] text-white max-w-lg whitespace-pre-line">
                 {services.headline}
               </motion.h2>
-              <motion.p variants={fadeUp(0.1)} className="font-sans text-[16px] text-white/60 max-w-md leading-relaxed">
+              <motion.p variants={fadeUp(0.1)} className="font-sans text-[16px] text-white/65 max-w-md leading-relaxed">
                 {services.body}
               </motion.p>
             </div>
 
-            {/* Vertical timeline nav */}
-            <motion.div variants={stagger} className="relative flex flex-col gap-6 pl-5 border-l border-white/[0.08]">
-              {services.nav.map((item, i) => (
-                <motion.div key={item} variants={cardAnim} className="relative flex items-center">
-                  <div className={`absolute -left-[21px] w-2 h-2 rounded-full transition-colors duration-500 ${i === 0 ? 'bg-cyan-400 shadow-[0_0_8px_rgba(76,215,246,0.6)]' : 'bg-white/15'}`} />
-                  <span className={`font-sans text-[12px] uppercase tracking-widest ${i === 0 ? 'text-white' : 'text-white/40'}`}>
-                    {item}
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
 
-          {/* Right: service cards with 3D tilt */}
+          {/* Right: service cards */}
           <motion.div
             variants={stagger}
             initial="hidden"
@@ -133,16 +87,16 @@ export default function Services() {
           >
             {services.cards.map(({ icon, title, description }) => (
               <motion.div key={title} variants={cardAnim}>
-                <TiltCard className="group p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02]
+                <div className="group p-6 rounded-2xl border border-white/[0.07] bg-white/[0.02]
                   hover:border-cyan-400/20 hover:bg-white/[0.04] transition-colors duration-500 h-full cursor-default">
                   <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08]
                     flex items-center justify-center mb-5
                     group-hover:bg-cyan-400/10 group-hover:border-cyan-400/20 transition-all duration-500">
                     <span className="material-symbols-outlined text-cyan-400 text-[18px]">{icon}</span>
                   </div>
-                  <h3 className="font-serif text-[22px] text-white mb-3">{title}</h3>
-                  <p className="font-sans text-[14px] text-white/55 leading-relaxed">{description}</p>
-                </TiltCard>
+                  <h3 className="font-serif text-[24px] text-white mb-3">{title}</h3>
+                  <p className="font-sans text-[15px] text-white/65 leading-relaxed">{description}</p>
+                </div>
               </motion.div>
             ))}
           </motion.div>
