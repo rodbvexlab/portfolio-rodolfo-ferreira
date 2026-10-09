@@ -9,17 +9,17 @@ export default function NotFound() {
   const copy = {
     pt: {
       code: '404',
-      headline: 'Página não encontrada.',
-      body: 'Esse endereço não existe — mas tudo que foi construído está aqui.',
-      cta: 'Voltar ao início',
+      headline: 'Essa página se perdeu.',
+      body: 'O endereço não existe — mas os projetos estão todos aqui, sãos e salvos.',
+      cta: 'Voltar pro início',
       alt: 'Ver projetos',
     },
     en: {
       code: '404',
-      headline: 'Page not found.',
-      body: "That address doesn't exist — but everything that was built is right here.",
+      headline: 'This page got lost.',
+      body: "That address doesn't exist — but every project is right here, safe and sound.",
       cta: 'Back to home',
-      alt: 'View projects',
+      alt: 'See projects',
     },
   }[lang]
 

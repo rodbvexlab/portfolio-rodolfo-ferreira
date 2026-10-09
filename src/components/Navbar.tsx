@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { ease } from '../lib/motion'
@@ -16,10 +17,10 @@ export default function Navbar() {
   }, [])
 
   const links = [
-    { label: t.nav.services, href: '#services' },
-    { label: t.nav.projects, href: '#projects' },
-    { label: t.nav.process, href: '#process' },
-    { label: t.nav.contact, href: '#contato' },
+    { label: t.nav.services, hash: '#services' },
+    { label: t.nav.projects, hash: '#projects' },
+    { label: t.nav.process, hash: '#process' },
+    { label: t.nav.contact, hash: '#contato' },
   ]
 
   return (
@@ -54,28 +55,28 @@ export default function Navbar() {
 
           {/* Col 1 — Logo (left-aligned) */}
           <div className="flex items-center">
-            <a href="/" className="group flex items-center gap-2">
+            <Link to="/" className="group flex items-center gap-2">
               <span className="font-serif text-[18px] tracking-tight text-white/80
                 group-hover:text-white transition-colors duration-300">
                 Rodolfo Ferreira
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* Col 2 — Navigation (truly centered) */}
           <div className="flex items-center gap-1">
-            {links.map(({ label, href }) => (
-              <a
-                key={href}
-                href={href}
-                onMouseEnter={() => setActiveLink(href)}
+            {links.map(({ label, hash }) => (
+              <Link
+                key={hash}
+                to={{ pathname: '/', hash }}
+                onMouseEnter={() => setActiveLink(hash)}
                 onMouseLeave={() => setActiveLink('')}
                 className="relative px-3.5 py-1.5 rounded-lg font-sans text-[13px] text-white/45
                   hover:text-white/90 transition-colors duration-300 tracking-wide group"
               >
                 {/* Hover pill */}
                 <AnimatePresence>
-                  {activeLink === href && (
+                  {activeLink === hash && (
                     <motion.span
                       layoutId="nav-pill"
                       className="absolute inset-0 rounded-lg bg-white/[0.06] border border-white/[0.08]"
@@ -87,7 +88,7 @@ export default function Navbar() {
                   )}
                 </AnimatePresence>
                 <span className="relative z-10">{label}</span>
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -119,10 +120,10 @@ export default function Navbar() {
 
             {/* CTA */}
             <a
-              href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+              href="https://wa.me/5511924796028?text=Oi%2C%20Rodolfo%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%20um%20projeto."
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-1.5 rounded-lg font-sans text-[11px] uppercase tracking-widest
+              className="whitespace-nowrap px-4 py-1.5 rounded-lg font-sans text-[11px] uppercase tracking-widest
                 text-white/70 hover:text-white
                 bg-white/[0.05] border border-white/[0.09]
                 hover:bg-white/[0.10] hover:border-white/[0.15]
@@ -136,9 +137,9 @@ export default function Navbar() {
 
         {/* ── Mobile layout ── */}
         <div className="flex md:hidden items-center justify-between px-5 py-3.5">
-          <a href="/" className="font-serif text-[18px] tracking-tight text-white/80">
+          <Link to="/" onClick={() => setMenuOpen(false)} className="font-serif text-[18px] tracking-tight text-white/80">
             Rodolfo Ferreira
-          </a>
+          </Link>
 
           <div className="flex items-center gap-3">
             <button
@@ -184,20 +185,20 @@ export default function Navbar() {
               className="overflow-hidden md:hidden border-t border-white/[0.07]"
             >
               <div className="px-5 py-5 flex flex-col gap-1">
-                {links.map(({ label, href }) => (
-                  <a
-                    key={href}
-                    href={href}
+                {links.map(({ label, hash }) => (
+                  <Link
+                    key={hash}
+                    to={{ pathname: '/', hash }}
                     onClick={() => setMenuOpen(false)}
                     className="px-3 py-3 rounded-lg font-sans text-[14px] text-white/60
                       hover:text-white hover:bg-white/[0.04] transition-all duration-200 tracking-wide"
                   >
                     {label}
-                  </a>
+                  </Link>
                 ))}
                 <div className="mt-4 pt-4 border-t border-white/[0.07]">
                   <a
-                    href="https://wa.me/5511924796028"
+                    href="https://wa.me/5511924796028?text=Oi%2C%20Rodolfo%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%20um%20projeto."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full text-center px-4 py-3 rounded-xl

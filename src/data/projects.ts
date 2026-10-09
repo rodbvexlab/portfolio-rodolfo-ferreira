@@ -40,13 +40,22 @@ export const projects: Project[] = [
     videoPreview: '/portfolio/origens/hero-desktop.mp4',
     videoPreviewMobile: '/portfolio/origens/hero-mobile.mp4',
     description: {
-      pt: 'Site institucional para clínica de psicoterapia, com direção editorial cinematográfica e identidade visual própria.',
-      en: 'Institutional website for a psychotherapy practice, with cinematic editorial direction and a dedicated visual identity.',
+      pt: 'Site pra uma clínica de psicoterapia, com direção editorial de cinema e identidade visual própria.',
+      en: 'Website for a psychotherapy practice, with cinematic editorial direction and its own visual identity.',
     },
     case: {
-      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      challenge: {
+        pt: 'Psicoterapia pede um site que acolha sem parecer folheto de clínica. O desafio era passar cuidado e seriedade, fugir da estética genérica da área da saúde e deixar a proposta clara antes do primeiro contato.',
+        en: 'Therapy calls for a site that feels welcoming without looking like a clinic brochure. The challenge was to convey care and seriousness, skip the generic healthcare look, and make the approach clear before the first contact.',
+      },
+      solution: {
+        pt: 'Direção editorial cinematográfica e identidade própria: abertura em vídeo com cortes pra desktop e mobile, tipografia editorial e uma narrativa em ritmo calmo, que apresenta a clínica e sua abordagem sem pressa.',
+        en: 'Cinematic editorial direction and a dedicated identity: a video opening with desktop and mobile cuts, editorial typography, and a calm narrative that introduces the practice and its approach at an unhurried pace.',
+      },
+      result: {
+        pt: 'Um site que traduz o cuidado da prática clínica em linguagem visual e leva o visitante da apresentação ao contato com naturalidade.',
+        en: 'A site that translates the care of clinical practice into visual language and walks visitors from introduction to contact naturally.',
+      },
     },
   },
   {
@@ -61,21 +70,21 @@ export const projects: Project[] = [
     gridSpan: 7,
     poster: '/portfolio/bonitos/poster-editorial.webp',
     description: {
-      pt: 'Site institucional para funilaria e pintura automotiva, com jornadas separadas para veículos leves e pesados e foco em orçamento.',
-      en: 'Institutional website for an auto body and paint shop, with separate journeys for light and heavy vehicles and a focus on quote requests.',
+      pt: 'Site pra uma funilaria e pintura automotiva, com caminhos separados pra leves e pesados e tudo levando ao orçamento.',
+      en: 'Website for an auto body and paint shop, with separate paths for cars and heavy vehicles, all leading to a quote.',
     },
     case: {
       challenge: {
-        pt: 'Apresentar os serviços de funilaria e pintura da Bonitos Car para dois públicos: proprietários de veículos leves e responsáveis por caminhões e frotas. A navegação precisava distinguir essas necessidades e conduzir à solicitação de orçamento.',
-        en: 'Present the auto body and paint services of Bonitos Car to two audiences: light vehicle owners and those responsible for trucks and fleets. Navigation needed to distinguish their needs and guide visitors to a quote request.',
+        pt: 'A Bonitos Car atende dois públicos bem diferentes: quem tem carro e quem cuida de caminhão e frota. O site precisava separar essas jornadas sem confundir ninguém — e levar todo mundo até o pedido de orçamento.',
+        en: 'Bonitos Car serves two very different audiences: car owners and people who manage trucks and fleets. The site had to split those journeys without confusing anyone — and get everyone to a quote request.',
       },
       solution: {
-        pt: 'Site institucional com páginas próprias para leves e pesados, apresentação dos serviços e formulário de orçamento. A solicitação reúne categoria do veículo, contato e descrição do serviço em uma mensagem enviada pelo WhatsApp.',
-        en: 'An institutional website with dedicated pages for light and heavy vehicles, service information, and a quote form. Requests collect the vehicle category, contact details, and service description into a message sent through WhatsApp.',
+        pt: 'Páginas próprias pra leves e pesados, apresentação dos serviços e um formulário de orçamento que junta categoria do veículo, contato e descrição numa mensagem pronta no WhatsApp.',
+        en: 'Dedicated pages for cars and heavy vehicles, a clear services overview, and a quote form that bundles vehicle type, contact, and description into a ready-to-send WhatsApp message.',
       },
       result: {
-        pt: 'Uma presença digital que organiza as duas frentes de atendimento e oferece um caminho direto entre a consulta aos serviços e o pedido de avaliação.',
-        en: 'A digital presence that organizes both service areas and offers a direct path from exploring services to requesting an assessment.',
+        pt: 'As duas frentes de atendimento organizadas num só lugar, com um caminho direto entre conhecer o serviço e pedir a avaliação.',
+        en: 'Both service lines organized in one place, with a direct path from exploring the services to requesting an assessment.',
       },
     },
   },
@@ -91,21 +100,21 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/asme/asme-poster.webp',
     description: {
-      pt: 'Portfólio digital com tipografia editorial, imagens em movimento e apresentação de abordagem e serviços criativos.',
-      en: 'Digital portfolio with editorial typography, moving imagery, and an introduction to its creative approach and services.',
+      pt: 'Portfólio digital com tipografia editorial, imagens em movimento e um tour pela abordagem e pelos serviços criativos.',
+      en: 'Digital portfolio with editorial typography, moving imagery, and a tour of its creative approach and services.',
     },
     case: {
       challenge: {
-        pt: 'A proposta apresentada no site é reunir projetos, estudos e soluções digitais com atenção à clareza visual, à funcionalidade e à experiência de navegação.',
-        en: 'The website presents a proposal to bring together projects, studies, and digital solutions with attention to visual clarity, functionality, and the browsing experience.',
+        pt: 'Reunir projetos, estudos e soluções digitais num só lugar, com clareza visual, funcionalidade e uma navegação gostosa de explorar.',
+        en: 'Bring projects, studies, and digital solutions together in one place, with visual clarity, functionality, and browsing that is a pleasure to explore.',
       },
       solution: {
-        pt: 'Interface com abertura audiovisual, tipografia serifada, alternância de idioma e seções sobre abordagem, estratégia, identidade visual, estrutura e execução.',
-        en: 'An interface with an audiovisual opening, serif typography, language switching, and sections covering approach, strategy, visual identity, structure, and execution.',
+        pt: 'Abertura audiovisual, tipografia serifada, troca de idioma e seções sobre abordagem, estratégia, identidade visual, estrutura e execução.',
+        en: 'An audiovisual opening, serif typography, language switching, and sections on approach, strategy, visual identity, structure, and execution.',
       },
       result: {
-        pt: 'O site publicado apresenta a direção visual e a abordagem criativa da ASME. O próprio conteúdo identifica o portfólio como em construção.',
-        en: 'The published website presents the visual direction and creative approach of ASME. Its own content describes the portfolio as under construction.',
+        pt: 'Um site que já mostra a direção visual e a abordagem criativa da ASME — com o próprio portfólio assumidamente em construção.',
+        en: 'A site that already shows ASME’s visual direction and creative approach — with the portfolio itself openly a work in progress.',
       },
     },
   },
@@ -122,21 +131,21 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/marques/poster-editorial.webp',
     description: {
-      pt: 'Landing page premium para barbearia, com identidade visual forte, agendamento integrado e foco em experiência do cliente.',
-      en: 'Premium landing page for a barbershop, with a strong visual identity, integrated booking, and a focus on client experience.',
+      pt: 'Landing page pra uma barbearia, com identidade forte, agendamento integrado e a experiência do cliente no centro.',
+      en: 'Landing page for a barbershop, with a strong identity, built-in booking, and the client experience front and center.',
     },
     case: {
       challenge: {
-        pt: 'A barbearia atendia por indicação mas não tinha presença digital que refletisse o padrão do serviço. Clientes novos não encontravam a marca online e o processo de agendamento era feito por mensagem manual.',
-        en: 'The barbershop relied on referrals but lacked a digital presence that reflected its service quality. New clients couldn\'t find the brand online and bookings were handled manually via messages.',
+        pt: 'A barbearia vivia de indicação, mas não tinha um site à altura do serviço. Quem chegava novo não achava a marca online, e o agendamento rolava na base da mensagem manual.',
+        en: 'The barbershop ran on referrals but had no site that matched its service. Newcomers couldn’t find the brand online, and bookings happened through manual messages.',
       },
       solution: {
-        pt: 'Landing page com identidade visual premium, galeria de trabalhos, seção de serviços e preços, e integração de agendamento. Design que comunica exclusividade sem perder a acessibilidade.',
-        en: 'Premium landing page with strong visual identity, work gallery, services and pricing section, and booking integration. Design that communicates exclusivity without losing accessibility.',
+        pt: 'Landing page com identidade premium, galeria de trabalhos, serviços e preços, e agendamento integrado. Exclusiva no visual, simples de usar.',
+        en: 'A landing page with a premium identity, work gallery, services and pricing, and built-in booking. Exclusive in look, simple to use.',
       },
       result: {
-        pt: 'Presença digital que eleva a percepção de valor da marca, reduz atrito no processo de agendamento e atrai novos clientes alinhados ao posicionamento premium do espaço.',
-        en: 'Digital presence that elevates the brand\'s perceived value, reduces friction in the booking process, and attracts new clients aligned with the space\'s premium positioning.',
+        pt: 'Uma marca que finalmente aparece online do jeito que é atendida na cadeira, com um caminho bem mais curto até o horário marcado.',
+        en: 'A brand that finally shows up online the way it treats people in the chair, with a much shorter path to a booked slot.',
       },
     },
   },
@@ -153,21 +162,21 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/aetheria/poster-editorial.webp',
     description: {
-      pt: 'Site para marca de estética e bem-estar, com experiência editorial e apresentação de tratamentos como Revive e Glow.',
-      en: 'Website for a beauty and wellness brand, with an editorial experience and presentation of treatments such as Revive and Glow.',
+      pt: 'Site pra uma marca de estética e bem-estar, com clima editorial e tratamentos como Revive e Glow.',
+      en: 'Website for a beauty and wellness brand, with an editorial mood and treatments such as Revive and Glow.',
     },
     case: {
       challenge: {
-        pt: 'Traduzir a proposta de estética e bem-estar da Aetheria em uma experiência digital que apresente os tratamentos e convide a conhecer o studio.',
-        en: 'Translate the beauty and wellness approach of Aetheria into a digital experience that introduces its treatments and invites visitors to explore the studio.',
+        pt: 'Traduzir a proposta de estética e bem-estar da Aetheria numa experiência que apresente os tratamentos e dê vontade de conhecer o studio.',
+        en: 'Translate Aetheria’s beauty and wellness approach into an experience that introduces the treatments and makes people want to visit the studio.',
       },
       solution: {
-        pt: 'Site com direção editorial, apresentação do studio, cards de tratamentos como Revive e Glow e um fluxo de agendamento com escolha de tratamento, data e horário.',
-        en: 'A website with editorial art direction, a studio introduction, treatment cards such as Revive and Glow, and a booking flow with treatment, date, and time selection.',
+        pt: 'Direção editorial, apresentação do studio, cards de tratamentos como Revive e Glow e um agendamento com escolha de tratamento, data e horário.',
+        en: 'Editorial art direction, a studio introduction, treatment cards such as Revive and Glow, and booking with treatment, date, and time selection.',
       },
       result: {
-        pt: 'Uma experiência que reúne a identidade da marca, a descoberta dos tratamentos e o acesso ao agendamento em uma mesma jornada.',
-        en: 'An experience that brings together the brand identity, treatment discovery, and access to booking in one journey.',
+        pt: 'Identidade da marca, descoberta dos tratamentos e agendamento numa jornada só, sem quebra.',
+        en: 'Brand identity, treatment discovery, and booking in one seamless journey.',
       },
     },
   },
@@ -184,13 +193,22 @@ export const projects: Project[] = [
     // SUMMER VIBES confirmed as part of LARIS30 by the project owner.
     poster: '/portfolio/laris30/poster-editorial.webp',
     description: {
-      pt: 'Experiência web mobile para convite de aniversário, com direção Y2K/disco e identidade visual própria.',
-      en: 'Mobile web experience for a birthday invitation, with Y2K/disco art direction and a dedicated visual identity.',
+      pt: 'Convite de aniversário em forma de experiência web mobile, com direção Y2K/disco e identidade própria.',
+      en: 'A birthday invitation turned mobile web experience, with Y2K/disco art direction and its own identity.',
     },
     case: {
-      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      challenge: {
+        pt: 'Transformar um convite de aniversário em algo que as pessoas quisessem abrir, explorar e mandar pros amigos — direto no celular, sem instalar nada.',
+        en: 'Turn a birthday invitation into something people would want to open, explore, and send to friends — right on their phones, nothing to install.',
+      },
+      solution: {
+        pt: 'Experiência mobile-first com direção Y2K/disco, identidade visual própria (incluindo a linha Summer Vibes) e interações desenhadas pro toque.',
+        en: 'A mobile-first experience with Y2K/disco art direction, its own visual identity (including the Summer Vibes line), and interactions designed for touch.',
+      },
+      result: {
+        pt: 'Um convite com personalidade, que cabe num link e entra no clima da festa da primeira à última tela.',
+        en: 'An invitation with personality that fits in a single link and gets into the party mood from the first screen to the last.',
+      },
     },
   },
   {
@@ -204,21 +222,21 @@ export const projects: Project[] = [
     inGrid: true,
     gridSpan: 5,
     description: {
-      pt: 'Site institucional para estúdio criativo, com linguagem editorial e identidade visual sofisticada alinhada ao posicionamento premium da marca.',
-      en: 'Institutional website for a creative studio, with an editorial tone and sophisticated visual identity aligned with the brand\'s premium positioning.',
+      pt: 'Site pra um estúdio criativo, com linguagem editorial e uma identidade sofisticada à altura do posicionamento da marca.',
+      en: 'Website for a creative studio, with an editorial voice and a sophisticated identity that matches the brand’s positioning.',
     },
     case: {
       challenge: {
-        pt: 'O estúdio tinha um portfólio forte mas um site genérico que não refletia o nível criativo do trabalho, dificultando a atração de clientes no segmento premium.',
-        en: 'The studio had a strong portfolio but a generic website that didn\'t reflect the creative level of their work, making it harder to attract premium-segment clients.',
+        pt: 'O estúdio tinha um portfólio forte e um site genérico, que não mostrava o nível criativo do trabalho — justo pra quem eles mais queriam atrair.',
+        en: 'The studio had a strong portfolio and a generic website that didn’t show the creative level of its work — exactly to the clients it most wanted to attract.',
       },
       solution: {
         pt: 'Redesign completo com direção editorial, tipografia expressiva, grid assimétrico e animações refinadas que traduzem o DNA criativo da marca.',
-        en: 'Complete redesign with editorial direction, expressive typography, asymmetric grid, and refined animations that translate the brand\'s creative DNA.',
+        en: 'A full redesign with editorial direction, expressive typography, an asymmetric grid, and refined animations that translate the brand’s creative DNA.',
       },
       result: {
-        pt: 'Site reconhecido pela equipe e clientes como verdadeiramente representativo do nível do estúdio, com aumento direto na qualidade dos projetos recebidos via contato digital.',
-        en: 'Website recognized by the team and clients as truly representative of the studio\'s level, with a direct increase in the quality of projects received via digital contact.',
+        pt: 'Um site que finalmente conversa com o nível do estúdio e apresenta o trabalho do jeito que ele merece.',
+        en: 'A site that finally matches the studio’s level and presents the work the way it deserves.',
       },
     },
   },
@@ -234,21 +252,21 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/stefani-amorim/poster-editorial.webp',
     description: {
-      pt: 'Site para loja de brinquedos educativos e papelaria afetiva, com catálogo e atendimento pelo WhatsApp.',
+      pt: 'Site pra uma loja de brinquedos educativos e papelaria afetiva, com catálogo e atendimento pelo WhatsApp.',
       en: 'Website for an educational toy and stationery store, with a product catalog and service through WhatsApp.',
     },
     case: {
       challenge: {
-        pt: 'Levar a curadoria de brinquedos educativos e papelaria afetiva da Stefani Amorim para uma experiência digital que apresente os produtos e a história da loja.',
-        en: 'Bring the educational toy and stationery selection of Stefani Amorim into a digital experience that presents the products and the story behind the store.',
+        pt: 'Levar a curadoria de brinquedos educativos e papelaria afetiva da Stefani Amorim pro digital, mostrando os produtos e a história por trás da loja.',
+        en: 'Bring Stefani Amorim’s curated educational toys and stationery online, showing the products and the story behind the store.',
       },
       solution: {
-        pt: 'Site com linguagem visual lúdica, seções de brinquedos e papelaria, orientações de escolha e acesso ao atendimento personalizado pelo WhatsApp.',
-        en: 'A website with a playful visual identity, toy and stationery sections, selection guidance, and access to personalized service through WhatsApp.',
+        pt: 'Visual lúdico, seções de brinquedos e papelaria, dicas pra escolher o presente certo e atendimento personalizado a um toque, pelo WhatsApp.',
+        en: 'A playful look, toy and stationery sections, tips for picking the right gift, and personal service one tap away on WhatsApp.',
       },
       result: {
-        pt: 'Uma vitrine digital que reúne produtos, curadoria e informações de contato, conectando a descoberta do catálogo à conversa com a loja.',
-        en: 'A digital storefront that brings together products, curation, and contact information, connecting catalog discovery to a conversation with the store.',
+        pt: 'Uma vitrine que junta produtos, curadoria e contato, e transforma a descoberta do catálogo numa conversa com a loja.',
+        en: 'A storefront that brings products, curation, and contact together, turning catalog browsing into a conversation with the store.',
       },
     },
   },
@@ -263,13 +281,22 @@ export const projects: Project[] = [
     mediaAspect: '4/3',
     poster: '/portfolio/poliana/universo-poliana-editorial.webp',
     description: {
-      pt: 'Site institucional e catálogo para loja de ferragens e fixadores, com direção editorial técnica.',
-      en: 'Institutional website and catalog for a hardware and fasteners store, with technical editorial direction.',
+      pt: 'Site institucional e catálogo pra uma loja de ferragens e fixadores, com direção editorial técnica.',
+      en: 'Business website and catalog for a hardware and fasteners store, with technical editorial direction.',
     },
     case: {
-      challenge: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      solution: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
-      result: { pt: '[PENDENTE — case study ainda não escrito]', en: '[PENDING — case study copy not written yet]' },
+      challenge: {
+        pt: 'Mostrar uma loja de ferragens e fixadores com a mesma clareza técnica do balcão, organizando um mix enorme de produtos de um jeito fácil de consultar.',
+        en: 'Present a hardware and fasteners store with the same technical clarity as its counter, organizing a huge product mix in a way that is easy to browse.',
+      },
+      solution: {
+        pt: 'Catálogo com direção editorial técnica: tipografia firme, hierarquia clara entre as linhas de produto e caminhos curtos até o atendimento.',
+        en: 'A catalog with technical editorial direction: solid typography, clear hierarchy across product lines, and short paths to customer service.',
+      },
+      result: {
+        pt: 'Uma presença online que reforça a credibilidade da loja e ajuda o cliente a achar o que precisa antes mesmo de chamar.',
+        en: 'An online presence that reinforces the store’s credibility and helps customers find what they need before they even reach out.',
+      },
     },
   },
 ]

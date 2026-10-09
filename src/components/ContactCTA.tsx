@@ -14,7 +14,7 @@ const WA_BASE = 'https://wa.me/5511924796028?text='
 /** Fallback: build a pre-filled WhatsApp message from form data */
 function buildWhatsAppURL(name: string, contact: string, type: string, message: string) {
   const text = [
-    'Olá! Vim pelo seu portfólio.',
+    'Oi, Rodolfo! Vim pelo seu portfólio.',
     `*Nome:* ${name}`,
     `*Contato:* ${contact}`,
     type ? `*Projeto:* ${type}` : '',
@@ -108,7 +108,7 @@ export default function ContactCTA() {
           <div className="pt-4">
             <MagneticButton>
               <a
-                href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+                href="https://wa.me/5511924796028?text=Oi%2C%20Rodolfo%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%20um%20projeto."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-full
