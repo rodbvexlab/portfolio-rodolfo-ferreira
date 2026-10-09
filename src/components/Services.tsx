@@ -8,6 +8,8 @@ import { useIsTouch } from '../hooks/useMediaQuery'
 const SERVICES_VIDEO_SRC =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_132944_a0d124bb-eaa1-4082-aa30-2310efb42b4b.mp4'
 
+const WHATSAPP_BASE = 'https://wa.me/5511924796028'
+
 const fadeUp = (delay = 0) => ({
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: ease, delay } },
@@ -25,6 +27,9 @@ const cardAnim = {
 export default function Services() {
   const { t } = useLanguage()
   const { services } = t
+  const { formats } = services
+  const whatsappFor = (format?: string) =>
+    `${WHATSAPP_BASE}?text=${encodeURIComponent(format ? `${formats.ask} ${format}.` : formats.ask_generic)}`
   const isTouch = useIsTouch()
 
   return (
@@ -103,84 +108,121 @@ export default function Services() {
         </div>
       </div>
 
-      {/* ── Pricing separator ── */}
+      {/* ── Separator ── */}
       <div className="px-6 md:px-20">
         <div className="max-w-container-max mx-auto">
           <div className="h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent)' }} />
         </div>
       </div>
 
-      {/* ── Investment / Pricing block ── */}
+      {/* ── Formats: what each engagement includes — pricing is handled in the proposal ── */}
       <div className="relative px-6 md:px-20 py-20 md:py-28">
-        {/* Subtle light from left for pricing section */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse 50% 80% at -5% 50%, rgba(76,215,246,0.03) 0%, transparent 70%)' }}
         />
-        <div className="relative max-w-container-max mx-auto">
+        <div className="relative max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-14 lg:gap-24 items-start">
+          {/* Left: positioning + how a proposal is built */}
           <motion.div
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.2 }}
             variants={stagger}
-            className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-16 lg:gap-24 items-start"
+            className="space-y-8 lg:sticky lg:top-32"
           >
-            {/* Left */}
             <div className="space-y-5">
               <motion.div variants={fadeUp()}>
                 <ScrambleText
-                  text={services.pricing.label}
+                  text={formats.label}
                   className="text-[11px] uppercase tracking-[0.2em] text-cyan-400/80"
                   delay={150}
                 />
               </motion.div>
-              <motion.h2 variants={fadeUp(0.05)} className="font-serif text-[32px] md:text-[42px] leading-tight text-white">
-                {services.pricing.headline}
+              <motion.h2 variants={fadeUp(0.05)} className="font-serif text-[34px] md:text-[44px] leading-[1.1] text-white whitespace-pre-line">
+                {formats.headline}
               </motion.h2>
-              <motion.p variants={fadeUp(0.1)} className="font-sans text-[13px] text-white/30 leading-relaxed max-w-xs">
-                {services.pricing.note}
+              <motion.p variants={fadeUp(0.1)} className="font-sans text-[15px] text-white/55 leading-relaxed max-w-md">
+                {formats.body}
               </motion.p>
-              <motion.div variants={fadeUp(0.15)}>
-                <MagneticButton>
-                  <a
-                    href="https://wa.me/5511924796028?text=Ol%C3%A1%21%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-2 px-6 py-3 rounded-full
-                      border border-white/10 bg-white/[0.03]
-                      font-sans text-[12px] uppercase tracking-widest text-white/60
-                      hover:border-cyan-400/30 hover:bg-cyan-400/5 hover:text-cyan-300
-                      transition-all duration-300"
-                  >
-                    {services.pricing.cta}
-                    <span className="material-symbols-outlined text-[16px]">arrow_right_alt</span>
-                  </a>
-                </MagneticButton>
-              </motion.div>
             </div>
 
-            {/* Right: pricing table */}
-            <motion.div variants={stagger} className="flex flex-col divide-y divide-white/[0.05]">
-              {services.pricing.items.map(({ service, range }, i) => {
-                const isConsult = range.toLowerCase().includes('consult') || range.toLowerCase().includes('consultar')
-                return (
-                  <motion.div
-                    key={service}
-                    variants={cardAnim}
-                    custom={i}
-                    className="group flex items-center justify-between py-5
-                      hover:bg-white/[0.02] transition-colors duration-300 px-4 -mx-4 rounded-xl cursor-default"
-                  >
-                    <span className="font-sans text-[15px] text-white/70 group-hover:text-white/90 transition-colors">
-                      {service}
-                    </span>
-                    <span className={`font-mono text-[13px] tracking-tight transition-colors ${isConsult ? 'text-white/25 italic' : 'text-cyan-400/70 group-hover:text-cyan-300'}`}>
-                      {range}
-                    </span>
-                  </motion.div>
-                )
-              })}
+            <motion.ol variants={fadeUp(0.15)} className="relative max-w-md space-y-5 pl-8">
+              {/* Rail */}
+              <span aria-hidden className="absolute left-[7px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan-400/40 via-white/10 to-transparent" />
+              {formats.steps.map(({ title, description }, i) => (
+                <li key={title} className="relative">
+                  <span aria-hidden className={`absolute -left-8 top-1.5 w-[15px] h-[15px] rounded-full border
+                    ${i === 0 ? 'border-cyan-400/60 bg-cyan-400/15' : 'border-white/15 bg-black'}`} />
+                  <span className="font-sans text-[14px] text-white/85">{title}</span>
+                  <span className="font-sans text-[14px] text-white/40"> — {description}</span>
+                </li>
+              ))}
+            </motion.ol>
+
+            <motion.div variants={fadeUp(0.2)}>
+              <MagneticButton>
+                <a
+                  href={whatsappFor()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full
+                    bg-white text-black font-sans text-[12px] uppercase tracking-widest
+                    hover:bg-cyan-300 transition-colors duration-300"
+                >
+                  {formats.cta}
+                  <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+                </a>
+              </MagneticButton>
             </motion.div>
           </motion.div>
+
+          {/* Right: format index — each row opens a pre-filled conversation */}
+          <div>
+            <motion.ul
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={stagger}
+              className="border-t border-white/[0.06]"
+            >
+              {formats.items.map(({ title, fit, includes }, i) => (
+                <motion.li key={title} variants={cardAnim} className="border-b border-white/[0.06]">
+                  <a
+                    href={whatsappFor(title)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative grid grid-cols-[2.25rem_1fr_auto] md:grid-cols-[3rem_1fr_auto] gap-x-3 md:gap-x-4 py-6 md:py-7 px-3 -mx-3 rounded-xl
+                      hover:bg-white/[0.025] transition-colors duration-500"
+                  >
+                    {/* Accent line */}
+                    <span aria-hidden className="absolute left-0 top-6 bottom-6 w-px bg-cyan-400/0 group-hover:bg-cyan-400/60 transition-colors duration-500" />
+                    <span className="font-mono text-[12px] text-white/25 pt-2 group-hover:text-cyan-400/70 transition-colors">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="min-w-0 space-y-2.5">
+                      <h3 className="font-serif text-[24px] md:text-[28px] leading-tight text-white/85 group-hover:text-white transition-colors">
+                        {title}
+                      </h3>
+                      <p className="font-sans text-[14px] md:text-[15px] text-white/50 leading-relaxed max-w-lg">{fit}</p>
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {includes.map((item) => (
+                          <span key={item} className="font-sans text-[10px] uppercase tracking-widest text-white/40
+                            border border-white/[0.08] rounded-full px-2.5 py-1
+                            group-hover:border-white/[0.14] group-hover:text-white/60 transition-colors duration-500">
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <span className="material-symbols-outlined self-start pt-1.5 md:self-center md:pt-0 text-[22px] text-white/15
+                      group-hover:text-cyan-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all duration-300">
+                      arrow_outward
+                    </span>
+                  </a>
+                </motion.li>
+              ))}
+            </motion.ul>
+            <p className="mt-6 font-sans text-[12px] text-white/30">{formats.note}</p>
+          </div>
         </div>
       </div>
     </section>
