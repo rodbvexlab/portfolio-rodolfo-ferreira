@@ -13,8 +13,8 @@ A copy vigente em português e inglês está em `src/i18n/translations.ts`. As d
 1. Abertura: nome, atuação, descrição curta e acesso aos projetos e contato, sobre o vídeo controlado pelo scroll.
 2. Projetos selecionados: imagens existentes, títulos e descrições curtas.
 3. Serviços: título e descrição à esquerda, vídeo da ilha abaixo deles, e quatro linhas à direita: sites, sistemas internos, automações e consultoria.
-4. Sobre: retrato existente e experiência em desenvolvimento web e TI.
-5. Contato: WhatsApp e formulário.
+4. Sobre: pausa editorial clara com vídeo de fundo e a apresentação em dois momentos sincronizados ao scroll.
+5. Contato: título, descrição e WhatsApp à esquerda, com a imagem interativa (DitherVeil) abaixo; formulário à direita.
 
 Não duplicar serviços com uma seção de formatos. O funcionamento da contratação cabe em um parágrafo, sem cards de processo.
 
@@ -42,6 +42,15 @@ Palco sticky de 100svh dentro de uma hero de 270svh (210svh abaixo de 768 px). O
 - "Reduzir movimento": hero de 100svh com poster, texto completo e sem vídeo.
 - Mídia, comandos e estratégia de keyframes: `docs/hero-video.md`.
 
+## Sobre
+
+Única seção clara: fundo do próprio vídeo (#EEF1F5), tipografia escura (#111317), título em Instrument Serif e frases em Geist, rótulo em ciano escuro (#0E7490). O vídeo é o palco inteiro, sem a foto e sem véu sobre a imagem. A leitura vem do posicionamento no terço superior, medido nos frames, e de uma luz suave localizada atrás de cada grupo.
+
+1. Primeiro momento, à esquerda: "Sou o Rodolfo." e duas frases.
+2. Segundo momento, à direita (texto alinhado à esquerda): duas frases e a linha de fechamento.
+
+Cada frase entra e sai com fade e deslocamento curto. Faixas curtas fazem a transição do preto para o claro e de volta. Em telas intermediárias, texto à esquerda e vídeo à direita; no celular, vídeo em cima e texto abaixo, na mesma área. Com movimento reduzido ou falha, poster e toda a copy de uma vez.
+
 ## Vídeo de serviços
 
 Ilha flutuante sob "O que eu desenvolvo", sem moldura, borda, raio ou sombra. Integra-se ao preto da seção por máscaras graduais: o halo dourado do arquivo se dissolve antes das bordas e a ilha fica intacta. Acompanha a passagem da seção pela tela, sem alongar a página. No celular, fica entre a descrição e a lista, com o quadro inteiro. Com "reduzir movimento", poster estático.
@@ -60,9 +69,11 @@ A navegação contém Projetos, Serviços, Sobre e Contato. Menu compacto até 1
 
 O formulário usa a configuração existente `VITE_WEB3FORMS_KEY`. Sem chave, prepara uma mensagem no WhatsApp. Abrir o WhatsApp não equivale a enviar a mensagem: mostrar que ela está pronta e um link para continuar. Com chave, informar sucesso apenas após resposta positiva do serviço.
 
+A imagem ao lado do formulário é decorativa: pontilhada em duotone, revela as cores sob o cursor no desktop; no toque e em telas estreitas, as cores abrem a partir do rosto ao rolar para baixo e fecham ao subir. Com movimento reduzido, fica estática em cores. Sem moldura, sombra ou card; o fundo da imagem se funde ao preto da seção. No celular, o formulário vem antes da imagem. Detalhes técnicos e licença em `docs/hero-video.md`.
+
 ## Stack e verificações
 
-React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. A hero usa um controlador próprio (refs + requestAnimationFrame), sem biblioteca extra.
+React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. Os vídeos usam um controlador próprio (refs + requestAnimationFrame), sem biblioteca extra. A imagem do contato usa `ogl` (WebGL2), carregado sob demanda.
 
 - `npm ci --no-audit --no-fund`
 - `npm run build`
@@ -70,6 +81,10 @@ React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. A hero us
 - `git diff --check`
 - Conferir responsividade, navegação, idioma, previews e formulário em navegador antes de aprovar o layout final.
 - Conferir o scrubbing em Chrome e Safari reais (H.264), incluindo iPhone.
+
+## Compartilhamento
+
+`public/og-image.jpg` (1200×630, ~137 KB): a hero com marca, título e subtítulo, sem menu, botões e controles. As meta tags Open Graph e Twitter em `index.html` usam URLs absolutas em `https://portfolio-rodolfo-ferreira.vercel.app/`; WhatsApp, LinkedIn e Facebook não aceitam caminho relativo. Ao ligar um domínio próprio na Vercel, trocar essas URLs (`og:url`, `og:image`, `og:image:secure_url`, `twitter:image`). Se a hero mudar, gerar a imagem de novo a partir de uma captura 1200×630 da página.
 
 Produção acompanha a branch `main` na Vercel. Revisões devem ser apresentadas em branch e PR.
 

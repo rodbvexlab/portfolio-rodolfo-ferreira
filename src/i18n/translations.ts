@@ -92,9 +92,13 @@ export const pt = {
   "about": {
     "label": "Sobre",
     "headline": "Sou o Rodolfo.",
-    "paragraphs": [
-      "Trabalho com desenvolvimento web e TI. Além de sites, participo da rotina de suporte, infraestrutura e melhoria de processos dentro de empresas.",
-      "Essa experiência me ajuda a entender quem vai usar o sistema e como ele entra no trabalho do dia a dia. Como freelancer, cuido do design e do desenvolvimento, com contato direto durante o projeto."
+    "intro": [
+      "Trabalho com desenvolvimento web, tecnologia e inovação.",
+      "Além de sites e sistemas, participo da rotina de equipes, visando melhoria de processos dentro de setores e empreendimentos."
+    ],
+    "experience": [
+      "Essa experiência me ajuda a entender quem vai usar o sistema e como ele entra no trabalho do dia a dia.",
+      "Como freelancer, cuido do design e do desenvolvimento, com contato direto durante o projeto."
     ],
     "working": "Conversamos sobre o que você precisa. Depois, envio uma proposta com entregas, prazo e valor definidos."
   }
@@ -194,9 +198,13 @@ export const en: typeof pt = {
   "about": {
     "label": "About",
     "headline": "I’m Rodolfo.",
-    "paragraphs": [
-      "I work in web development and IT. Alongside websites, I’m involved in support, infrastructure and process improvements within companies.",
-      "That experience helps me understand who will use a system and how it fits into their daily work. As a freelancer, I handle design and development, with direct communication throughout the project."
+    "intro": [
+      "I work with web development, technology and innovation.",
+      "Beyond websites and systems, I take part in teams’ daily routines, working to improve processes across departments and businesses."
+    ],
+    "experience": [
+      "That experience helps me understand who will use a system and how it fits into their daily work.",
+      "As a freelancer, I handle design and development, with direct communication throughout the project."
     ],
     "working": "We discuss what you need. Then I send a proposal with the deliverables, timeline and price."
   }
