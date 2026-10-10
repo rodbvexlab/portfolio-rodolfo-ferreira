@@ -170,7 +170,7 @@ ffmpeg -i $SRC -vf "select=eq(n\,0),crop=1080:1080:420:0,scale=900:900:flags=lan
 |---|---|---|---|
 | `public/contact/dither-veil.jpg` | 1400×1939 | 357 KB | WebGL (desktop com mouse) |
 | `public/contact/dither-veil-static.webp` | 1400×1939 | ~236 KB | estática em cores |
-| `public/contact/dither-veil-800.webp` | 800×1108 | ~85 KB | estática em telas pequenas (`srcset`) |
+| `public/contact/dither-veil-800.webp` | 800×1108 | ~85 KB | efeito por scroll em telas &lt;768 px e estática em telas pequenas (`srcset`) |
 
 O fundo da foto é quase preto (~#08080A), não #000; sobre a seção preta aparecia um retângulo. As versões estáticas passam por uma curva de tons: até 14/255 vira 0, acima de 48/255 nada muda, e entre os dois uma curva Hermite contínua. Resultado: fundo (percentil 99 das bordas) = 0; no rosto, desvio médio de 0,44 nível e 88% dos pixels inalterados. Uma máscara CSS de 5–6% nas bordas completa a transição.
 
@@ -194,13 +194,14 @@ EOF
 
 - `src/components/DitherVeil.tsx`: adaptação em TypeScript do DitherVeil do React Bits, com `ogl` 1.0.11 (Unlicense) fixado no `package.json`. Os shaders e a difusão (Floyd–Steinberg na CPU) são os do original.
 - Configuração: `pattern="floyd"`, `fit="contain"`, `pixelSize={2}`, `inkColor="#000000"`, `paperColor="#f4f1ea"`, `softness={0.6}`, `linger={1}`, `reverse`, `wander` e `clickBurst` desligados, `rim={0}`. `revealRadius` acompanha o quadro: 30% do menor lado, entre 150 e 180 px (165 px em 1440, 150 px em 1024).
-- Diferenças em relação ao original: verificação de WebGL2 antes de criar o renderer; falha de shader, erro da imagem e perda de contexto chamam `onFallback`; pausa fora da tela e com a aba oculta; limpeza de listeners, observers, rAF, render targets, texturas, programas, geometria e contexto ao desmontar.
+- Diferenças em relação ao original: modo `trigger="scroll"` (abaixo); verificação de WebGL2 antes de criar o renderer; falha de shader, erro da imagem e perda de contexto chamam `onFallback`; pausa fora da tela e com a aba oculta; limpeza de listeners, observers, rAF, render targets, texturas, programas, geometria e contexto ao desmontar.
 
 ### Comportamento
 
-- Desktop com mouse (`hover: hover`, `pointer: fine`, ≥768 px): o componente e o `ogl` ficam num chunk separado (~21 KB gzip), baixado quando a seção está a cerca de uma tela de distância. A foto começa pontilhada em duotone; o cursor revela as cores originais e o rastro se desfaz gradualmente (some por completo em até ~2 s depois que o mouse para).
-- Animação de entrada de 1,1 s quando a imagem carrega. Fora isso, o loop só roda enquanto há ponteiro sobre a imagem ou rastro.
-- Toque, telas estreitas, movimento reduzido, navegador sem WebGL2, erro de shader, erro da imagem, falha ao baixar o chunk ou perda de contexto: imagem estática em cores. No celular e no tablet a imagem fica depois do formulário.
+- Desktop com mouse (`hover: hover`, `pointer: fine`, ≥768 px): o componente e o `ogl` ficam num chunk separado (~21 KB gzip), baixado quando a seção está a cerca de uma tela de distância (IntersectionObserver, com uma verificação de posição no scroll como reserva: no Chromium, um salto feito enquanto a página ainda carrega às vezes não gerava notificação do observer). A foto começa pontilhada em duotone; o cursor revela as cores originais e o rastro se desfaz gradualmente (some por completo em até ~2 s depois que o mouse para).
+- Toque e telas estreitas (`trigger="scroll"`): sem ponteiro. A cor abre a partir do rosto (`focus` 0,52 × 0,40 do quadro) com a mesma borda pontilhada do cursor, presa à posição da imagem na tela: fechada enquanto o topo da imagem está abaixo de 75% da altura da tela, aberta quando o centro chega ao meio da tela (ou no fim da página, se vier antes; mínimo de 160 px de rolagem). Rolando para cima, fecha de novo. O valor exibido segue o scroll com suavização de 0,12 s. A imagem não recebe toques (`pointer-events: none`) e ocupa a mesma caixa da foto estática. Em telas &lt;768 px usa `dither-veil-800.webp` (85 KB) em vez do JPG original; renderiza até 3× de densidade para os pontos não borrarem em celulares 3×.
+- Animação de entrada de 1,1 s quando a imagem carrega. Fora isso, o loop só roda com ponteiro sobre a imagem, rastro ou enquanto a revelação por scroll alcança a posição atual.
+- Movimento reduzido, navegador sem WebGL2, erro de shader, erro da imagem, falha ao baixar o chunk ou perda de contexto: imagem estática em cores. No celular e no tablet a imagem fica depois do formulário.
 - A imagem é decorativa (`aria-hidden`, `alt=""`), ocupa a própria área do grid e não cobre o link do WhatsApp nem o formulário.
 
 ## Previews dos projetos

@@ -69,7 +69,7 @@ A navegação contém Projetos, Serviços, Sobre e Contato. Menu compacto até 1
 
 O formulário usa a configuração existente `VITE_WEB3FORMS_KEY`. Sem chave, prepara uma mensagem no WhatsApp. Abrir o WhatsApp não equivale a enviar a mensagem: mostrar que ela está pronta e um link para continuar. Com chave, informar sucesso apenas após resposta positiva do serviço.
 
-A imagem ao lado do formulário é decorativa: pontilhada em duotone, revela as cores sob o cursor no desktop e fica estática em cores no toque, em telas estreitas e com movimento reduzido. Sem moldura, sombra ou card; o fundo da imagem se funde ao preto da seção. No celular, o formulário vem antes da imagem. Detalhes técnicos e licença em `docs/hero-video.md`.
+A imagem ao lado do formulário é decorativa: pontilhada em duotone, revela as cores sob o cursor no desktop; no toque e em telas estreitas, as cores abrem a partir do rosto ao rolar para baixo e fecham ao subir. Com movimento reduzido, fica estática em cores. Sem moldura, sombra ou card; o fundo da imagem se funde ao preto da seção. No celular, o formulário vem antes da imagem. Detalhes técnicos e licença em `docs/hero-video.md`.
 
 ## Stack e verificações
 
@@ -81,6 +81,10 @@ React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. Os vídeo
 - `git diff --check`
 - Conferir responsividade, navegação, idioma, previews e formulário em navegador antes de aprovar o layout final.
 - Conferir o scrubbing em Chrome e Safari reais (H.264), incluindo iPhone.
+
+## Compartilhamento
+
+`public/og-image.jpg` (1200×630, ~137 KB): a hero com marca, título e subtítulo, sem menu, botões e controles. As meta tags Open Graph e Twitter em `index.html` usam URLs absolutas em `https://portfolio-rodolfo-ferreira.vercel.app/`; WhatsApp, LinkedIn e Facebook não aceitam caminho relativo. Ao ligar um domínio próprio na Vercel, trocar essas URLs (`og:url`, `og:image`, `og:image:secure_url`, `twitter:image`). Se a hero mudar, gerar a imagem de novo a partir de uma captura 1200×630 da página.
 
 Produção acompanha a branch `main` na Vercel. Revisões devem ser apresentadas em branch e PR.
 

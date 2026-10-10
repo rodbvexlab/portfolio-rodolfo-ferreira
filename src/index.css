@@ -465,8 +465,20 @@
     overflow: hidden;
     touch-action: pan-y;
   }
+  /* Scroll-driven reveal (touch, narrow screens): same box as the static photo,
+     and touches go straight through to the page. */
+  .contact-visual[data-trigger='scroll'] {
+    width: 100%;
+    max-width: 20rem;
+    margin-inline: auto;
+    aspect-ratio: 1400 / 1939;
+    pointer-events: none;
+  }
   @media (min-width: 768px) {
-    .contact-visual {
+    .contact-visual,
+    .contact-visual[data-trigger='scroll'] {
+      max-width: none;
+      aspect-ratio: auto;
       height: clamp(28rem, 62vh, 38rem);
     }
     /* Sized by height so the edge fades follow the photo, not the frame. */
