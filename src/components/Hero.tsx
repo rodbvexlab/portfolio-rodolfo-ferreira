@@ -91,10 +91,6 @@ function CyanBloom({ reduced }: { reduced: boolean }) {
   )
 }
 
-// A var() inside an unsupported value would resolve to `unset` instead of falling
-// back to the vw classes, so the container-unit size is only applied when supported.
-const SUPPORTS_CQI = typeof CSS !== 'undefined' && CSS.supports('font-size', '1cqi')
-
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12, delayChildren: 0.3 } },
@@ -108,13 +104,8 @@ const fadeUp = {
   show: (d = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.7, ease: ease, delay: d } }),
 }
 
-/** A small project outline, without simulated business metrics. */
+/** The working stack, as a small code-file card — no simulated business metrics. */
 function TechMockup({ m }: { m: ReturnType<typeof useLanguage>['t']['hero']['mockup'] }) {
-  const rows = [
-    { label: m.label1, value: m.val1 },
-    { label: m.label2, value: m.val2 },
-    { label: m.label3, value: m.val3 },
-  ]
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -126,9 +117,9 @@ function TechMockup({ m }: { m: ReturnType<typeof useLanguage>['t']['hero']['moc
         <span aria-hidden="true" className="material-symbols-outlined text-cyan-300/70 text-[20px]">code</span>
         <span className="font-mono text-[14px] text-white/80">{m.filename}</span>
       </div>
-      <p className="font-mono text-[12px] text-white/55 mt-5 mb-6">{m.comment1}</p>
-      <dl className="space-y-5">
-        {rows.map(({ label, value }) => (
+      <p className="font-mono text-[12px] text-white/55 mt-5 mb-5">{m.comment1}</p>
+      <dl className="space-y-4">
+        {m.rows.map(({ label, value }) => (
           <div key={label} className="space-y-1">
             <dt className="font-mono text-[12px] text-cyan-300/70">{label}</dt>
             <dd className="font-sans text-[15px] text-white/80">{value}</dd>
@@ -210,124 +201,115 @@ const Hero = forwardRef<HTMLElement>((_, _ref) => {
       />
 
       {/* ── Content ── */}
-      <div className="relative z-10 w-full max-w-container-max mx-auto pt-32 pb-16 lg:pt-32 lg:pb-20 [container-type:inline-size]">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex items-center gap-3 font-sans text-[10px] sm:text-[11px] md:text-[12px] uppercase leading-relaxed tracking-[0.14em] sm:tracking-[0.16em] text-cyan-300/80 mb-4 md:mb-6"
-        >
-          <span aria-hidden className="hidden sm:block h-px w-8 bg-cyan-300/50" />
-          {hero.label}
-        </motion.p>
+      <div className="relative z-10 w-full max-w-container-max mx-auto lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16 lg:items-center">
+        {/* Left: introduction and actions */}
+        <div className="flex flex-col items-start gap-7 pt-32 pb-16 lg:py-36">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex items-center gap-3 font-sans text-[10px] sm:text-[11px] md:text-[12px] uppercase leading-relaxed tracking-[0.14em] sm:tracking-[0.16em] text-cyan-300/80"
+          >
+            <span aria-hidden className="hidden sm:block h-px w-8 bg-cyan-300/50" />
+            {hero.label}
+          </motion.p>
 
-        {/* Headline — a single line fitted to the content width, so the thesis
-            reads like a masthead. --fit is the rendered width of "From design to
-            code" (the wider locale) in em, plus ~2% slack: ~6.4em on mobile, where
-            spacing stays near normal so small sizes don't cramp, and ~6.07em from
-            md up, where display-size tracking and word spacing are tightened.
-            The vw classes are a fallback for browsers without container units. */}
-        <motion.h1
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="font-serif text-[12.5vw] md:text-[11vw] leading-[0.95] text-white [font-kerning:normal]
-            tracking-[-0.02em] md:tracking-[-0.03em] md:[word-spacing:-0.04em] [--fit:6.6] md:[--fit:6.2]"
-          style={SUPPORTS_CQI ? { fontSize: 'calc(100cqi / var(--fit))' } : undefined}
-        >
-          {hero.headline.map((line, li) => (
-            // Padding keeps accents (ó) and descenders (g) clear of the reveal mask
-            <span key={li} className="block overflow-hidden py-[0.2em] -my-[0.2em]">
-              {line.split(' ').map((w, wi) => (
-                <Fragment key={wi}>
-                  {/* Real space keeps the heading readable for screen readers and crawlers */}
-                  {wi > 0 && ' '}
-                  <motion.span variants={word} className="inline-block">
-                    {w}
-                  </motion.span>
-                </Fragment>
-              ))}
-            </span>
-          ))}
-        </motion.h1>
+          {/* Headline — calm display size; the stack card carries the detail */}
+          <motion.h1
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="font-serif text-[44px] sm:text-[56px] md:text-[64px] lg:text-[60px] xl:text-[72px] leading-[1.05] tracking-[-0.01em] text-white"
+          >
+            {hero.headline.map((line, li) => (
+              // Padding keeps accents (ó) and descenders (g) clear of the reveal mask
+              <span key={li} className="block overflow-hidden py-[0.2em] -my-[0.2em]">
+                {line.split(' ').map((w, wi) => (
+                  <Fragment key={wi}>
+                    {/* Real space keeps the heading readable for screen readers and crawlers */}
+                    {wi > 0 && ' '}
+                    <motion.span variants={word} className="inline-block">
+                      {w}
+                    </motion.span>
+                  </Fragment>
+                ))}
+              </span>
+            ))}
+          </motion.h1>
 
-        <div className="mt-10 md:mt-12 lg:grid lg:grid-cols-[minmax(0,34rem)_340px] lg:justify-between lg:items-start lg:gap-16">
-          {/* Left: introduction and actions */}
-          <div className="flex flex-col items-start gap-8">
-            {/* Body */}
-            <motion.p
-              custom={0.9}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="font-sans text-[17px] md:text-[18px] leading-[1.6] text-white/65 max-w-[34rem]"
-            >
-              {hero.body}
-            </motion.p>
+          {/* Body */}
+          <motion.p
+            custom={0.9}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="font-sans text-[17px] md:text-[18px] leading-[1.6] text-white/65 max-w-[34rem]"
+          >
+            {hero.body}
+          </motion.p>
 
-            {/* CTAs */}
-            <motion.div
-              custom={1.05}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="flex flex-wrap items-center gap-x-6 gap-y-4"
-            >
-              <MagneticButton>
-                <a
-                  href="#projects"
-                  className="group flex items-center gap-3 px-7 py-3.5 rounded-full
-                    bg-white text-black font-sans text-[12px] uppercase tracking-widest
-                    hover:bg-cyan-300 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-                >
-                  {hero.cta_primary}
-                  <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
-                    arrow_right_alt
-                  </span>
-                </a>
-              </MagneticButton>
+          {/* CTAs */}
+          <motion.div
+            custom={1.05}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="flex flex-wrap items-center gap-x-6 gap-y-4 mt-1"
+          >
+            <MagneticButton>
               <a
-                href="#contato"
-                className="py-2 font-sans text-[12px] uppercase tracking-widest text-white/70
-                  underline decoration-white/20 underline-offset-[6px]
-                  hover:text-white hover:decoration-cyan-300/60 transition-colors"
+                href="#projects"
+                className="group flex items-center gap-3 px-7 py-3.5 rounded-full
+                  bg-white text-black font-sans text-[12px] uppercase tracking-widest
+                  hover:bg-cyan-300 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
               >
-                {hero.cta_secondary}
+                {hero.cta_primary}
+                <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
+                  arrow_right_alt
+                </span>
               </a>
-            </motion.div>
-
-            {/* Proof points — concrete working terms instead of vanity metrics */}
-            <motion.ul
-              custom={1.2}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-2.5 sm:pt-6 sm:border-t border-white/[0.07] w-full"
+            </MagneticButton>
+            <a
+              href="#contato"
+              className="py-2 font-sans text-[12px] uppercase tracking-widest text-white/70
+                underline decoration-white/20 underline-offset-[6px]
+                hover:text-white hover:decoration-cyan-300/60 transition-colors"
             >
-              {hero.proof.map((item) => (
-                <li key={item} className="flex items-center gap-2 font-sans text-[13px] text-white/45">
-                  <span aria-hidden className="material-symbols-outlined text-[15px] text-cyan-300/60">check</span>
-                  {item}
-                </li>
-              ))}
-            </motion.ul>
+              {hero.cta_secondary}
+            </a>
+          </motion.div>
 
-            {/* Mobile: project outline after the introduction */}
-            <motion.div
-              custom={1.4}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              className="lg:hidden w-full mt-4"
-            >
-              <TechMockup m={hero.mockup} />
-            </motion.div>
-          </div>
+          {/* Proof points — concrete working terms instead of vanity metrics */}
+          <motion.ul
+            custom={1.2}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-2.5 mt-2 sm:pt-6 sm:border-t border-white/[0.07] w-full max-w-[40rem]"
+          >
+            {hero.proof.map((item) => (
+              <li key={item} className="flex items-center gap-2 font-sans text-[13px] text-white/45">
+                <span aria-hidden className="material-symbols-outlined text-[15px] text-cyan-300/60">check</span>
+                {item}
+              </li>
+            ))}
+          </motion.ul>
 
-          {/* Desktop: tech mockup in grid column */}
-          <div className="hidden lg:flex relative justify-end">
+          {/* Mobile: stack card after the introduction */}
+          <motion.div
+            custom={1.4}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="lg:hidden w-full mt-4"
+          >
             <TechMockup m={hero.mockup} />
-          </div>
+          </motion.div>
+        </div>
+
+        {/* Desktop: stack card in grid column */}
+        <div className="hidden lg:flex relative items-center justify-end">
+          <TechMockup m={hero.mockup} />
         </div>
       </div>
 
