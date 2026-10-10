@@ -12,7 +12,7 @@ A copy vigente em português e inglês está em `src/i18n/translations.ts`. As d
 
 1. Abertura: nome, atuação, descrição curta e acesso aos projetos e contato, sobre o vídeo controlado pelo scroll.
 2. Projetos selecionados: imagens existentes, títulos e descrições curtas.
-3. Serviços: quatro linhas — sites, sistemas internos, automações e consultoria.
+3. Serviços: título e descrição à esquerda, vídeo da ilha abaixo deles, e quatro linhas à direita: sites, sistemas internos, automações e consultoria.
 4. Sobre: retrato existente e experiência em desenvolvimento web e TI.
 5. Contato: WhatsApp e formulário.
 
@@ -42,7 +42,11 @@ Palco sticky de 100svh dentro de uma hero de 270svh (210svh abaixo de 768 px). O
 - "Reduzir movimento": hero de 100svh com poster, texto completo e sem vídeo.
 - Mídia, comandos e estratégia de keyframes: `docs/hero-video.md`.
 
-Movimento fica concentrado na abertura, nos projetos (reveal por card e previews) e na entrada suave das seções seguintes. Sem cards, badges ou elementos decorativos competindo com o vídeo.
+## Vídeo de serviços
+
+Ilha flutuante sob "O que eu desenvolvo", sem moldura, borda, raio ou sombra. Integra-se ao preto da seção por máscaras graduais: o halo dourado do arquivo se dissolve antes das bordas e a ilha fica intacta. Acompanha a passagem da seção pela tela, sem alongar a página. No celular, fica entre a descrição e a lista, com o quadro inteiro. Com "reduzir movimento", poster estático.
+
+Movimento fica concentrado na abertura, nos projetos (reveal por card e previews), no vídeo de serviços e na entrada suave das seções seguintes. Sem cards, badges ou elementos decorativos competindo com o vídeo.
 
 ## Projetos e navegação
 

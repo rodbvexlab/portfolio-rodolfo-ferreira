@@ -1,6 +1,6 @@
-# Vídeo da abertura e previews dos projetos
+# Vídeos controlados pelo scroll e previews dos projetos
 
-Referência técnica da mídia usada na hero controlada pelo scroll (`src/components/Hero.tsx`, `src/lib/scrollScrub.ts`) e nos previews dos cards (`src/components/Portfolio.tsx`).
+Referência técnica da mídia usada na hero (`src/components/Hero.tsx`), na seção "O que eu desenvolvo" (`src/components/ServicesVideo.tsx`) e nos previews dos cards (`src/components/Portfolio.tsx`). O controlador comum está em `src/lib/scrollScrub.ts`.
 
 ## Original da hero
 
@@ -64,6 +64,51 @@ ffprobe -v error -select_streams v:0 -skip_frame nokey -show_entries frame=pts_t
 - O arquivo é baixado inteiro com `fetch` (prioridade baixa) e vira um object URL. A porcentagem só aparece quando há `Content-Length` sem compressão. Se o `fetch` falhar, o elemento carrega a URL direto.
 - O vídeo não é baixado com Save-Data, em conexão 2G ou quando o navegador não decodifica H.264. Nesses casos fica o poster.
 - O playhead se aproxima do alvo com suavização. Só um seek fica pendente por vez e o seguinte vai para o alvo mais recente. Sem movimento, o loop para e o vídeo fica pausado no frame correspondente.
+
+## Vídeo de "O que eu desenvolvo"
+
+### Original
+
+- Fonte: `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_094631_d30ab262-45ee-4b7d-99f3-5d5848c8ef13.mp4`
+- SHA-256: `5c4e2424b9a8aff6ff44a11fae9fa56a35e1ed3dab741543b9040f903820e0bb`
+- H.264 Main, 1572×1316, 24 fps, 289 frames, 12,04 s, yuv420p, sem áudio, 20,7 MB, **um único keyframe**. Não é versionado nem referenciado pelo site.
+- Fundo preto puro (0,0,0) à direita, embaixo e nos cantos, exceto um halo dourado estático no canto superior esquerdo que desce pela borda esquerda até ~45% da altura.
+- A ilha ocupa, somando todos os frames, x 20–90% e y 19–80% do quadro: nada encosta nas bordas.
+
+### Versões
+
+| Arquivo | Dimensões | Tamanho | Keyframes |
+|---|---|---|---|
+| `public/services/services-scrub-desktop.mp4` | 1180×988 | 3,8 MB (4.004.022 B) | 49 (a cada 6 frames) |
+| `public/services/services-scrub-mobile.mp4` | 786×658 | 2,2 MB (2.281.088 B) | 49 (a cada 6 frames) |
+| `public/services/services-poster.webp` | 1180×988 | 61 KB | frame 0 |
+
+Quadro inteiro (sem recorte), H.264 High, yuv420p, `+faststart`, sem B-frames. A coluna exibe no máximo ~620 px de largura, então 1180 px cobre telas 2x. Comparação a 1180×988: GOP 6 CRF 26 = 3,4 MB, SSIM 0,989; all-intra CRF 26 = 8,3 MB, SSIM 0,979.
+
+```bash
+SRC=services-original.mp4
+COMMON="-an -c:v libx264 -profile:v high -pix_fmt yuv420p -movflags +faststart -preset slow -bf 0 -sc_threshold 0"
+ffmpeg -i $SRC $COMMON -vf scale=1180:988:flags=lanczos -g 6 -keyint_min 6 -crf 25 public/services/services-scrub-desktop.mp4
+ffmpeg -i $SRC $COMMON -vf scale=786:658:flags=lanczos -g 6 -keyint_min 6 -crf 25 public/services/services-scrub-mobile.mp4
+ffmpeg -i $SRC -vf "select=eq(n\,0),scale=1180:988:flags=lanczos" -frames:v 1 -c:v libwebp -quality 80 public/services/services-poster.webp
+```
+
+### Máscara
+
+Seis camadas de `mask-image` intersectadas (o alfa final é o produto), em `.services-media` no `index.css`: elipse suave em torno da ilha, fades no topo, na esquerda, na direita e embaixo, e uma elipse que atenua o núcleo do halo. As rampas usam várias paradas para aproximar uma curva smoothstep e evitar uma "linha" onde o fade começa.
+
+Os parâmetros foram ajustados em Python sobre 37 frames reais:
+- a ilha mantém alfa ≥ 0,99 em 99,9% dos seus pixels, em todos os frames;
+- o halo dourado vira uma luz difusa junto à ilha e chega a zero antes das bordas. Ele encosta no canto superior esquerdo da ilha, então eliminá-lo por completo escureceria as flores.
+
+No navegador, com só a mídia visível, a faixa de 3 px na borda do vídeo fica em luminância 0–1 (de 255) em todos os frames, nas cinco larguras testadas.
+
+### Comportamento
+
+- Progresso pela passagem do vídeo na viewport (`passageProgress`): 0 quando o topo do vídeo está a 95% da altura da tela, 1 quando a base chega a 5%. A seção mantém a altura natural, sem trilho sticky; os 12 s correspondem a ~1.300 px de rolagem no desktop e ~1.100 px no celular.
+- Download só quando a seção está a cerca de uma tela de distância (`IntersectionObserver` com `rootMargin: 100%`). Mesmas regras da hero: fetch em memória com prioridade baixa, sem download com Save-Data, 2G ou sem H.264, poster mantido em caso de erro.
+- Pausa fora da viewport e com a aba oculta. "Reduzir movimento": poster estático, sem vídeo.
+- Layout: no desktop fica sob título e descrição, avançando sobre a margem da página e um pouco sobre o espaço entre as colunas; no celular ocupa a largura toda, entre descrição e lista, com o quadro completo.
 
 ## Previews dos projetos
 

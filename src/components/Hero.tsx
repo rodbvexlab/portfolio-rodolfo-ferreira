@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import { useMediaQuery, usePrefersReducedMotion } from '../hooks/useMediaQuery'
-import { createScrollScrub, fetchVideoBlob } from '../lib/scrollScrub'
+import { useObjectUrlCache } from '../hooks/useObjectUrlCache'
+import { createScrollScrub, loadScrubVideo, shouldSkipScrubVideo, stickyProgress } from '../lib/scrollScrub'
 
 /** Narrow portrait screens get the 9:16 centre cut of the video. */
 const PORTRAIT_QUERY = '(max-aspect-ratio: 7/10)'
@@ -11,18 +12,10 @@ const HERO_MEDIA = {
 }
 /** Both encodes keep the source's 24 fps (docs/hero-video.md). */
 const VIDEO_FPS = 24
-const VIDEO_TYPE = 'video/mp4; codecs="avc1.640028"'
 
 /** 0 → 1 while `progress` crosses [start, end]. */
 const segment = (progress: number, start: number, end: number) =>
   Math.min(1, Math.max(0, (progress - start) / (end - start)))
-
-type Connection = { saveData?: boolean; effectiveType?: string }
-
-function prefersLightMedia() {
-  const connection = (navigator as Navigator & { connection?: Connection }).connection
-  return !!connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? '')
-}
 
 export default function Hero() {
   const { t } = useLanguage()
@@ -43,18 +36,7 @@ export default function Hero() {
   const progressFillRef = useRef<HTMLSpanElement>(null)
   const loadingRef = useRef<HTMLSpanElement>(null)
   // Object URLs survive source switches (rotation) and are revoked on unmount.
-  const blobUrls = useRef(new Map<string, string>())
-  const disposed = useRef(false)
-
-  useEffect(() => {
-    disposed.current = false
-    const urls = blobUrls.current
-    return () => {
-      disposed.current = true
-      urls.forEach((url) => URL.revokeObjectURL(url))
-      urls.clear()
-    }
-  }, [])
+  const { cache: blobUrls, isDisposed } = useObjectUrlCache()
 
   useEffect(() => {
     const track = trackRef.current
@@ -102,26 +84,20 @@ export default function Hero() {
 
     const video = videoRef.current
     const scrub = createScrollScrub({
-      track,
-      stage,
+      target: track,
+      progress: stickyProgress(track, stage),
+      observe: [track, stage],
       fps: VIDEO_FPS,
       onProgress: applyProgress,
       onFrameReady: () => { stage.dataset.video = 'ready' },
     })
 
-    // Save-Data, 2G or no H.264 decoder: keep the poster and skip the download.
-    if (!video || prefersLightMedia() || !video.canPlayType(VIDEO_TYPE)) {
+    if (!video || shouldSkipScrubVideo(video)) {
       stage.dataset.video = 'off'
       return () => scrub.destroy()
     }
 
-    const src = portrait ? HERO_MEDIA.portrait.video : HERO_MEDIA.landscape.video
-    const abort = new AbortController()
-    let cancelled = false
-    let attached = false
     let shownPercent = -1
-    let primeTimer = 0
-
     const showLoading = (ratio: number | null) => {
       const percent = ratio === null ? -1 : Math.round(ratio * 100)
       if (percent === shownPercent) return
@@ -129,67 +105,22 @@ export default function Hero() {
       loading.textContent = percent < 0 || percent >= 100 ? '' : `${loading.dataset.label} ${percent}%`
     }
 
-    const attach = () => {
-      if (cancelled || attached) return
-      attached = true
-      video.pause()
-      scrub.setVideo(video)
-    }
-    const onLoaded = () => {
-      // iOS only paints seeked frames once the element has played; prime it muted.
-      const primed = video.play()
-      if (primed) primed.then(attach, attach)
-      primeTimer = window.setTimeout(attach, 400)
-    }
-    const onPlay = () => { if (attached) video.pause() }
-    const onError = () => {
-      if (cancelled) return
-      stage.dataset.video = 'error'
-      showLoading(null)
-      scrub.setVideo(null)
-    }
-
     stage.dataset.video = 'loading'
-    video.addEventListener('loadeddata', onLoaded, { once: true })
-    video.addEventListener('play', onPlay)
-    video.addEventListener('error', onError)
-
-    const cached = blobUrls.current.get(src)
-    const load = cached
-      ? Promise.resolve(cached)
-      : fetchVideoBlob(src, abort.signal, showLoading).then(
-          (url) => {
-            // Finished after unmount: nothing will revoke it later, so do it now.
-            if (disposed.current) {
-              URL.revokeObjectURL(url)
-              return null
-            }
-            blobUrls.current.set(src, url)
-            return url
-          },
-          // Network/stream trouble: let the element stream the file itself.
-          () => (abort.signal.aborted ? null : src),
-        )
-    load.then((url) => {
-      showLoading(null)
-      if (cancelled || !url) return
-      video.src = url
-      video.load()
+    const stopLoading = loadScrubVideo({
+      video,
+      src: portrait ? HERO_MEDIA.portrait.video : HERO_MEDIA.landscape.video,
+      scrub,
+      cache: blobUrls,
+      isDisposed,
+      onError: () => { stage.dataset.video = 'error' },
+      onLoadProgress: showLoading,
     })
 
     return () => {
-      cancelled = true
-      window.clearTimeout(primeTimer)
-      abort.abort()
+      stopLoading()
       scrub.destroy()
-      video.removeEventListener('loadeddata', onLoaded)
-      video.removeEventListener('play', onPlay)
-      video.removeEventListener('error', onError)
-      video.pause()
-      video.removeAttribute('src')
-      video.load()
     }
-  }, [reducedMotion, portrait])
+  }, [reducedMotion, portrait, blobUrls, isDisposed])
 
   return (
     <section id="hero-section" ref={trackRef} aria-labelledby="hero-title" className="hero-track">

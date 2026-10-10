@@ -1,27 +1,63 @@
 /**
  * Scroll-scrubbed video controller.
  *
- * Progress is local to `track` (the tall hero section), never to the page:
+ * A `ProgressSource` turns the scroll position into a local 0–1 progress for
+ * one element; the page height never enters the calculation:
  *
- *   progress = -track.top / (track.height - stage.height)
+ * - `stickyProgress`: a tall track with a sticky stage (the hero).
+ *     progress = -track.top / (track.height - stage.height)
+ * - `passageProgress`: an element in normal flow crossing the viewport
+ *     (the services video), so the section keeps its natural height.
  *
- * 0 when the track's top reaches the viewport top, 1 when its bottom meets the
- * bottom of the sticky `stage`. Everything runs on refs and requestAnimationFrame;
- * no React state is touched per frame.
- *
- * Seeking: the playhead eases toward the scroll target, only one seek is in
+ * Everything runs on refs and requestAnimationFrame; no React state is touched
+ * per frame. The playhead eases toward the scroll target, only one seek is in
  * flight at a time, and when it lands the next seek goes to the latest target.
  * When scrolling stops the playhead converges, the loop idles and the video
  * stays paused on that frame.
  */
 
+export interface ProgressSource {
+  /** Current progress; may fall outside 0–1 (the controller clamps it). */
+  read: () => number
+  /** Re-measure cached sizes after a resize. */
+  measure: () => void
+}
+
+export function stickyProgress(track: HTMLElement, stage: HTMLElement): ProgressSource {
+  let range = 1
+  return {
+    measure() {
+      range = Math.max(1, track.offsetHeight - stage.offsetHeight)
+    },
+    read: () => -track.getBoundingClientRect().top / range,
+  }
+}
+
+/**
+ * 0 when `el`'s top reaches `start` × viewport height, 1 when its bottom
+ * reaches `end` × viewport height (1 = bottom edge, 0 = top edge).
+ */
+export function passageProgress(el: HTMLElement, start: number, end: number): ProgressSource {
+  return {
+    measure() {},
+    read() {
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      return (vh * start - rect.top) / (vh * (start - end) + rect.height)
+    },
+  }
+}
+
 export interface ScrollScrubOptions {
-  track: HTMLElement
-  stage: HTMLElement
+  /** Element observed for visibility; the loop only runs while it intersects the viewport. */
+  target: HTMLElement
+  progress: ProgressSource
+  /** Elements whose size changes require `progress.measure()`. Defaults to `[target]`. */
+  observe?: HTMLElement[]
   /** Frame rate of the encoded file, used to snap seeks to real frames. */
   fps: number
   /** Called inside rAF whenever the local progress changes. */
-  onProgress: (progress: number) => void
+  onProgress?: (progress: number) => void
   /** Called once the first scrubbed frame is decoded after a video is attached. */
   onFrameReady?: () => void
 }
@@ -37,10 +73,9 @@ const SMOOTHING_MS = 90
 /** Some browsers occasionally drop `seeked`; never wait on a seek longer than this. */
 const SEEK_TIMEOUT_MS = 400
 
-export function createScrollScrub({ track, stage, fps, onProgress, onFrameReady }: ScrollScrubOptions): ScrollScrub {
+export function createScrollScrub({ target, progress: source, observe, fps, onProgress, onFrameReady }: ScrollScrubOptions): ScrollScrub {
   let frameId = 0
   let inView = true
-  let range = 1
   let lastProgress = -1
   let lastTs = 0
 
@@ -52,11 +87,7 @@ export function createScrollScrub({ track, stage, fps, onProgress, onFrameReady 
   let seekTimer = 0
   let revealed = false
 
-  const measure = () => {
-    range = Math.max(1, track.offsetHeight - stage.offsetHeight)
-  }
-
-  const readProgress = () => Math.min(1, Math.max(0, -track.getBoundingClientRect().top / range))
+  const readProgress = () => Math.min(1, Math.max(0, source.read()))
 
   const stop = () => {
     cancelAnimationFrame(frameId)
@@ -98,20 +129,20 @@ export function createScrollScrub({ track, stage, fps, onProgress, onFrameReady 
     const moved = Math.abs(progress - lastProgress) > 1e-4
     if (moved) {
       lastProgress = progress
-      onProgress(progress)
+      onProgress?.(progress)
     }
 
     let pending = false
     if (video) {
-      const target = progress * maxFrame
-      if (playhead < 0) playhead = target
+      const goal = progress * maxFrame
+      if (playhead < 0) playhead = goal
       else {
-        playhead += (target - playhead) * (1 - Math.exp(-dt / SMOOTHING_MS))
-        if (Math.abs(target - playhead) < 0.25) playhead = target
+        playhead += (goal - playhead) * (1 - Math.exp(-dt / SMOOTHING_MS))
+        if (Math.abs(goal - playhead) < 0.25) playhead = goal
       }
       const frame = Math.round(playhead)
       if (frame !== shownFrame && !seeking) seek(frame)
-      pending = seeking || playhead !== target || frame !== shownFrame
+      pending = seeking || playhead !== goal || frame !== shownFrame
     }
 
     if (moved || pending) schedule()
@@ -123,12 +154,13 @@ export function createScrollScrub({ track, stage, fps, onProgress, onFrameReady 
     if (document.hidden) stop()
     else schedule()
   }
-
-  const resizeObserver = new ResizeObserver(() => {
-    measure()
+  const remeasure = () => {
+    source.measure()
     lastProgress = -1
     schedule()
-  })
+  }
+
+  const resizeObserver = new ResizeObserver(remeasure)
   const viewObserver = new IntersectionObserver(([entry]) => {
     inView = entry.isIntersecting
     if (inView) {
@@ -138,14 +170,14 @@ export function createScrollScrub({ track, stage, fps, onProgress, onFrameReady 
     stop()
     // Leave the styles at the edge the visitor left through (0 above, 1 below).
     lastProgress = readProgress()
-    onProgress(lastProgress)
+    onProgress?.(lastProgress)
   })
 
-  measure()
-  resizeObserver.observe(track)
-  resizeObserver.observe(stage)
-  viewObserver.observe(track)
+  source.measure()
+  for (const el of observe ?? [target]) resizeObserver.observe(el)
+  viewObserver.observe(target)
   window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', remeasure)
   document.addEventListener('visibilitychange', onVisibility)
   schedule()
 
@@ -175,9 +207,21 @@ export function createScrollScrub({ track, stage, fps, onProgress, onFrameReady 
       resizeObserver.disconnect()
       viewObserver.disconnect()
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', remeasure)
       document.removeEventListener('visibilitychange', onVisibility)
     },
   }
+}
+
+/** H.264 High — the codec of every scrub encode (docs/hero-video.md). */
+export const SCRUB_VIDEO_TYPE = 'video/mp4; codecs="avc1.640028"'
+
+type Connection = { saveData?: boolean; effectiveType?: string }
+
+/** Save-Data, 2G or no H.264 decoder: keep the poster and skip the download. */
+export function shouldSkipScrubVideo(video: HTMLVideoElement) {
+  const connection = (navigator as Navigator & { connection?: Connection }).connection
+  return !!connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? '') || !video.canPlayType(SCRUB_VIDEO_TYPE)
 }
 
 /**
@@ -206,4 +250,88 @@ export async function fetchVideoBlob(
     onProgress(total ? Math.min(1, loaded / total) : null)
   }
   return URL.createObjectURL(new Blob(chunks, { type: 'video/mp4' }))
+}
+
+export interface ScrubVideoLoad {
+  video: HTMLVideoElement
+  src: string
+  scrub: ScrollScrub
+  /** Object URLs by source, owned by the component (revoked on its unmount). */
+  cache: Map<string, string>
+  /** True once the owning component has unmounted. */
+  isDisposed: () => boolean
+  onError: () => void
+  onLoadProgress?: (ratio: number | null) => void
+}
+
+/**
+ * Fetches `src` (or reuses its cached object URL), attaches it to `video` and
+ * hands it to `scrub`. Falls back to streaming the URL if the fetch fails.
+ * Returns a cleanup that aborts the download and releases the element.
+ */
+export function loadScrubVideo({ video, src, scrub, cache, isDisposed, onError, onLoadProgress }: ScrubVideoLoad): () => void {
+  const abort = new AbortController()
+  let cancelled = false
+  let attached = false
+  let primeTimer = 0
+  const reportProgress = onLoadProgress ?? (() => {})
+
+  const attach = () => {
+    if (cancelled || attached) return
+    attached = true
+    video.pause()
+    scrub.setVideo(video)
+  }
+  const onLoaded = () => {
+    // iOS only paints seeked frames once the element has played; prime it muted.
+    const primed = video.play()
+    if (primed) primed.then(attach, attach)
+    primeTimer = window.setTimeout(attach, 400)
+  }
+  const onPlay = () => { if (attached) video.pause() }
+  const handleError = () => {
+    if (cancelled) return
+    reportProgress(null)
+    scrub.setVideo(null)
+    onError()
+  }
+
+  video.addEventListener('loadeddata', onLoaded, { once: true })
+  video.addEventListener('play', onPlay)
+  video.addEventListener('error', handleError)
+
+  const cached = cache.get(src)
+  const load = cached
+    ? Promise.resolve(cached)
+    : fetchVideoBlob(src, abort.signal, reportProgress).then(
+        (url) => {
+          // Finished after unmount: nothing will revoke it later, so do it now.
+          if (isDisposed()) {
+            URL.revokeObjectURL(url)
+            return null
+          }
+          cache.set(src, url)
+          return url
+        },
+        // Network/stream trouble: let the element stream the file itself.
+        () => (abort.signal.aborted ? null : src),
+      )
+  load.then((url) => {
+    reportProgress(null)
+    if (cancelled || !url) return
+    video.src = url
+    video.load()
+  })
+
+  return () => {
+    cancelled = true
+    window.clearTimeout(primeTimer)
+    abort.abort()
+    video.removeEventListener('loadeddata', onLoaded)
+    video.removeEventListener('play', onPlay)
+    video.removeEventListener('error', handleError)
+    video.pause()
+    video.removeAttribute('src')
+    video.load()
+  }
 }
