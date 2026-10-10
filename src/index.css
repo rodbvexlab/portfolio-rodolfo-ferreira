@@ -428,6 +428,68 @@
     }
   }
 
+  /* ─── Contact: intro, form and the DitherVeil visual (ContactVisual.tsx) ─── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'intro' 'form' 'visual';
+    row-gap: 3rem;
+  }
+  .contact-intro { grid-area: intro; }
+  .contact-form { grid-area: form; }
+  .contact-visual {
+    grid-area: visual;
+    position: relative;
+    background: #000;
+  }
+  /* The photo's background is #08080a, not #000: short edge fades hide the
+     seam (the subject never comes within 6 px of an edge). */
+  .contact-visual-img {
+    display: block;
+    width: 100%;
+    max-width: 20rem;
+    height: auto;
+    margin: 0 auto;
+    --edge-fade:
+      linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
+      linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
+    -webkit-mask-image: var(--edge-fade);
+    mask-image: var(--edge-fade);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+  .dither-veil {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+  @media (min-width: 768px) {
+    .contact-visual {
+      height: clamp(28rem, 62vh, 38rem);
+    }
+    /* Sized by height so the edge fades follow the photo, not the frame. */
+    .contact-visual-img {
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+  /* Title block on top; the visual sits beside the form, a little taller than it. */
+  @media (min-width: 1024px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      grid-template-areas: 'intro .' 'visual form';
+      column-gap: 6rem;
+      row-gap: 2.5rem;
+    }
+    .contact-form {
+      align-self: center;
+    }
+  }
+
   /* Projects rise over the last part of the pinned hero. */
   .projects-section {
     background:

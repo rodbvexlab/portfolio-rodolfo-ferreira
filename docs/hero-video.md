@@ -1,6 +1,6 @@
 # Vídeos controlados pelo scroll e previews dos projetos
 
-Referência técnica da mídia usada na hero (`src/components/Hero.tsx`), na seção "O que eu desenvolvo" (`src/components/ServicesVideo.tsx`), na seção "Sobre" (`src/components/About.tsx`) e nos previews dos cards (`src/components/Portfolio.tsx`). O controlador comum está em `src/lib/scrollScrub.ts`.
+Referência técnica da mídia usada na hero (`src/components/Hero.tsx`), na seção "O que eu desenvolvo" (`src/components/ServicesVideo.tsx`), na seção "Sobre" (`src/components/About.tsx`), nos previews dos cards (`src/components/Portfolio.tsx`) e na imagem de "Fale comigo" (`src/components/ContactVisual.tsx`). O controlador comum dos vídeos está em `src/lib/scrollScrub.ts`.
 
 ## Original da hero
 
@@ -155,6 +155,53 @@ ffmpeg -i $SRC -vf "select=eq(n\,0),crop=1080:1080:420:0,scale=900:900:flags=lan
 - Entrada e saída: faixas de 16svh, com curva suavizada, do preto até a cor do fundo do vídeo. No fim, a base do palco clareia até essa cor antes de liberar.
 - Download quando a seção está a cerca de uma tela de distância. Pausa fora da seção e com a aba oculta.
 - Movimento reduzido, navegador sem H.264, Save-Data/2G ou falha de carregamento: composição estática com poster (frame 0, laterais livres) e toda a copy, sem trilha longa.
+
+## Imagem de "Fale comigo" (DitherVeil)
+
+### Original e licença
+
+- Foto de **Maxim Berg** ([@maxberg](https://unsplash.com/@maxberg)) no Unsplash, publicada em 17/01/2025: [página da foto](https://unsplash.com/photos/a-glass-sculpture-of-a-persons-head-on-a-black-background-QNVh6QXPXLk). É a imagem indicada no `src` do componente DitherVeil (React Bits), `photo-1737071371043-761e02b1ef95`.
+- Licença: [Unsplash License](https://unsplash.com/license). Uso comercial e não comercial gratuito, sem exigir crédito (o crédito fica registrado aqui e no código). Não permite revender a foto sem modificação nem montar um serviço concorrente de imagens.
+- `public/contact/dither-veil.jpg`: arquivo servido pelo Unsplash a 1400 px, sem alteração. 1400×1939, 357.359 B, SHA-256 `dc8b086833ce520ba55bf4b0014138630c1a20201122012398e15167b21b2e06`. Fica na mesma origem do site porque a difusão de erro lê os pixels da imagem (uma imagem de outra origem sem CORS bloquearia a leitura).
+
+### Versões estáticas
+
+| Arquivo | Dimensões | Tamanho | Uso |
+|---|---|---|---|
+| `public/contact/dither-veil.jpg` | 1400×1939 | 357 KB | WebGL (desktop com mouse) |
+| `public/contact/dither-veil-static.webp` | 1400×1939 | ~236 KB | estática em cores |
+| `public/contact/dither-veil-800.webp` | 800×1108 | ~85 KB | estática em telas pequenas (`srcset`) |
+
+O fundo da foto é quase preto (~#08080A), não #000; sobre a seção preta aparecia um retângulo. As versões estáticas passam por uma curva de tons: até 14/255 vira 0, acima de 48/255 nada muda, e entre os dois uma curva Hermite contínua. Resultado: fundo (percentil 99 das bordas) = 0; no rosto, desvio médio de 0,44 nível e 88% dos pixels inalterados. Uma máscara CSS de 5–6% nas bordas completa a transição.
+
+```bash
+python3 - <<'EOF'
+import numpy as np
+from PIL import Image
+lo, hi = 14.0, 48.0
+def curve(x):
+    t = np.clip((x - lo) / (hi - lo), 0, 1)
+    mid = (-2*t**3 + 3*t**2) * hi + (t**3 - t**2) * (hi - lo)
+    return np.where(x <= lo, 0.0, np.where(x >= hi, x, mid))
+apply = lambda img: Image.fromarray(np.clip(curve(np.asarray(img).astype(float)), 0, 255).round().astype(np.uint8))
+im = Image.open('public/contact/dither-veil.jpg').convert('RGB')
+apply(im).save('public/contact/dither-veil-static.webp', 'WEBP', quality=84, method=6)
+apply(im.resize((800, round(im.height * 800 / im.width)), Image.LANCZOS)).save('public/contact/dither-veil-800.webp', 'WEBP', quality=82, method=6)
+EOF
+```
+
+### Componente e configuração
+
+- `src/components/DitherVeil.tsx`: adaptação em TypeScript do DitherVeil do React Bits, com `ogl` 1.0.11 (Unlicense) fixado no `package.json`. Os shaders e a difusão (Floyd–Steinberg na CPU) são os do original.
+- Configuração: `pattern="floyd"`, `fit="contain"`, `pixelSize={2}`, `inkColor="#000000"`, `paperColor="#f4f1ea"`, `softness={0.6}`, `linger={1}`, `reverse`, `wander` e `clickBurst` desligados, `rim={0}`. `revealRadius` acompanha o quadro: 30% do menor lado, entre 150 e 180 px (165 px em 1440, 150 px em 1024).
+- Diferenças em relação ao original: verificação de WebGL2 antes de criar o renderer; falha de shader, erro da imagem e perda de contexto chamam `onFallback`; pausa fora da tela e com a aba oculta; limpeza de listeners, observers, rAF, render targets, texturas, programas, geometria e contexto ao desmontar.
+
+### Comportamento
+
+- Desktop com mouse (`hover: hover`, `pointer: fine`, ≥768 px): o componente e o `ogl` ficam num chunk separado (~21 KB gzip), baixado quando a seção está a cerca de uma tela de distância. A foto começa pontilhada em duotone; o cursor revela as cores originais e o rastro se desfaz gradualmente (some por completo em até ~2 s depois que o mouse para).
+- Animação de entrada de 1,1 s quando a imagem carrega. Fora isso, o loop só roda enquanto há ponteiro sobre a imagem ou rastro.
+- Toque, telas estreitas, movimento reduzido, navegador sem WebGL2, erro de shader, erro da imagem, falha ao baixar o chunk ou perda de contexto: imagem estática em cores. No celular e no tablet a imagem fica depois do formulário.
+- A imagem é decorativa (`aria-hidden`, `alt=""`), ocupa a própria área do grid e não cobre o link do WhatsApp nem o formulário.
 
 ## Previews dos projetos
 

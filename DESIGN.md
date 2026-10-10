@@ -14,7 +14,7 @@ A copy vigente em português e inglês está em `src/i18n/translations.ts`. As d
 2. Projetos selecionados: imagens existentes, títulos e descrições curtas.
 3. Serviços: título e descrição à esquerda, vídeo da ilha abaixo deles, e quatro linhas à direita: sites, sistemas internos, automações e consultoria.
 4. Sobre: pausa editorial clara com vídeo de fundo e a apresentação em dois momentos sincronizados ao scroll.
-5. Contato: WhatsApp e formulário.
+5. Contato: título, descrição e WhatsApp à esquerda, com a imagem interativa (DitherVeil) abaixo; formulário à direita.
 
 Não duplicar serviços com uma seção de formatos. O funcionamento da contratação cabe em um parágrafo, sem cards de processo.
 
@@ -69,9 +69,11 @@ A navegação contém Projetos, Serviços, Sobre e Contato. Menu compacto até 1
 
 O formulário usa a configuração existente `VITE_WEB3FORMS_KEY`. Sem chave, prepara uma mensagem no WhatsApp. Abrir o WhatsApp não equivale a enviar a mensagem: mostrar que ela está pronta e um link para continuar. Com chave, informar sucesso apenas após resposta positiva do serviço.
 
+A imagem ao lado do formulário é decorativa: pontilhada em duotone, revela as cores sob o cursor no desktop e fica estática em cores no toque, em telas estreitas e com movimento reduzido. Sem moldura, sombra ou card; o fundo da imagem se funde ao preto da seção. No celular, o formulário vem antes da imagem. Detalhes técnicos e licença em `docs/hero-video.md`.
+
 ## Stack e verificações
 
-React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. A hero usa um controlador próprio (refs + requestAnimationFrame), sem biblioteca extra.
+React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. Os vídeos usam um controlador próprio (refs + requestAnimationFrame), sem biblioteca extra. A imagem do contato usa `ogl` (WebGL2), carregado sob demanda.
 
 - `npm ci --no-audit --no-fund`
 - `npm run build`
