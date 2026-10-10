@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { ease } from '../lib/motion'
 import ScrambleText from './ScrambleText'
+import Lede from './Lede'
 import MagneticButton from './MagneticButton'
 import { useIsTouch } from '../hooks/useMediaQuery'
 
@@ -33,7 +34,7 @@ export default function Services() {
   const isTouch = useIsTouch()
 
   return (
-    <section id="services" className="relative z-10 overflow-hidden" style={{
+    <section id="services" aria-label={services.label} className="relative z-10 overflow-hidden" style={{
       background: 'radial-gradient(ellipse 70% 50% at 85% 0%, rgba(76,215,246,0.05) 0%, transparent 65%), #000',
     }}>
       {/* Thin separator line with fade */}
@@ -64,7 +65,7 @@ export default function Services() {
             viewport={{ once: true, amount: 0.2 }}
             className="flex flex-col gap-10"
           >
-            <div className="space-y-5">
+            <div className="space-y-6">
               <motion.div variants={fadeUp()}>
                 <ScrambleText
                   text={services.label}
@@ -72,12 +73,7 @@ export default function Services() {
                   delay={200}
                 />
               </motion.div>
-              <motion.h2 variants={fadeUp(0.05)} className="font-serif text-[38px] md:text-[52px] lg:text-[56px] leading-[1.1] text-white max-w-lg whitespace-pre-line">
-                {services.headline}
-              </motion.h2>
-              <motion.p variants={fadeUp(0.1)} className="font-sans text-[16px] text-white/65 max-w-md leading-relaxed">
-                {services.body}
-              </motion.p>
+              <Lede lead={services.lead} variants={fadeUp(0.05)} className="max-w-[30rem]" />
             </div>
 
           </motion.div>

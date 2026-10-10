@@ -301,6 +301,7 @@ export default function Portfolio() {
   return (
     <section
       id="projects"
+      aria-label={portfolio.label}
       className="relative z-10 px-6 md:px-20 py-24 md:py-32 overflow-hidden"
       style={{
         background: 'radial-gradient(ellipse 60% 40% at 10% 100%, rgba(76,215,246,0.04) 0%, transparent 65%), #000',
@@ -312,34 +313,29 @@ export default function Portfolio() {
         style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.07) 40%, rgba(255,255,255,0.07) 60%, transparent)' }}
       />
 
-      <div className="max-w-container-max mx-auto space-y-20">
-        {/* Header */}
+      <div className="max-w-container-max mx-auto space-y-12 md:space-y-16">
+        {/* Header — no headline: the work opens the section */}
         <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
           variants={stagger}
-          className="grid grid-cols-1 md:grid-cols-12 gap-8"
+          className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 pb-6 border-b border-white/[0.06]"
         >
-          <motion.div variants={cardAnim} className="md:col-span-3">
+          <motion.div variants={cardAnim}>
             <ScrambleText
               text={portfolio.label}
-              className="text-[11px] uppercase tracking-[0.2em] text-white/30"
+              className="text-[11px] uppercase tracking-[0.2em] text-white/40"
               delay={100}
             />
           </motion.div>
-          <motion.div variants={cardAnim} className="md:col-span-9 space-y-5">
-            <h2 className="font-serif text-[32px] md:text-[48px] lg:text-[56px] text-white leading-tight font-light">
-              {portfolio.headline}
-            </h2>
-            <div className="flex items-center gap-2 text-white/30 font-sans text-[11px] uppercase tracking-[0.2em]">
-              <motion.span
-                animate={{ opacity: [1, 0.3, 1] }}
-                transition={{ repeat: Infinity, duration: 2.5 }}
-                className="w-1.5 h-1.5 rounded-full bg-cyan-400"
-              />
-              {portfolio.available}
-            </div>
+          <motion.div variants={cardAnim} className="flex items-center gap-2 text-white/30 font-sans text-[11px] uppercase tracking-[0.2em]">
+            <motion.span
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ repeat: Infinity, duration: 2.5 }}
+              className="w-1.5 h-1.5 rounded-full bg-cyan-400"
+            />
+            {portfolio.available}
           </motion.div>
         </motion.div>
 

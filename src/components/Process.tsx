@@ -2,6 +2,7 @@ import { ease } from '../lib/motion'
 import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import ScrambleText from './ScrambleText'
+import Lede from './Lede'
 import { useIsTouch } from '../hooks/useMediaQuery'
 
 const PROCESS_VIDEO_HLS = 'https://cdn.dribbble.com/userupload/11094311/file/original-84df46d0803a71c3972ee3ec8938744f.mp4'
@@ -23,7 +24,7 @@ export default function Process() {
   const isTouch = useIsTouch()
 
   return (
-    <section id="process" className="relative z-10 px-6 md:px-20 py-24 md:py-40 bg-black overflow-hidden">
+    <section id="process" aria-label={process.label} className="relative z-10 px-6 md:px-20 py-24 md:py-40 bg-black overflow-hidden">
       {/* Video background — desktop only */}
       {!isTouch && (
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -58,19 +59,14 @@ export default function Process() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.65, ease: ease }}
-          className="space-y-4 mb-14 md:mb-20"
+          className="space-y-6 mb-14 md:mb-20"
         >
           <ScrambleText
             text={process.label}
             className="text-[11px] uppercase tracking-[0.2em] text-cyan-400/80 block"
             delay={100}
           />
-          <h2 className="font-serif text-[38px] md:text-[52px] text-white max-w-3xl leading-[1.1] whitespace-pre-line">
-            {process.headline}
-          </h2>
-          <p className="font-sans text-[16px] text-white/65 max-w-[35rem] leading-relaxed">
-            {process.body}
-          </p>
+          <Lede lead={process.lead} className="max-w-[40rem]" />
         </motion.div>
 
         {/* Steps — full-width reading on mobile, five columns on desktop */}
