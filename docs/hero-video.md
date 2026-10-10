@@ -1,6 +1,6 @@
 # Vídeos controlados pelo scroll e previews dos projetos
 
-Referência técnica da mídia usada na hero (`src/components/Hero.tsx`), na seção "O que eu desenvolvo" (`src/components/ServicesVideo.tsx`) e nos previews dos cards (`src/components/Portfolio.tsx`). O controlador comum está em `src/lib/scrollScrub.ts`.
+Referência técnica da mídia usada na hero (`src/components/Hero.tsx`), na seção "O que eu desenvolvo" (`src/components/ServicesVideo.tsx`), na seção "Sobre" (`src/components/About.tsx`) e nos previews dos cards (`src/components/Portfolio.tsx`). O controlador comum está em `src/lib/scrollScrub.ts`.
 
 ## Original da hero
 
@@ -109,6 +109,52 @@ No navegador, com só a mídia visível, a faixa de 3 px na borda do vídeo fica
 - Download só quando a seção está a cerca de uma tela de distância (`IntersectionObserver` com `rootMargin: 100%`). Mesmas regras da hero: fetch em memória com prioridade baixa, sem download com Save-Data, 2G ou sem H.264, poster mantido em caso de erro.
 - Pausa fora da viewport e com a aba oculta. "Reduzir movimento": poster estático, sem vídeo.
 - Layout: no desktop fica sob título e descrição, avançando sobre a margem da página e um pouco sobre o espaço entre as colunas; no celular ocupa a largura toda, entre descrição e lista, com o quadro completo.
+
+## Vídeo de "Sobre"
+
+### Original
+
+- Fonte: `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260802_081931_d0adfc37-7ace-4c83-939e-4a6e0e9d9763.mp4`
+- SHA-256: `733d7bc89de5df33716eebc1c966cc943dee1dfdb60aa04d2d0972c618b224de`
+- H.264 High, 1920×1080, 24 fps, 121 frames, 5,04 s, yuv420p, sem áudio, 6,4 MB, **um único keyframe**. Não é versionado nem referenciado pelo site.
+- Fundo claro e frio (~#EEF1F5 no topo e nas laterais). A figura e a mão ocupam sobretudo x 33–83% do quadro; a mão passa rápido em primeiro plano nos frames 10–35.
+
+### Versões
+
+| Arquivo | Dimensões | Tamanho | Keyframes |
+|---|---|---|---|
+| `public/about/about-scrub-desktop.mp4` | 1920×1080 | 2,5 MB (2.598.335 B) | 21 (a cada 6 frames) |
+| `public/about/about-scrub-mobile.mp4` | 900×900 (recorte central 1:1, x 420–1500) | 1,6 MB (1.703.403 B) | 21 (a cada 6 frames) |
+| `public/about/about-poster-desktop.webp` | 1920×1080 | 45 KB | frame 0 |
+| `public/about/about-poster-mobile.webp` | 900×900 | 37 KB | frame 0, mesmo recorte |
+
+H.264 High, yuv420p, `+faststart`, sem B-frames. Comparação a 1920×1080: GOP 6 CRF 26 = 1,9 MB, SSIM 0,989; all-intra CRF 26 = 3,8 MB, SSIM 0,989 (mesma qualidade com o dobro do tamanho).
+
+```bash
+SRC=about-original.mp4
+COMMON="-an -c:v libx264 -profile:v high -pix_fmt yuv420p -movflags +faststart -preset slow -bf 0 -sc_threshold 0"
+ffmpeg -i $SRC $COMMON -g 6 -keyint_min 6 -crf 24 public/about/about-scrub-desktop.mp4
+ffmpeg -i $SRC $COMMON -vf "crop=1080:1080:420:0,scale=900:900:flags=lanczos" -g 6 -keyint_min 6 -crf 23 public/about/about-scrub-mobile.mp4
+ffmpeg -i $SRC -vf "select=eq(n\,0)" -frames:v 1 -c:v libwebp -quality 78 public/about/about-poster-desktop.webp
+ffmpeg -i $SRC -vf "select=eq(n\,0),crop=1080:1080:420:0,scale=900:900:flags=lanczos" -frames:v 1 -c:v libwebp -quality 80 public/about/about-poster-mobile.webp
+```
+
+### Composição e leitura
+
+- Posição dos textos medida nos frames de cada momento, já com o recorte de um viewport 1440×900. A faixa superior (y 10–35% do quadro) só tem a malha branca; abaixo dela aparecem dedos e anéis.
+- Primeiro momento à esquerda e segundo à direita, ambos no terço superior. O bloco da direita tem 22rem e começa logo abaixo da navbar; isso reduziu a área com mão ou anéis sob o texto de 19% para 11% em média (pico de 39% para 28%) em relação a um bloco de 25rem mais abaixo.
+- Uma luz suave localizada atrás de cada grupo entra e sai junto com o texto.
+- No navegador, com o texto transparente, o fundo atrás de cada bloco no pior frame tem luminância (percentil 5) 204 no primeiro momento e 183 no segundo, em 1440 px: contraste ≈11,6:1 e ≈9,3:1 com o texto #111317.
+- Telas de proporção intermediária (≥900 px de largura e entre 1:1 e 1,45, como 1024×768 e 1280×1024): coluna de texto à esquerda e vídeo à direita.
+- Celulares e tablets em retrato: vídeo em cima e os dois momentos na mesma área de texto abaixo, sem alternância lateral. No celular é usado o recorte 1:1.
+
+### Comportamento
+
+- Trilha de 210svh com palco sticky de 100svh. Progresso só pela trilha (`stickyProgress`); a âncora `#about` está na trilha, então a navegação pousa no palco já fixado, com o primeiro momento visível.
+- Janelas de progresso: primeiro momento 0–0,42 (o título já aparece fixado); segundo momento entra entre 0,44 e 0,61 e fica até 0,90–0,98.
+- Entrada e saída: faixas de 16svh, com curva suavizada, do preto até a cor do fundo do vídeo. No fim, a base do palco clareia até essa cor antes de liberar.
+- Download quando a seção está a cerca de uma tela de distância. Pausa fora da seção e com a aba oculta.
+- Movimento reduzido, navegador sem H.264, Save-Data/2G ou falha de carregamento: composição estática com poster (frame 0, laterais livres) e toda a copy, sem trilha longa.
 
 ## Previews dos projetos
 

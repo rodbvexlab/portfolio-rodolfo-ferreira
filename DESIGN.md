@@ -13,7 +13,7 @@ A copy vigente em português e inglês está em `src/i18n/translations.ts`. As d
 1. Abertura: nome, atuação, descrição curta e acesso aos projetos e contato, sobre o vídeo controlado pelo scroll.
 2. Projetos selecionados: imagens existentes, títulos e descrições curtas.
 3. Serviços: título e descrição à esquerda, vídeo da ilha abaixo deles, e quatro linhas à direita: sites, sistemas internos, automações e consultoria.
-4. Sobre: retrato existente e experiência em desenvolvimento web e TI.
+4. Sobre: pausa editorial clara com vídeo de fundo e a apresentação em dois momentos sincronizados ao scroll.
 5. Contato: WhatsApp e formulário.
 
 Não duplicar serviços com uma seção de formatos. O funcionamento da contratação cabe em um parágrafo, sem cards de processo.
@@ -41,6 +41,15 @@ Palco sticky de 100svh dentro de uma hero de 270svh (210svh abaixo de 768 px). O
 - CTAs recolhidos ficam `inert`.
 - "Reduzir movimento": hero de 100svh com poster, texto completo e sem vídeo.
 - Mídia, comandos e estratégia de keyframes: `docs/hero-video.md`.
+
+## Sobre
+
+Única seção clara: fundo do próprio vídeo (#EEF1F5), tipografia escura (#111317), título em Instrument Serif e frases em Geist, rótulo em ciano escuro (#0E7490). O vídeo é o palco inteiro, sem a foto e sem véu sobre a imagem. A leitura vem do posicionamento no terço superior, medido nos frames, e de uma luz suave localizada atrás de cada grupo.
+
+1. Primeiro momento, à esquerda: "Sou o Rodolfo." e duas frases.
+2. Segundo momento, à direita (texto alinhado à esquerda): duas frases e a linha de fechamento.
+
+Cada frase entra e sai com fade e deslocamento curto. Faixas curtas fazem a transição do preto para o claro e de volta. Em telas intermediárias, texto à esquerda e vídeo à direita; no celular, vídeo em cima e texto abaixo, na mesma área. Com movimento reduzido ou falha, poster e toda a copy de uma vez.
 
 ## Vídeo de serviços
 
