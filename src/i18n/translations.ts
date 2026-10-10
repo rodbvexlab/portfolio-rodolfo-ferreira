@@ -34,8 +34,10 @@ export const pt = {
   },
   services: {
     "label": "Serviços",
-    "headline": "Como posso ajudar\nno seu projeto.",
-    "body": "Cada projeto começa entendendo o que ele precisa resolver. A partir daí, escolho o formato e as ferramentas certas, de uma landing page a um sistema completo.",
+    "lead": [
+      "Começo pelo que o seu projeto precisa resolver.",
+      "Depois escolho o formato e as ferramentas que fazem sentido para ele."
+    ] as [string, string],
     "cards": [
       {
         "icon": "dashboard",
@@ -83,15 +85,16 @@ export const pt = {
   },
   portfolio: {
     label: 'Projetos selecionados',
-    headline: 'Cada projeto com a sua identidade.',
     available: 'Disponível para novos projetos',
     view_case: 'Ver case',
     back: '← Voltar',
   },
   process: {
     "label": "Processo",
-    "headline": "Do briefing\nao site no ar.",
-    "body": "Um processo simples e transparente. Primeiro entendo a necessidade; depois desenho e desenvolvo o que o projeto realmente pede.",
+    "lead": [
+      "Cinco etapas, do primeiro briefing ao site no ar.",
+      "Em cada uma você sabe o que está sendo feito e o que vem a seguir."
+    ] as [string, string],
     "steps": [
       {
         "num": "01",
@@ -195,8 +198,10 @@ export const en: typeof pt = {
   },
   services: {
     "label": "Services",
-    "headline": "How I can help\nwith your project.",
-    "body": "Every project starts by understanding what it needs to solve. From there, I pick the right format and tools, from a landing page to a complete system.",
+    "lead": [
+      "I start with what your project needs to solve.",
+      "Then I pick the format and the tools that make sense for it."
+    ] as [string, string],
     "cards": [
       {
         "icon": "dashboard",
@@ -244,15 +249,16 @@ export const en: typeof pt = {
   },
   portfolio: {
     label: 'Selected work',
-    headline: 'Each project with its own identity.',
     available: 'Available for new projects',
     view_case: 'View case',
     back: '← Back',
   },
   process: {
     "label": "Process",
-    "headline": "From briefing\nto launch.",
-    "body": "A simple, transparent process. First I understand the need; then I design and build what the project really calls for.",
+    "lead": [
+      "Five steps, from the first briefing to a live site.",
+      "At each one you know what is being done and what comes next."
+    ] as [string, string],
     "steps": [
       {
         "num": "01",
