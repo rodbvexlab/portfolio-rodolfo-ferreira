@@ -11,7 +11,7 @@ export const pt = {
     "headline": [
       "Do design ao código"
     ],
-    "body": "Crio sites, landing pages e sistemas web do zero. Você fala direto com quem desenha e programa o projeto, e nada se perde no\u00a0caminho.",
+    "body": "Primeiro eu entendo o que o seu projeto precisa. Depois desenho e desenvolvo cada detalhe, com as ferramentas certas, para entregar um resultado à\u00a0altura.",
     "cta_primary": "Ver projetos",
     "cta_secondary": "Falar comigo",
     "proof": [
@@ -20,47 +20,48 @@ export const pt = {
       "Publicado e pronto para usar"
     ],
     "mockup": {
-      "filename": "novo-projeto.tsx",
-      "comment1": "// tudo no mesmo projeto",
-      "label1": "estrutura",
-      "val1": "conteúdo, fluxos e navegação",
-      "label2": "interface",
-      "val2": "identidade visual e interação",
-      "label3": "código",
-      "val3": "React, TypeScript e deploy",
+      "filename": "stack.ts",
+      "comment1": "// o que uso no dia a dia",
+      "rows": [
+        { "label": "front-end", "value": "React, Next.js e TypeScript" },
+        { "label": "interface", "value": "Tailwind CSS, shadcn/ui e Radix" },
+        { "label": "movimento", "value": "Framer Motion, GSAP e Three.js" },
+        { "label": "back-end", "value": "Node.js, Express e APIs de IA" },
+        { "label": "deploy", "value": "Vercel e Google Cloud" }
+      ],
       "status": "disponível para novos projetos"
     }
   },
   services: {
     "label": "Serviços",
-    "headline": "Sites e sistemas,\nsem template.",
-    "body": "Todo projeto começa pelo problema que precisa resolver. A partir daí, defino o formato certo — de uma landing page a um sistema interno.",
+    "headline": "Como posso ajudar\nno seu projeto.",
+    "body": "Cada projeto começa entendendo o que ele precisa resolver. A partir daí, escolho o formato e as ferramentas certas, de uma landing page a um sistema completo.",
     "cards": [
       {
         "icon": "dashboard",
         "title": "Web Design",
-        "description": "Sites institucionais e landing pages com identidade visual forte e navegação clara."
+        "description": "Sites institucionais e landing pages com identidade própria, desenvolvidos em React e Next.js."
       },
       {
         "icon": "database",
         "title": "Sistemas Web",
-        "description": "Painéis, áreas restritas e ferramentas internas que organizam a operação do dia a dia."
+        "description": "Painéis e ferramentas internas em React, TypeScript e Node.js para organizar a rotina da sua equipe."
       },
       {
         "icon": "bolt",
         "title": "Automação",
-        "description": "Integrações e fluxos automáticos para você parar de repetir a mesma tarefa toda semana."
+        "description": "Integrações entre ferramentas e APIs, incluindo IA, para automatizar tarefas repetitivas."
       },
       {
         "icon": "construction",
         "title": "Soluções sob medida",
-        "description": "Quando nenhuma ferramenta pronta resolve, eu construo a que está faltando."
+        "description": "Quando o projeto pede algo específico, desenho e desenvolvo uma solução do zero."
       }
     ],
     formats: {
       label: 'Formatos',
-      headline: 'Escopo claro\nantes de começar.',
-      body: 'Toda proposta começa com uma conversa sobre o seu contexto. Você recebe por escrito o que será entregue, o prazo e o investimento.',
+      headline: 'Tudo combinado\nantes de começar.',
+      body: 'Toda proposta começa com uma conversa sobre o seu contexto. Depois você recebe por escrito o que será entregue, o prazo e o investimento.',
       steps: [
         { title: 'Conversa', description: 'Você conta o que precisa resolver.' },
         { title: 'Proposta', description: 'Escopo, prazo e valor definidos por escrito.' },
@@ -82,7 +83,7 @@ export const pt = {
   },
   portfolio: {
     label: 'Projetos selecionados',
-    headline: 'Nenhum projeto igual ao outro.',
+    headline: 'Cada projeto com a sua identidade.',
     available: 'Disponível para novos projetos',
     view_case: 'Ver case',
     back: '← Voltar',
@@ -90,7 +91,7 @@ export const pt = {
   process: {
     "label": "Processo",
     "headline": "Do briefing\nao site no ar.",
-    "body": "Um processo enxuto, sem burocracia. Primeiro entendo o problema; depois desenho e construo só o que precisa existir.",
+    "body": "Um processo simples e transparente. Primeiro entendo a necessidade; depois desenho e desenvolvo o que o projeto realmente pede.",
     "steps": [
       {
         "num": "01",
@@ -110,22 +111,13 @@ export const pt = {
       {
         "num": "04",
         "title": "Desenvolvimento",
-        "description": "Levar o design para o código: rápido, responsivo e fiel ao layout."
+        "description": "Levar o design para o código com React e TypeScript: rápido, responsivo e fiel ao layout."
       },
       {
         "num": "05",
         "title": "Entrega",
         "description": "Publicar, testar e deixar tudo pronto para você usar."
       }
-    ]
-  },
-  about: {
-    "label": "Sobre mim",
-    "headline": "Um designer\nque também programa.",
-    "paragraphs": [
-      "Sou Rodolfo Ferreira, designer e desenvolvedor web. Crio sites, sistemas e experiências digitais do início ao fim — da primeira conversa ao projeto publicado.",
-      "Antes de abrir o editor, quero entender o problema. É isso que me permite cuidar ao mesmo tempo do visual e da estrutura que faz tudo funcionar.",
-      "No dia a dia, meu trabalho passa por design de interfaces, desenvolvimento front-end, automações e uso prático de IA."
     ]
   },
   contact: {
@@ -180,7 +172,7 @@ export const en: typeof pt = {
     "headline": [
       "From design to code"
     ],
-    "body": "I build websites, landing pages, and web systems from scratch. You work directly with the person designing and coding your project, so nothing gets lost along the\u00a0way.",
+    "body": "First I understand what your project needs. Then I design and build every detail, with the right tools, to deliver work that lives up to\u00a0it.",
     "cta_primary": "View projects",
     "cta_secondary": "Talk to me",
     "proof": [
@@ -189,47 +181,48 @@ export const en: typeof pt = {
       "Published and ready to use"
     ],
     "mockup": {
-      "filename": "new-project.tsx",
-      "comment1": "// all in one project",
-      "label1": "structure",
-      "val1": "content, flows & navigation",
-      "label2": "interface",
-      "val2": "visual identity & interaction",
-      "label3": "code",
-      "val3": "React, TypeScript & deploy",
+      "filename": "stack.ts",
+      "comment1": "// what I use day to day",
+      "rows": [
+        { "label": "front-end", "value": "React, Next.js & TypeScript" },
+        { "label": "interface", "value": "Tailwind CSS, shadcn/ui & Radix" },
+        { "label": "motion", "value": "Framer Motion, GSAP & Three.js" },
+        { "label": "back-end", "value": "Node.js, Express & AI APIs" },
+        { "label": "deploy", "value": "Vercel & Google Cloud" }
+      ],
       "status": "available for new projects"
     }
   },
   services: {
     "label": "Services",
-    "headline": "Websites and systems,\nno templates.",
-    "body": "Every project starts with the problem it needs to solve. From there, I pick the right format — from a landing page to an internal system.",
+    "headline": "How I can help\nwith your project.",
+    "body": "Every project starts by understanding what it needs to solve. From there, I pick the right format and tools, from a landing page to a complete system.",
     "cards": [
       {
         "icon": "dashboard",
         "title": "Web Design",
-        "description": "Business websites and landing pages with a strong visual identity and clear navigation."
+        "description": "Business websites and landing pages with their own identity, built with React and Next.js."
       },
       {
         "icon": "database",
         "title": "Web Systems",
-        "description": "Dashboards, members areas, and internal tools that keep day-to-day operations organized."
+        "description": "Dashboards and internal tools in React, TypeScript, and Node.js to organize your team’s routine."
       },
       {
         "icon": "bolt",
         "title": "Automation",
-        "description": "Integrations and automated workflows, so you stop repeating the same task every week."
+        "description": "Integrations between tools and APIs, including AI, to automate repetitive tasks."
       },
       {
         "icon": "construction",
         "title": "Custom Solutions",
-        "description": "When no off-the-shelf tool solves it, I build the one that's missing."
+        "description": "When a project needs something specific, I design and build a solution from scratch."
       }
     ],
     formats: {
       label: 'Formats',
-      headline: 'Clear scope\nbefore we start.',
-      body: 'Every proposal starts with a conversation about your context. You get in writing what will be delivered, the timeline, and the investment.',
+      headline: 'Everything agreed\nbefore we start.',
+      body: 'Every proposal starts with a conversation about your context. Then you get in writing what will be delivered, the timeline, and the investment.',
       steps: [
         { title: 'Conversation', description: 'You tell me what needs solving.' },
         { title: 'Proposal', description: 'Scope, timeline, and price set in writing.' },
@@ -251,7 +244,7 @@ export const en: typeof pt = {
   },
   portfolio: {
     label: 'Selected work',
-    headline: 'No two projects alike.',
+    headline: 'Each project with its own identity.',
     available: 'Available for new projects',
     view_case: 'View case',
     back: '← Back',
@@ -259,7 +252,7 @@ export const en: typeof pt = {
   process: {
     "label": "Process",
     "headline": "From briefing\nto launch.",
-    "body": "A lean process, no red tape. First I understand the problem, then I design and build only what needs to exist.",
+    "body": "A simple, transparent process. First I understand the need; then I design and build what the project really calls for.",
     "steps": [
       {
         "num": "01",
@@ -279,22 +272,13 @@ export const en: typeof pt = {
       {
         "num": "04",
         "title": "Development",
-        "description": "Bring the design into code: fast, responsive, and true to the layout."
+        "description": "Bring the design into code with React and TypeScript: fast, responsive, and true to the layout."
       },
       {
         "num": "05",
         "title": "Delivery",
         "description": "Publish, test, and get everything ready for you to use."
       }
-    ]
-  },
-  about: {
-    "label": "About me",
-    "headline": "A designer\nwho also codes.",
-    "paragraphs": [
-      "I'm Rodolfo Ferreira, a web designer and developer. I build websites, systems, and digital experiences from start to finish — from the first conversation to the published project.",
-      "Before I open the editor, I want to understand the problem. That's what lets me take care of both the visuals and the structure that makes everything work.",
-      "Day to day, my work covers interface design, front-end development, automation, and practical uses of AI."
     ]
   },
   contact: {

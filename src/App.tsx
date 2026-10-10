@@ -5,7 +5,6 @@ import Hero from './components/Hero'
 import Services from './components/Services'
 import Portfolio from './components/Portfolio'
 import Process from './components/Process'
-import About from './components/About'
 import ContactCTA from './components/ContactCTA'
 import WhatsAppFloating from './components/WhatsAppFloating'
 import CustomCursor from './components/CustomCursor'
@@ -85,7 +84,6 @@ function HomePage() {
       <Services />
       <Portfolio />
       <Process />
-      <About />
       <ContactCTA />
       <SiteFooter />
       <WhatsAppFloating />
