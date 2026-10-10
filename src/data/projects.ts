@@ -10,7 +10,7 @@ export interface Project {
   year: string
   tags: string[]
   link: string
-  video?: string          // legacy hover-video field — consumed by the current ProjectCard when there's no `poster`
+  video?: string          // full-length recording (heavy). Played only by the legacy card path when there's no `poster`
   wide?: boolean          // legacy flagship flag, superseded by `gridSpan` — no longer consumed by Portfolio.tsx
   inGrid?: boolean        // false hides the project from the Portfolio grid while keeping its /case/:slug route. Omitted = true.
   gridSpan?: 12 | 7 | 5   // desktop (lg:) bento column span out of 12. Omitted = default 1-col mobile / balanced 2-col tablet.
@@ -18,8 +18,8 @@ export interface Project {
   mediaAspect?: '21/9' | '4/3' | '4/5' | '5/4'  // desktop aspect for non-flagship (gridSpan !== 12) poster cards
   poster?: string         // key-visual image, desktop — path relative to /public
   posterMobile?: string   // optional mobile-specific poster/crop
-  videoPreview?: string   // preview video, desktop — path relative to /public
-  videoPreviewMobile?: string  // optional mobile-specific preview cut
+  videoPreview?: string   // short, light preview cut (desktop) — path relative to /public; see docs/hero-video.md
+  videoPreviewMobile?: string  // optional smaller cut for touch / narrow screens
   description: { pt: string; en: string }
   case: CaseStudy
 }
@@ -40,8 +40,8 @@ export const projects: Project[] = [
     videoPreview: '/portfolio/origens/hero-desktop.mp4',
     videoPreviewMobile: '/portfolio/origens/hero-mobile.mp4',
     description: {
-      pt: 'Site para uma clínica de psicoterapia, com direção editorial de cinema e identidade visual própria.',
-      en: 'Website for a psychotherapy practice, with cinematic editorial direction and its own visual identity.',
+      pt: 'Site para clínica de psicologia, com apresentação dos profissionais e formas de atendimento.',
+      en: 'Website for a psychology practice, presenting its professionals and care options.',
     },
     case: {
       challenge: {
@@ -65,13 +65,15 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Web Design', 'Automotivo', 'Institucional'],
     link: 'https://www.bonitoscar.com.br/',
-    video: '/video/bonitos-car.mp4', // preserved for a future videoPreview — not wired yet
+    video: '/video/bonitos-car.mp4', // full screen recording; previews below are cut from it
     inGrid: true,
     gridSpan: 7,
     poster: '/portfolio/bonitos/poster-editorial.webp',
+    videoPreview: '/portfolio/bonitos/preview-desktop.mp4',
+    videoPreviewMobile: '/portfolio/bonitos/preview-mobile.mp4',
     description: {
-      pt: 'Site para uma funilaria e pintura automotiva, com caminhos separados para leves e pesados e tudo levando ao orçamento.',
-      en: 'Website for an auto body and paint shop, with separate paths for cars and heavy vehicles, all leading to a quote.',
+      pt: 'Site de funilaria e pintura, com páginas para veículos leves e pesados e orçamento pelo WhatsApp.',
+      en: 'Auto body and paint website, with pages for cars and heavy vehicles and quotes through WhatsApp.',
     },
     case: {
       challenge: {
@@ -100,8 +102,8 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/asme/asme-poster.webp',
     description: {
-      pt: 'Portfólio digital com tipografia editorial, imagens em movimento e um tour pela abordagem e pelos serviços criativos.',
-      en: 'Digital portfolio with editorial typography, moving imagery, and a tour of its creative approach and services.',
+      pt: 'Portfólio de serviços criativos, com apresentação dos trabalhos e da abordagem do estúdio.',
+      en: 'Creative services portfolio presenting the studio’s work and approach.',
     },
     case: {
       challenge: {
@@ -125,14 +127,16 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Web Design', 'Landing Page', 'Branding'],
     link: 'https://barber-marques.vercel.app',
-    video: '/video/barbearia-marques.mp4', // preserved for a future videoPreview — not wired yet
+    video: '/video/barbearia-marques.mp4', // full screen recording; previews below are cut from it
     inGrid: true,
     gridSpan: 5,
     mediaAspect: '5/4',
     poster: '/portfolio/marques/poster-editorial.webp',
+    videoPreview: '/portfolio/marques/preview-desktop.mp4',
+    videoPreviewMobile: '/portfolio/marques/preview-mobile.mp4',
     description: {
-      pt: 'Landing page para uma barbearia, com identidade forte, agendamento integrado e a experiência do cliente no centro.',
-      en: 'Landing page for a barbershop, with a strong identity, built-in booking, and the client experience front and center.',
+      pt: 'Site para barbearia, com serviços, galeria e acesso ao agendamento.',
+      en: 'Barbershop website with services, a gallery and access to booking.',
     },
     case: {
       challenge: {
@@ -156,14 +160,16 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Web Design', 'Estética', 'Experiência'],
     link: 'https://aetheria-alpha-five.vercel.app/',
-    video: '/video/aetheria.mp4', // preserved for a future videoPreview — not wired yet
+    video: '/video/aetheria.mp4', // full screen recording; previews below are cut from it
     inGrid: true,
     gridSpan: 7,
     mediaAspect: '5/4',
     poster: '/portfolio/aetheria/poster-editorial.webp',
+    videoPreview: '/portfolio/aetheria/preview-desktop.mp4',
+    videoPreviewMobile: '/portfolio/aetheria/preview-mobile.mp4',
     description: {
-      pt: 'Site para uma marca de estética e bem-estar, com clima editorial e tratamentos como Revive e Glow.',
-      en: 'Website for a beauty and wellness brand, with an editorial mood and treatments such as Revive and Glow.',
+      pt: 'Site de estética, com apresentação dos tratamentos e agendamento.',
+      en: 'Beauty website with treatment information and booking.',
     },
     case: {
       challenge: {
@@ -193,8 +199,8 @@ export const projects: Project[] = [
     // SUMMER VIBES confirmed as part of LARIS30 by the project owner.
     poster: '/portfolio/laris30/poster-editorial.webp',
     description: {
-      pt: 'Convite de aniversário em forma de experiência web mobile, com direção Y2K/disco e identidade própria.',
-      en: 'A birthday invitation turned mobile web experience, with Y2K/disco art direction and its own identity.',
+      pt: 'Convite digital interativo para aniversário, desenvolvido para o celular.',
+      en: 'Interactive birthday invitation built for mobile.',
     },
     case: {
       challenge: {
@@ -218,12 +224,15 @@ export const projects: Project[] = [
     year: '2025',
     tags: ['Design', 'Branding', 'Web'],
     link: 'https://www.etrecreative.com.br/',
-    video: '/video/etre-creative.mp4',
+    video: '/video/etre-creative.mp4', // full screen recording; poster frame and previews are cut from it
     inGrid: true,
     gridSpan: 5,
+    poster: '/portfolio/etre-creative/poster-frame.webp',
+    videoPreview: '/portfolio/etre-creative/preview-desktop.mp4',
+    videoPreviewMobile: '/portfolio/etre-creative/preview-mobile.mp4',
     description: {
-      pt: 'Site para um estúdio criativo, com linguagem editorial e uma identidade sofisticada à altura do posicionamento da marca.',
-      en: 'Website for a creative studio, with an editorial voice and a sophisticated identity that matches the brand’s positioning.',
+      pt: 'Site institucional para estúdio criativo, com serviços e portfólio.',
+      en: 'Business website for a creative studio, with services and a portfolio.',
     },
     case: {
       challenge: {
@@ -252,8 +261,8 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/stefani-amorim/poster-editorial.webp',
     description: {
-      pt: 'Site para uma loja de brinquedos educativos e papelaria afetiva, com catálogo e atendimento pelo WhatsApp.',
-      en: 'Website for an educational toy and stationery store, with a product catalog and service through WhatsApp.',
+      pt: 'Site de brinquedos e papelaria, com catálogo e atendimento pelo WhatsApp.',
+      en: 'Toy and stationery website with a catalog and WhatsApp contact.',
     },
     case: {
       challenge: {

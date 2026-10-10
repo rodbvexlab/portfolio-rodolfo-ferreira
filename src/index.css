@@ -22,7 +22,7 @@
     font-family: var(--font-sans);
     background-color: #000;
     color: #e8e6e3;
-    cursor: none;
+    cursor: auto;
     /* Prevent layout shift from scrollbar */
     scrollbar-gutter: stable;
   }
@@ -52,6 +52,173 @@
 
 /* ─── Liquid Glass ──────────────────────────────────────────────── */
 @layer components {
+  .section-label {
+    @apply text-[12px] font-mono text-cyan-300;
+    letter-spacing: 0.06em;
+  }
+  .section-title {
+    @apply font-sans font-normal text-[34px] md:text-[46px] leading-[1.12] tracking-[-0.04em] text-white;
+  }
+  .primary-link {
+    @apply inline-flex items-center justify-center gap-6 px-6 py-3.5 rounded-lg bg-white text-black text-[14px] hover:bg-cyan-300 transition-colors;
+  }
+  /* ─── Hero: sticky stage scrubbed by the scroll (Hero.tsx) ───
+     The track is taller than the viewport only when motion is allowed;
+     the stage stays pinned while the track scrolls past it. */
+  .hero-track {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    background: #000;
+  }
+  .hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+  }
+  .hero-video {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .hero-stage[data-video='ready'] .hero-video {
+    opacity: 1;
+  }
+  /* Localized shades: only where text sits, never a uniform veil over the video. */
+  .hero-shade-top,
+  .hero-shade-intro,
+  .hero-shade-exit {
+    position: absolute;
+    pointer-events: none;
+  }
+  .hero-shade-top {
+    inset: 0 0 auto 0;
+    height: 9rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0));
+  }
+  .hero-shade-intro {
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.66) 30%, rgba(0,0,0,0) 72%);
+  }
+  .hero-shade-exit {
+    inset: 0;
+    opacity: 0;
+    background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.9) 36%, rgba(0,0,0,0) 80%);
+  }
+  @media (min-width: 768px) {
+    .hero-shade-intro {
+      background:
+        linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.52) 32%, rgba(0,0,0,0) 62%),
+        radial-gradient(ellipse 58% 92% at 0% 100%, rgba(0,0,0,0.62), rgba(0,0,0,0) 72%);
+    }
+  }
+  .hero-copy {
+    text-shadow: 0 2px 28px rgba(0,0,0,0.4);
+  }
+  .hero-progress {
+    @apply absolute z-10 right-3 md:right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3;
+  }
+  .hero-progress-fill {
+    @apply absolute inset-0 bg-cyan-300 origin-top;
+    transform: scaleY(0);
+  }
+
+  /* ─── Services video (ServicesVideo.tsx) ───
+     Six mask layers, intersected (alpha = product), no frame or radius:
+     1. soft ellipse around the island        4. right edge (content is pure black)
+     2. top edge                              5. bottom edge (content is pure black)
+     3. left edge                             6. dims the core of the golden glow
+     Ramps use eased stops (smoothstep) so no fade start reads as a line.
+     Tuned on real frames: the island keeps full alpha in every frame; all
+     four edges reach 0 (docs/hero-video.md). */
+  .services-media {
+    position: relative;
+    aspect-ratio: 1180 / 988;
+    --services-mask:
+      radial-gradient(ellipse 62% 62% at 56% 56%, #000 60%, rgba(0,0,0,0.84) 70%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.16) 90%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.16) 4.5%, rgba(0,0,0,0.5) 9%, rgba(0,0,0,0.84) 13.5%, #000 18%),
+      linear-gradient(to right, transparent 0%, rgba(0,0,0,0.16) 4%, rgba(0,0,0,0.5) 8%, rgba(0,0,0,0.84) 12%, #000 16%),
+      linear-gradient(to left, transparent 0%, rgba(0,0,0,0.5) 3.5%, #000 7%),
+      linear-gradient(to top, transparent 0%, rgba(0,0,0,0.5) 6%, #000 12%),
+      radial-gradient(ellipse 20% 26% at 12% 20%, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.24) 25%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.86) 75%, #000 100%);
+    -webkit-mask-image: var(--services-mask);
+    mask-image: var(--services-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+  .services-video {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .services-media[data-video='ready'] .services-video {
+    opacity: 1;
+  }
+  /* Mobile: full bleed under the copy. Desktop: left column, bleeding into the
+     page margin and a little into the column gap. */
+  .services-media-layout {
+    width: calc(100% + 3rem);
+    margin: 0.25rem -1.5rem -1.5rem;
+  }
+  @media (min-width: 768px) {
+    .services-media-layout {
+      width: calc(100% + 5rem);
+      max-width: 40rem;
+      margin: 0.5rem 0 -1.5rem -5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .services-media-layout {
+      width: calc(100% + 8rem);
+      max-width: none;
+      /* the lowest ~19% of the frame is black: let the section end closer to the island */
+      margin: -1rem 0 -5rem -5rem;
+    }
+  }
+
+  /* Projects rise over the last part of the pinned hero. */
+  .projects-section {
+    background:
+      radial-gradient(ellipse 60% 40% at 10% 100%, rgba(76,215,246,0.04) 0%, transparent 65%),
+      linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0.78) 9rem, #000 19rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-track {
+      height: 210vh;
+      height: 210svh;
+    }
+    .projects-section {
+      margin-top: -45vh;
+      margin-top: -45svh;
+    }
+    @media (min-width: 768px) {
+      .hero-track {
+        height: 270vh;
+        height: 270svh;
+      }
+      .projects-section {
+        margin-top: -60vh;
+        margin-top: -60svh;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-progress,
+    .hero-shade-exit {
+      display: none;
+    }
+  }
+  .skip-link {
+    @apply fixed top-4 left-4 z-[100] bg-white text-black px-4 py-3 rounded-lg;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
   .liquid-glass {
     background: rgba(255, 255, 255, 0.01);
     backdrop-filter: blur(20px);
@@ -128,18 +295,18 @@
     background-color: rgba(10, 10, 10, 0.88) !important;
   }
 
-  /* Navbar needs slightly more opacity without blur */
-  nav {
+  /* Navbar needs slightly more opacity without blur — except over the hero video */
+  header:not([data-over-hero='true']) nav {
     background-color: rgba(6, 6, 6, 0.92) !important;
   }
 }
 
 /* 2 — content-visibility: skip layout + paint for below-fold sections.
-   The browser skips rendering until the section is near the viewport. */
+   The browser skips rendering until the section is near the viewport.
+   #projects is excluded: it starts below the tall hero, and an estimated
+   height there breaks scroll restoration when returning from a case. */
 @media (pointer: coarse) {
   #services,
-  #projects,
-  #process,
   #about,
   #contato {
     content-visibility: auto;
