@@ -1,0 +1,92 @@
+# Vídeo da abertura e previews dos projetos
+
+Referência técnica da mídia usada na hero controlada pelo scroll (`src/components/Hero.tsx`, `src/lib/scrollScrub.ts`) e nos previews dos cards (`src/components/Portfolio.tsx`).
+
+## Original da hero
+
+- Fonte: `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_230900_ef8565a6-16eb-4fe9-98e4-4b972d3f436d.mp4`
+- SHA-256: `b65e059cc3bf09f7b082e4ea58ae9837bc6832310d0c5a3117e67b2078f2bf3d`
+- H.264 High, 1920×1080, 24 fps, 241 frames, 10,04 s, yuv420p, sem áudio, 9,8 MB.
+- **Um único keyframe** (o primeiro frame). Buscar um instante no fim do arquivo obriga o decoder a decodificar tudo desde o início, por isso o original não serve para scrubbing.
+- O original não é versionado no repositório. As versões abaixo mantêm os 241 frames, a duração, a cor e, no desktop, a resolução original.
+
+## Versões para scrubbing
+
+| Arquivo | Dimensões | Tamanho | Keyframes |
+|---|---|---|---|
+| `public/hero/hero-scrub-desktop.mp4` | 1920×1080 | 6,4 MB (6.722.585 B) | 41 (a cada 6 frames, 0,25 s) |
+| `public/hero/hero-scrub-mobile.mp4` | 608×1080 (recorte central 9:16) | 2,6 MB (2.684.370 B) | 41 (a cada 6 frames) |
+| `public/hero/hero-poster-desktop.webp` | 1920×1080 | 170 KB | frame 0 |
+| `public/hero/hero-poster-mobile.webp` | 608×1080 | 57 KB | frame 0, mesmo recorte |
+
+Todas em H.264 High, `yuv420p`, `+faststart` (moov antes do mdat), sem B-frames e sem áudio.
+
+### Estratégia de keyframes
+
+All-intra foi testado e descartado. O vídeo tem flores com muito detalhe, que comprimem mal sem predição entre frames:
+
+| Teste (1920×1080 salvo indicação) | Tamanho | SSIM vs. original |
+|---|---|---|
+| all-intra, CRF 22 | 16,1 MB | 0,986 |
+| all-intra, CRF 26 | 11,5 MB | 0,979 |
+| all-intra 1280×720, CRF 26 | 6,8 MB | 0,963 |
+| **GOP 6, CRF 25, sem B-frames (escolhido)** | **6,4 MB** | **0,990** |
+| GOP 12, CRF 21 | 8,6 MB | 0,993 |
+| GOP 8 1600×900, CRF 25 | 4,6 MB | 0,987 |
+
+GOP 6 sem B-frames limita qualquer seek a no máximo 5 frames P após o keyframe anterior. Com o arquivo inteiro em memória, isso decodifica rápido e mantém a resolução original com qualidade maior que o all-intra do mesmo tamanho.
+
+### Comandos
+
+```bash
+SRC=hero-original.mp4
+COMMON="-an -c:v libx264 -profile:v high -pix_fmt yuv420p -movflags +faststart -preset slow -bf 0 -sc_threshold 0"
+
+# Desktop — resolução original
+ffmpeg -i $SRC $COMMON -g 6 -keyint_min 6 -crf 25 public/hero/hero-scrub-desktop.mp4
+
+# Mobile — recorte central 9:16, sem reescala (a figura fica centralizada em todo o vídeo)
+ffmpeg -i $SRC $COMMON -vf "crop=608:1080:656:0" -g 6 -keyint_min 6 -crf 25 public/hero/hero-scrub-mobile.mp4
+
+# Posters — frame 0, igual ao primeiro frame do scrubbing
+ffmpeg -i $SRC -vf "select=eq(n\,0)" -frames:v 1 -c:v libwebp -quality 74 public/hero/hero-poster-desktop.webp
+ffmpeg -i $SRC -vf "select=eq(n\,0),crop=608:1080:656:0" -frames:v 1 -c:v libwebp -quality 76 public/hero/hero-poster-mobile.webp
+
+# Conferência
+ffprobe -v error -select_streams v:0 -skip_frame nokey -show_entries frame=pts_time -of csv=p=0 public/hero/hero-scrub-desktop.mp4 | wc -l   # 41
+```
+
+## Como a hero usa o vídeo
+
+- O progresso é local à hero: `-track.top / (track.height - stage.height)`. A altura total da página não entra no cálculo.
+- Altura da hero: 270svh a partir de 768 px e 210svh abaixo disso. Com "reduzir movimento", a hero ocupa 100svh e não há vídeo.
+- O corte vertical é usado quando a tela tem proporção até 7:10 (celular em pé). Tablets em pé (768×1024) usam o 16:9.
+- O arquivo é baixado inteiro com `fetch` (prioridade baixa) e vira um object URL. A porcentagem só aparece quando há `Content-Length` sem compressão. Se o `fetch` falhar, o elemento carrega a URL direto.
+- O vídeo não é baixado com Save-Data, em conexão 2G ou quando o navegador não decodifica H.264. Nesses casos fica o poster.
+- O playhead se aproxima do alvo com suavização. Só um seek fica pendente por vez e o seguinte vai para o alvo mais recente. Sem movimento, o loop para e o vídeo fica pausado no frame correspondente.
+
+## Previews dos projetos
+
+Os vídeos em `public/video/*.mp4` são gravações de tela completas (33–40 MB, ~1908×908, 30 fps, com áudio). Eles continuam no repositório e no campo `video` de `projects.ts`, mas o card nunca os carrega quando existe poster. Os previews são trechos curtos recortados na proporção do card:
+
+| Projeto | Trecho | Recorte (x, largura) | Desktop | Mobile |
+|---|---|---|---|---|
+| Bonitos Car | 1,9–9,9 s | 100, 1450 (16:10) | 1152×720, 735 KB | 768×480, 300 KB |
+| Barbearia Marques | 3,5–11,5 s (pula o loader) | 248, 1140 (5:4) | 900×720, 455 KB | 600×480, 192 KB |
+| Aetheria | 0–8,5 s | 300, 1136 (5:4) | 900×720, 443 KB | 600×480, 207 KB |
+| Être Creative | 7,2–14,2 s (depois do pop-up) | 222, 1456 (16:10) | 1152×720, 576 KB | 768×480, 258 KB |
+
+O deslocamento horizontal de cada recorte mantém os títulos do site inteiros. Être não tinha poster; `poster-frame.webp` é o frame de 1 s da própria gravação (hero do site), no mesmo recorte do preview.
+
+```bash
+COMMON="-an -c:v libx264 -profile:v high -pix_fmt yuv420p -movflags +faststart -preset slow -g 48"
+# exemplo: Marques
+ffmpeg -ss 3.5 -t 8 -i public/video/barbearia-marques.mp4 $COMMON -vf "crop=1140:912:248:0,scale=900:720:flags=lanczos" -crf 26 public/portfolio/marques/preview-desktop.mp4
+ffmpeg -ss 3.5 -t 8 -i public/video/barbearia-marques.mp4 $COMMON -vf "crop=1140:912:248:0,scale=600:480:flags=lanczos" -crf 28 public/portfolio/marques/preview-mobile.mp4
+# poster do Être
+ffmpeg -ss 1 -i public/video/etre-creative.mp4 -frames:v 1 -vf "crop=1456:910:222:0" -c:v libwebp -quality 82 public/portfolio/etre-creative/poster-frame.webp
+```
+
+Comportamento: hover e foco de teclado no desktop; botão "Reproduzir prévia" no toque e com "reduzir movimento". Um preview ativo por vez. Pausa ao sair do card, ao rolar o card para fora da tela e ao esconder a aba. O `<video>` só é criado na primeira ativação, então nenhum preview é baixado na abertura da página.
+
+Atualizado em 10/10/2026.

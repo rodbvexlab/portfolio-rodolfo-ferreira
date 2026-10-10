@@ -62,14 +62,101 @@
   .primary-link {
     @apply inline-flex items-center justify-center gap-6 px-6 py-3.5 rounded-lg bg-white text-black text-[14px] hover:bg-cyan-300 transition-colors;
   }
-  .portfolio-hero {
-    background: radial-gradient(ellipse at 90% 30%, rgba(76,215,246,0.055), transparent 60%), #000;
+  /* ─── Hero: sticky stage scrubbed by the scroll (Hero.tsx) ───
+     The track is taller than the viewport only when motion is allowed;
+     the stage stays pinned while the track scrolls past it. */
+  .hero-track {
+    position: relative;
+    height: 100vh;
+    height: 100svh;
+    background: #000;
   }
-  .hero-grid {
-    @apply absolute inset-y-0 right-0 w-1/2 pointer-events-none;
-    background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: linear-gradient(to right, transparent, black);
+  .hero-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+  }
+  .hero-video {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .hero-stage[data-video='ready'] .hero-video {
+    opacity: 1;
+  }
+  /* Localized shades: only where text sits, never a uniform veil over the video. */
+  .hero-shade-top,
+  .hero-shade-intro,
+  .hero-shade-exit {
+    position: absolute;
+    pointer-events: none;
+  }
+  .hero-shade-top {
+    inset: 0 0 auto 0;
+    height: 9rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0));
+  }
+  .hero-shade-intro {
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.66) 30%, rgba(0,0,0,0) 72%);
+  }
+  .hero-shade-exit {
+    inset: 0;
+    opacity: 0;
+    background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.9) 36%, rgba(0,0,0,0) 80%);
+  }
+  @media (min-width: 768px) {
+    .hero-shade-intro {
+      background:
+        linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.52) 32%, rgba(0,0,0,0) 62%),
+        radial-gradient(ellipse 58% 92% at 0% 100%, rgba(0,0,0,0.62), rgba(0,0,0,0) 72%);
+    }
+  }
+  .hero-copy {
+    text-shadow: 0 2px 28px rgba(0,0,0,0.4);
+  }
+  .hero-progress {
+    @apply absolute z-10 right-3 md:right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3;
+  }
+  .hero-progress-fill {
+    @apply absolute inset-0 bg-cyan-300 origin-top;
+    transform: scaleY(0);
+  }
+
+  /* Projects rise over the last part of the pinned hero. */
+  .projects-section {
+    background:
+      radial-gradient(ellipse 60% 40% at 10% 100%, rgba(76,215,246,0.04) 0%, transparent 65%),
+      linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0.78) 9rem, #000 19rem);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-track {
+      height: 210vh;
+      height: 210svh;
+    }
+    .projects-section {
+      margin-top: -45vh;
+      margin-top: -45svh;
+    }
+    @media (min-width: 768px) {
+      .hero-track {
+        height: 270vh;
+        height: 270svh;
+      }
+      .projects-section {
+        margin-top: -60vh;
+        margin-top: -60svh;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-progress,
+    .hero-shade-exit {
+      display: none;
+    }
   }
   .skip-link {
     @apply fixed top-4 left-4 z-[100] bg-white text-black px-4 py-3 rounded-lg;
@@ -154,18 +241,18 @@
     background-color: rgba(10, 10, 10, 0.88) !important;
   }
 
-  /* Navbar needs slightly more opacity without blur */
-  nav {
+  /* Navbar needs slightly more opacity without blur — except over the hero video */
+  header:not([data-over-hero='true']) nav {
     background-color: rgba(6, 6, 6, 0.92) !important;
   }
 }
 
 /* 2 — content-visibility: skip layout + paint for below-fold sections.
-   The browser skips rendering until the section is near the viewport. */
+   The browser skips rendering until the section is near the viewport.
+   #projects is excluded: it starts below the tall hero, and an estimated
+   height there breaks scroll restoration when returning from a case. */
 @media (pointer: coarse) {
   #services,
-  #projects,
-  #process,
   #about,
   #contato {
     content-visibility: auto;

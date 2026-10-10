@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
+import Reveal from './Reveal'
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 
@@ -67,13 +68,13 @@ export default function ContactCTA() {
   return (
     <section id="contato" aria-labelledby="contact-title" className="px-6 md:px-20 py-20 md:py-28 border-t border-white/10">
       <div className="max-w-container-max mx-auto grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-24">
-        <div>
+        <Reveal>
           <p className="section-label mb-6">{contact.label}</p>
           <h2 id="contact-title" className="section-title">{contact.headline}</h2>
           <p className="mt-6 max-w-md text-[17px] leading-relaxed text-white/70">{contact.body}</p>
           <a href={t.footer.social.whatsapp} target="_blank" rel="noopener noreferrer" className="primary-link mt-8">{contact.whatsapp}<span aria-hidden="true">↗</span></a>
-        </div>
-        <div>
+        </Reveal>
+        <Reveal delay={0.08}>
           {status === 'success' ? (
             <p role="status" className="py-8 text-white/80">{contact.success}</p>
           ) : (
@@ -110,7 +111,7 @@ export default function ContactCTA() {
               </div>
             </form>
           )}
-        </div>
+        </Reveal>
       </div>
     </section>
   )

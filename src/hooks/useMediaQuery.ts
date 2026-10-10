@@ -1,20 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return window.matchMedia(query).matches
-  })
-
-  useEffect(() => {
+/** Subscribes to a CSS media query. Re-renders only when the match changes. */
+export function useMediaQuery(query: string): boolean {
+  const subscribe = useCallback((onChange: () => void) => {
     const mq = window.matchMedia(query)
-    setMatches(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setMatches(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
   }, [query])
-
-  return matches
+  const getSnapshot = () => window.matchMedia(query).matches
+  return useSyncExternalStore(subscribe, getSnapshot, () => false)
 }
 
 /** True on touch-primary devices (phones, tablets). Uses pointer:coarse — more reliable than screen width. */

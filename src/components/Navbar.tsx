@@ -5,14 +5,42 @@ import { useLanguage } from '../context/LanguageContext'
 export default function Navbar() {
   const { lang, t, toggle } = useLanguage()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [overHero, setOverHero] = useState(false)
   const menuButton = useRef<HTMLButtonElement>(null)
+  const header = useRef<HTMLElement>(null)
   const location = useLocation()
+  const isHome = location.pathname === '/'
   const links = [
     { label: t.nav.projects, hash: '#projects' },
     { label: t.nav.services, hash: '#services' },
     { label: t.nav.about, hash: '#about' },
     { label: t.nav.contact, hash: '#contato' },
   ]
+
+  // Transparent while the bar sits over the hero video; solid once the
+  // projects section reaches it. State only changes when that flips.
+  useEffect(() => {
+    if (!isHome) return
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const projects = document.getElementById('projects')
+      const bar = header.current
+      if (!projects || !bar) return
+      setOverHero(projects.getBoundingClientRect().top > bar.offsetHeight)
+    }
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update) }
+    schedule()
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
+    }
+  }, [isHome])
+
+  const transparent = isHome && overHero && !menuOpen
 
   useEffect(() => {
     if (!menuOpen) return
@@ -27,7 +55,7 @@ export default function Navbar() {
   }, [menuOpen])
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-black/95 border-b border-white/10">
+    <header ref={header} data-over-hero={transparent ? 'true' : undefined} className={`fixed top-0 inset-x-0 z-50 border-b transition-colors duration-300 ${transparent ? 'bg-transparent border-transparent' : 'bg-black/95 border-white/10'}`}>
       <nav aria-label={lang === 'pt' ? 'Navegação principal' : 'Main navigation'} className="max-w-container-max mx-auto px-6 md:px-20">
         <div className="flex items-center justify-between gap-5 min-h-[76px]">
           <Link to="/" onClick={() => setMenuOpen(false)} className="font-serif text-[23px] text-white whitespace-nowrap">Rodolfo Ferreira<span className="text-cyan-300">.</span></Link>

@@ -10,7 +10,7 @@ A copy vigente em português e inglês está em `src/i18n/translations.ts`. As d
 
 ## Estrutura da home
 
-1. Abertura: nome, atuação, descrição curta e acesso aos projetos e contato.
+1. Abertura: nome, atuação, descrição curta e acesso aos projetos e contato, sobre o vídeo controlado pelo scroll.
 2. Projetos selecionados: imagens existentes, títulos e descrições curtas.
 3. Serviços: quatro linhas — sites, sistemas internos, automações e consultoria.
 4. Sobre: retrato existente e experiência em desenvolvimento web e TI.
@@ -23,15 +23,32 @@ Não duplicar serviços com uma seção de formatos. O funcionamento da contrata
 - Preto como fundo principal; `#080808` na apresentação pessoal.
 - Branco para títulos e texto com opacidade mínima de 60% sobre preto.
 - Ciano `#4cd7f6` em rótulos, estados de foco e interação.
-- Geist nos títulos principais e interface; Instrument Serif no nome e título do portfólio.
+- Geist nos títulos principais e interface; Instrument Serif no nome e no título "Projetos selecionados".
 - Container máximo de 1440 px; padding de 24 px no celular e 80 px a partir de 768 px.
 - Bordas discretas e raio de 8 px nos novos controles; sem cards decorativos nos serviços.
-- Abertura com grade CSS discreta. Sem quadro de código, canvas ou vídeos de fundo.
 - Cursor nativo. Movimentos reduzidos conforme preferência do sistema.
+
+## Abertura com vídeo
+
+Palco sticky de 100svh dentro de uma hero de 270svh (210svh abaixo de 768 px). O scroll avança e recua o vídeo; parado, o vídeo fica no frame correspondente.
+
+1. Momento 1: rótulo, headline, descrição e CTAs no canto inferior esquerdo, legíveis desde o primeiro carregamento.
+2. Momento 2: o texto se recolhe (fade e deslocamento curto), o vídeo ocupa o palco e, no fim, "Projetos selecionados" sobe sobre a parte inferior escurecida.
+
+- Vídeo sem véu uniforme. Leitura garantida por gradientes localizados: topo (navbar), inferior esquerdo (abertura) e inferior (saída).
+- Indicador de progresso vertical discreto (01/02) na borda direita.
+- Navbar transparente sobre o vídeo; sólida quando Projetos chega até ela.
+- CTAs recolhidos ficam `inert`.
+- "Reduzir movimento": hero de 100svh com poster, texto completo e sem vídeo.
+- Mídia, comandos e estratégia de keyframes: `docs/hero-video.md`.
+
+Movimento fica concentrado na abertura, nos projetos (reveal por card e previews) e na entrada suave das seções seguintes. Sem cards, badges ou elementos decorativos competindo com o vídeo.
 
 ## Projetos e navegação
 
 Preservar seleção, URLs, slugs, posters e previews existentes. Descrições na home devem informar o tipo de entrega e funcionalidades. Tags detalhadas ficam nos estudos de caso.
+
+Previews: trechos curtos em `public/portfolio/<projeto>/preview-*.mp4`, nunca as gravações completas de `public/video`. Hover e foco no desktop; botão de reprodução no toque e com "reduzir movimento"; um preview ativo por vez.
 
 A navegação contém Projetos, Serviços, Sobre e Contato. Menu compacto até 1023 px, com estado anunciado e fechamento por Escape.
 
@@ -41,14 +58,15 @@ O formulário usa a configuração existente `VITE_WEB3FORMS_KEY`. Sem chave, pr
 
 ## Stack e verificações
 
-React + TypeScript + Vite, Tailwind CSS e React Router. Motion permanece nos projetos e cases.
+React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. A hero usa um controlador próprio (refs + requestAnimationFrame), sem biblioteca extra.
 
 - `npm ci --no-audit --no-fund`
 - `npm run build`
 - ESLint dos arquivos alterados
 - `git diff --check`
 - Conferir responsividade, navegação, idioma, previews e formulário em navegador antes de aprovar o layout final.
+- Conferir o scrubbing em Chrome e Safari reais (H.264), incluindo iPhone.
 
 Produção acompanha a branch `main` na Vercel. Revisões devem ser apresentadas em branch e PR.
 
-Atualizado em 09/10/2026.
+Atualizado em 10/10/2026.

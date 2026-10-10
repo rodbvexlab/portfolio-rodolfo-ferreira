@@ -15,7 +15,8 @@ export const pt = {
     "body": "Sou desenvolvedor freelancer. Crio sites, sistemas internos e automações para empresas e empreendedores.",
     "cta_primary": "Ver projetos",
     "cta_secondary": "Falar comigo",
-    "note": "Design, desenvolvimento e publicação."
+    "note": "Design, desenvolvimento e publicação.",
+    "loading": "Carregando vídeo"
   },
   "services": {
     "label": "Serviços",
@@ -44,7 +45,9 @@ export const pt = {
     "label": "Projetos selecionados",
     "view_case": "Ver projeto",
     "back": "← Voltar",
-    "intro": "Uma seleção dos meus trabalhos em desenvolvimento web."
+    "intro": "Uma seleção dos meus trabalhos em desenvolvimento web.",
+    "play_preview": "Reproduzir prévia",
+    "pause_preview": "Pausar prévia"
   },
   "contact": {
     "label": "Contato",
@@ -114,7 +117,8 @@ export const en: typeof pt = {
     "body": "I’m a freelance developer. I build websites, internal tools and automations for businesses and entrepreneurs.",
     "cta_primary": "View projects",
     "cta_secondary": "Talk to me",
-    "note": "Design, development and launch."
+    "note": "Design, development and launch.",
+    "loading": "Loading video"
   },
   "services": {
     "label": "Services",
@@ -143,7 +147,9 @@ export const en: typeof pt = {
     "label": "Selected work",
     "view_case": "View project",
     "back": "← Back",
-    "intro": "A selection of my web development work."
+    "intro": "A selection of my web development work.",
+    "play_preview": "Play preview",
+    "pause_preview": "Pause preview"
   },
   "contact": {
     "label": "Contact",
