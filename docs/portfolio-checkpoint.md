@@ -1,5 +1,7 @@
 # Checkpoint — Portfolio editorial
 
+> Registro histórico de curadoria. A revisão da home de 09/10/2026 está documentada em `DESIGN.md`: abertura → projetos → serviços → sobre → contato. Formatos e cards de processo foram removidos; as validações de navegador abaixo pertencem à rodada anterior.
+
 ## Entrega
 
 - Bento existente mantido: Ori.gens 12; Poliana 7 + LARIS30 5; Bonitos 12; Aetheria 7 + Être 5; Marques 5 + Stefani 7.

@@ -22,7 +22,7 @@
     font-family: var(--font-sans);
     background-color: #000;
     color: #e8e6e3;
-    cursor: none;
+    cursor: auto;
     /* Prevent layout shift from scrollbar */
     scrollbar-gutter: stable;
   }
@@ -52,6 +52,32 @@
 
 /* ─── Liquid Glass ──────────────────────────────────────────────── */
 @layer components {
+  .section-label {
+    @apply text-[12px] font-mono text-cyan-300;
+    letter-spacing: 0.06em;
+  }
+  .section-title {
+    @apply font-sans font-normal text-[34px] md:text-[46px] leading-[1.12] tracking-[-0.04em] text-white;
+  }
+  .primary-link {
+    @apply inline-flex items-center justify-center gap-6 px-6 py-3.5 rounded-lg bg-white text-black text-[14px] hover:bg-cyan-300 transition-colors;
+  }
+  .portfolio-hero {
+    background: radial-gradient(ellipse at 90% 30%, rgba(76,215,246,0.055), transparent 60%), #000;
+  }
+  .hero-grid {
+    @apply absolute inset-y-0 right-0 w-1/2 pointer-events-none;
+    background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to right, transparent, black);
+  }
+  .skip-link {
+    @apply fixed top-4 left-4 z-[100] bg-white text-black px-4 py-3 rounded-lg;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
   .liquid-glass {
     background: rgba(255, 255, 255, 0.01);
     backdrop-filter: blur(20px);

@@ -40,8 +40,8 @@ export const projects: Project[] = [
     videoPreview: '/portfolio/origens/hero-desktop.mp4',
     videoPreviewMobile: '/portfolio/origens/hero-mobile.mp4',
     description: {
-      pt: 'Site para uma clínica de psicoterapia, com direção editorial de cinema e identidade visual própria.',
-      en: 'Website for a psychotherapy practice, with cinematic editorial direction and its own visual identity.',
+      pt: 'Site para clínica de psicologia, com apresentação dos profissionais e formas de atendimento.',
+      en: 'Website for a psychology practice, presenting its professionals and care options.',
     },
     case: {
       challenge: {
@@ -70,8 +70,8 @@ export const projects: Project[] = [
     gridSpan: 7,
     poster: '/portfolio/bonitos/poster-editorial.webp',
     description: {
-      pt: 'Site para uma funilaria e pintura automotiva, com caminhos separados para leves e pesados e tudo levando ao orçamento.',
-      en: 'Website for an auto body and paint shop, with separate paths for cars and heavy vehicles, all leading to a quote.',
+      pt: 'Site de funilaria e pintura, com páginas para veículos leves e pesados e orçamento pelo WhatsApp.',
+      en: 'Auto body and paint website, with pages for cars and heavy vehicles and quotes through WhatsApp.',
     },
     case: {
       challenge: {
@@ -100,8 +100,8 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/asme/asme-poster.webp',
     description: {
-      pt: 'Portfólio digital com tipografia editorial, imagens em movimento e um tour pela abordagem e pelos serviços criativos.',
-      en: 'Digital portfolio with editorial typography, moving imagery, and a tour of its creative approach and services.',
+      pt: 'Portfólio de serviços criativos, com apresentação dos trabalhos e da abordagem do estúdio.',
+      en: 'Creative services portfolio presenting the studio’s work and approach.',
     },
     case: {
       challenge: {
@@ -131,8 +131,8 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/marques/poster-editorial.webp',
     description: {
-      pt: 'Landing page para uma barbearia, com identidade forte, agendamento integrado e a experiência do cliente no centro.',
-      en: 'Landing page for a barbershop, with a strong identity, built-in booking, and the client experience front and center.',
+      pt: 'Site para barbearia, com serviços, galeria e acesso ao agendamento.',
+      en: 'Barbershop website with services, a gallery and access to booking.',
     },
     case: {
       challenge: {
@@ -162,8 +162,8 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/aetheria/poster-editorial.webp',
     description: {
-      pt: 'Site para uma marca de estética e bem-estar, com clima editorial e tratamentos como Revive e Glow.',
-      en: 'Website for a beauty and wellness brand, with an editorial mood and treatments such as Revive and Glow.',
+      pt: 'Site de estética, com apresentação dos tratamentos e agendamento.',
+      en: 'Beauty website with treatment information and booking.',
     },
     case: {
       challenge: {
@@ -193,8 +193,8 @@ export const projects: Project[] = [
     // SUMMER VIBES confirmed as part of LARIS30 by the project owner.
     poster: '/portfolio/laris30/poster-editorial.webp',
     description: {
-      pt: 'Convite de aniversário em forma de experiência web mobile, com direção Y2K/disco e identidade própria.',
-      en: 'A birthday invitation turned mobile web experience, with Y2K/disco art direction and its own identity.',
+      pt: 'Convite digital interativo para aniversário, desenvolvido para o celular.',
+      en: 'Interactive birthday invitation built for mobile.',
     },
     case: {
       challenge: {
@@ -222,8 +222,8 @@ export const projects: Project[] = [
     inGrid: true,
     gridSpan: 5,
     description: {
-      pt: 'Site para um estúdio criativo, com linguagem editorial e uma identidade sofisticada à altura do posicionamento da marca.',
-      en: 'Website for a creative studio, with an editorial voice and a sophisticated identity that matches the brand’s positioning.',
+      pt: 'Site institucional para estúdio criativo, com serviços e portfólio.',
+      en: 'Business website for a creative studio, with services and a portfolio.',
     },
     case: {
       challenge: {
@@ -252,8 +252,8 @@ export const projects: Project[] = [
     mediaAspect: '5/4',
     poster: '/portfolio/stefani-amorim/poster-editorial.webp',
     description: {
-      pt: 'Site para uma loja de brinquedos educativos e papelaria afetiva, com catálogo e atendimento pelo WhatsApp.',
-      en: 'Website for an educational toy and stationery store, with a product catalog and service through WhatsApp.',
+      pt: 'Site de brinquedos e papelaria, com catálogo e atendimento pelo WhatsApp.',
+      en: 'Toy and stationery website with a catalog and WhatsApp contact.',
     },
     case: {
       challenge: {

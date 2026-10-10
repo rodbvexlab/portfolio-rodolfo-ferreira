@@ -4,7 +4,6 @@ import { ease } from '../lib/motion'
 import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { projects } from '../data/projects'
-import ScrambleText from './ScrambleText'
 import { useIsTouch, usePrefersReducedMotion } from '../hooks/useMediaQuery'
 
 const stagger = {
@@ -186,7 +185,7 @@ function ProjectCard({
       >
         {/* Visual container */}
         <div
-          className={`relative overflow-hidden rounded-2xl bg-[#0a0a0a] border border-white/[0.05]
+          className={`relative overflow-hidden rounded-lg bg-[#0a0a0a] border border-white/[0.05]
             transition-all duration-500 group-hover:border-white/[0.10]
             ${project.mediaAspect === '5/4' ? 'aspect-[5/4]' : gridSpan === 12
               ? 'aspect-[4/3] sm:aspect-[16/10] lg:aspect-[21/9]'
@@ -237,7 +236,7 @@ function ProjectCard({
               bg-black/70 backdrop-blur-md border border-white/10
               opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100
               translate-y-2 group-hover:translate-y-0 group-focus-visible:translate-y-0
-              transition-all duration-400"
+              transition-all duration-400 [@media(hover:none)]:opacity-100 [@media(hover:none)]:translate-y-0"
           >
             <span className="font-sans text-[11px] uppercase tracking-widest text-white/80">
               {t.portfolio.view_case}
@@ -250,33 +249,19 @@ function ProjectCard({
         <div className="mt-5 space-y-2">
           {/* Primary — project name dominates */}
           <div className="flex items-baseline justify-between gap-4">
-            <h3 className="font-serif text-[22px] leading-tight text-white/85
+            <h3 className="font-sans text-[21px] leading-tight tracking-[-0.025em] text-white/85
               group-hover:text-white transition-colors duration-300">
               {project.title}
             </h3>
-            <span className="font-mono text-[11px] text-white/25 shrink-0">{project.year}</span>
+            <span className="font-mono text-[11px] text-white/60 shrink-0">{project.year}</span>
           </div>
 
           {/* Secondary — description */}
-          <p className="font-sans text-[13px] text-white/50 leading-snug max-w-xs">
+          <p className="font-sans text-[13px] text-white/65 leading-relaxed max-w-lg">
             {project.description[lang]}
           </p>
         </div>
 
-        {/* Tags — tertiary */}
-        <div className="mt-3 flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="font-sans text-[10px] uppercase tracking-widest
-                text-white/30 border border-white/[0.08] px-2.5 py-1 rounded-full
-                group-hover:border-white/[0.14] group-hover:text-white/45
-                transition-all duration-300"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
       </Link>
     </motion.div>
   )
@@ -302,7 +287,7 @@ export default function Portfolio() {
     <section
       id="projects"
       aria-label={portfolio.label}
-      className="relative z-10 px-6 md:px-20 py-24 md:py-32 overflow-hidden"
+      className="relative z-10 px-6 md:px-20 pt-4 pb-20 md:pb-28 overflow-hidden"
       style={{
         background: 'radial-gradient(ellipse 60% 40% at 10% 100%, rgba(76,215,246,0.04) 0%, transparent 65%), #000',
       }}
@@ -314,30 +299,10 @@ export default function Portfolio() {
       />
 
       <div className="max-w-container-max mx-auto space-y-12 md:space-y-16">
-        {/* Header — no headline: the work opens the section */}
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={stagger}
-          className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 pb-6 border-b border-white/[0.06]"
-        >
-          <motion.div variants={cardAnim}>
-            <ScrambleText
-              text={portfolio.label}
-              className="text-[11px] uppercase tracking-[0.2em] text-white/40"
-              delay={100}
-            />
-          </motion.div>
-          <motion.div variants={cardAnim} className="flex items-center gap-2 text-white/30 font-sans text-[11px] uppercase tracking-[0.2em]">
-            <motion.span
-              animate={{ opacity: [1, 0.3, 1] }}
-              transition={{ repeat: Infinity, duration: 2.5 }}
-              className="w-1.5 h-1.5 rounded-full bg-cyan-400"
-            />
-            {portfolio.available}
-          </motion.div>
-        </motion.div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
+          <h2 className="font-serif text-[36px] md:text-[48px] leading-tight tracking-[-0.02em]">{portfolio.label}</h2>
+          <p className="text-[14px] text-white/65 max-w-[22rem]">{portfolio.intro}</p>
+        </div>
 
         {/* Cards grid */}
         <motion.div
@@ -345,7 +310,7 @@ export default function Portfolio() {
           whileInView="show"
           viewport={{ once: true, amount: 0.05 }}
           variants={stagger}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-14 lg:gap-y-16"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-10 lg:gap-y-12"
         >
           {projects
             .filter((project) => project.inGrid !== false)
