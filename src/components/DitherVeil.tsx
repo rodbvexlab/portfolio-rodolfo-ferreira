@@ -9,10 +9,11 @@
  * - Fails over instead of breaking: no WebGL2, a shader that does not link,
  *   an image that does not load or a lost context call `onFallback` (the
  *   caller shows a static image).
- * - `trigger="scroll"` (touch screens): no pointer; the colour opens from
- *   `focus` as the frame scrolls into view and closes again on the way back.
+ * - `reveal`: a 0–1 value read on scroll (e.g. a section's progress) opens
+ *   the colour from `focus` and closes it again on the way back. `pointer`
+ *   turns the cursor reveal off (touch screens).
  * - Renders only while it is on screen, the tab is visible and something is
- *   moving (pointer, trail, scroll reveal, intro); idles otherwise.
+ *   moving (pointer, trail, reveal, intro); idles otherwise.
  * - Releases programs, buffers, textures and framebuffers on unmount.
  */
 import { useEffect, useRef, type CSSProperties } from 'react'
@@ -45,9 +46,11 @@ export interface DitherVeilProps {
   reverse?: boolean
   wander?: boolean
   clickBurst?: boolean
-  /** 'pointer' follows the cursor; 'scroll' ties the reveal to the frame's position on screen. */
-  trigger?: 'pointer' | 'scroll'
-  /** Where the scroll reveal opens from, in frame coordinates (0–1, top-left origin). */
+  /** Cursor reveal (off on touch screens). */
+  pointer?: boolean
+  /** 0–1, read on scroll and resize: opens the colour from `focus` (1 = all colour). */
+  reveal?: () => number
+  /** Where `reveal` opens from, in frame coordinates (0–1, top-left origin). */
   focus?: Vec2
   className?: string
   style?: CSSProperties
@@ -55,7 +58,7 @@ export interface DitherVeilProps {
   onFallback?: (reason: DitherVeilFallback) => void
 }
 
-type Settings = Required<Omit<DitherVeilProps, 'src' | 'trigger' | 'className' | 'style' | 'onFallback'>>
+type Settings = Required<Omit<DitherVeilProps, 'src' | 'pointer' | 'reveal' | 'className' | 'style' | 'onFallback'>>
 
 const ORDERED: Partial<Record<Pattern, number>> = { bayer: 0, noise: 1, lines: 2 }
 
@@ -81,11 +84,7 @@ const MAX_BURSTS = 4
 const BURST_SECONDS = 1.2
 const HOLD = 1.6
 const INTRO_MS = 1100
-/** Scroll reveal: closed while the frame's top is below 75% of the viewport… */
-const SWEEP_START = 0.75
-/** …open once its centre reaches mid-screen, over at least this many px of scroll. */
-const SWEEP_MIN_RANGE = 160
-/** Time constant (s) of the eased reveal following the scroll position. */
+/** Time constant (s) of the eased reveal following `reveal()`. */
 const SWEEP_EASE = 0.12
 
 const hexToRgb = (hex: string): Vec3 => {
@@ -386,7 +385,7 @@ float shockwave(vec2 p) {
   return value;
 }
 
-// Scroll reveal: a disc from uFocus that covers the frame as uSweep goes 0 → 1.
+// reveal(): a disc from uFocus that covers the frame as uSweep goes 0 → 1.
 float sweep(vec2 q) {
   if (uSweep <= 0.0) return 0.0;
   const float band = 0.3;
@@ -465,7 +464,8 @@ export default function DitherVeil({
   reverse = false,
   wander = false,
   clickBurst = false,
-  trigger = 'pointer',
+  pointer: cursor = true,
+  reveal,
   focus = [0.5, 0.5],
   className = '',
   style,
@@ -475,10 +475,13 @@ export default function DitherVeil({
   const settingsRef = useRef<Settings | null>(null)
   const wakeRef = useRef<() => void>(() => {})
   const fallbackRef = useRef(onFallback)
+  const revealRef = useRef(reveal)
+  const hasReveal = !!reveal
 
   // Latest props for the render loop, without restarting WebGL.
   useEffect(() => {
     fallbackRef.current = onFallback
+    revealRef.current = reveal
     settingsRef.current = {
       fit, pattern, pixelSize, levels, palette, inkColor, paperColor, contrast, brightness,
       revealRadius, softness, linger, rimColor, rim, reverse, wander, clickBurst, focus,
@@ -506,9 +509,8 @@ export default function DitherVeil({
     }
 
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    const scrollMode = trigger === 'scroll'
     // Phones are often 3×: rendering at 2× there would blur the dots on upscale.
-    const maxDpr = scrollMode ? 3 : 2
+    const maxDpr = cursor ? 2 : 3
     const renderer = new Renderer({ canvas, webgl: 2, dpr: Math.min(window.devicePixelRatio || 1, maxDpr), alpha: false, antialias: false, depth: false })
     const gl = renderer.gl
     canvas.style.display = 'block'
@@ -615,17 +617,9 @@ export default function DitherVeil({
     const brush = { x: 0, y: 0, px: 0, py: 0 }
     const bursts: { x: number; y: number; start: number }[] = []
     const sweep = { target: 0, shown: 0 }
-
-    // 0 while the frame's top is in the lower quarter of the viewport, 1 once
-    // its centre reaches mid-screen, or at the end of the page if that comes first.
-    const measureSweep = () => {
-      const rect = container.getBoundingClientRect()
-      const vh = window.innerHeight
-      const y = window.scrollY
-      const top = rect.top + y
-      const end = Math.min(top + rect.height / 2 - vh / 2, document.documentElement.scrollHeight - vh)
-      const start = Math.min(top - vh * SWEEP_START, end - SWEEP_MIN_RANGE)
-      sweep.target = Math.min(1, Math.max(0, (y - start) / (end - start)))
+    const readReveal = () => {
+      const value = revealRef.current?.() ?? 0
+      sweep.target = Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : 0
     }
 
     const layout = () => {
@@ -735,7 +729,7 @@ export default function DitherVeil({
 
       if (presence > 0.002) trailUntil = now + s.linger * 1000 + 150
 
-      if (scrollMode) {
+      if (sweep.shown !== sweep.target) {
         sweep.shown += (sweep.target - sweep.shown) * (1 - Math.exp(-dt / SWEEP_EASE))
         if (Math.abs(sweep.target - sweep.shown) < 0.002) sweep.shown = sweep.target
       }
@@ -875,13 +869,14 @@ export default function DitherVeil({
     }
     const onScroll = () => {
       if (!inView) return
-      measureSweep()
+      readReveal()
       wake()
     }
-    if (scrollMode) {
+    if (hasReveal) {
       window.addEventListener('scroll', onScroll, { passive: true })
       window.addEventListener('resize', onScroll, { passive: true })
-    } else {
+    }
+    if (cursor) {
       container.addEventListener('pointermove', onMove, { passive: true })
       container.addEventListener('pointerenter', onMove, { passive: true })
       container.addEventListener('pointerdown', onDown, { passive: true })
@@ -899,7 +894,7 @@ export default function DitherVeil({
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting
       if (inView) {
-        if (scrollMode) measureSweep()
+        if (hasReveal) readReveal()
         wake()
       } else {
         cancelAnimationFrame(raf)
@@ -909,7 +904,10 @@ export default function DitherVeil({
     intersectionObserver.observe(container)
 
     layout()
-    if (scrollMode) measureSweep()
+    if (hasReveal) {
+      readReveal()
+      sweep.shown = sweep.target // arrive at the current state, no catch-up
+    }
     wake()
 
     return () => {
@@ -940,7 +938,7 @@ export default function DitherVeil({
       gl.getExtension('WEBGL_lose_context')?.loseContext()
       canvas.remove()
     }
-  }, [src, trigger])
+  }, [src, cursor, hasReveal])
 
   return <div ref={containerRef} aria-hidden="true" className={`dither-veil ${className}`.trim()} style={style} />
 }

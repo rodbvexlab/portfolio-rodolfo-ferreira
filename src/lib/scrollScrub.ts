@@ -8,6 +8,8 @@
  *     progress = -track.top / (track.height - stage.height)
  * - `passageProgress`: an element in normal flow crossing the viewport
  *     (the services video), so the section keeps its natural height.
+ * - `arrivalProgress`: an element near the end of the page (the contact
+ *     video), complete when it reaches mid-screen or the page ends first.
  *
  * Everything runs on refs and requestAnimationFrame; no React state is touched
  * per frame. The playhead eases toward the scroll target, only one seek is in
@@ -44,6 +46,26 @@ export function passageProgress(el: HTMLElement, start: number, end: number): Pr
       const rect = el.getBoundingClientRect()
       const vh = window.innerHeight
       return (vh * start - rect.top) / (vh * (start - end) + rect.height)
+    },
+  }
+}
+
+/**
+ * 0 when `el`'s top reaches `start` × viewport height, 1 when its centre
+ * reaches mid-screen, or at the end of the page if that comes first; never
+ * over less than `minRange` px of scroll.
+ */
+export function arrivalProgress(el: HTMLElement, start = 0.9, minRange = 200): ProgressSource {
+  return {
+    measure() {},
+    read() {
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const y = window.scrollY
+      const top = rect.top + y
+      const end = Math.min(top + rect.height / 2 - vh / 2, document.documentElement.scrollHeight - vh)
+      const begin = Math.min(top - vh * start, end - minRange)
+      return (y - begin) / (end - begin)
     },
   }
 }
