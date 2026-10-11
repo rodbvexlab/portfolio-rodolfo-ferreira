@@ -13,16 +13,17 @@ A copy vigente em português e inglês está em `src/i18n/translations.ts`. As d
 1. Abertura: nome, atuação, descrição curta e acesso aos projetos e contato, sobre o vídeo controlado pelo scroll.
 2. Projetos selecionados: imagens existentes, títulos e descrições curtas.
 3. Serviços: título e descrição à esquerda, vídeo da ilha abaixo deles, e quatro linhas à direita: sites, sistemas internos, automações e consultoria.
-4. Sobre: pausa editorial clara com vídeo de fundo e a apresentação em dois momentos sincronizados ao scroll.
-5. Contato: título, descrição e WhatsApp à esquerda, com a imagem interativa (DitherVeil) abaixo; formulário à direita.
+4. Sobre: pausa escura em que a apresentação, em dois momentos sincronizados ao scroll, revela o rosto pontilhado em cores.
+5. Contato: única seção clara. Título, descrição e WhatsApp à esquerda, com o vídeo da mão abaixo; formulário à direita.
 
 Não duplicar serviços com uma seção de formatos. O funcionamento da contratação cabe em um parágrafo, sem cards de processo.
 
 ## Direção visual
 
-- Preto como fundo principal; `#080808` na apresentação pessoal.
+- Preto como fundo principal, inclusive em "Sobre".
 - Branco para títulos e texto com opacidade mínima de 60% sobre preto.
 - Ciano `#4cd7f6` em rótulos, estados de foco e interação.
+- Contato (seção clara): fundo `#F5F7FA` (`paper`), texto `#111317` (`ink`) e teal escuro `#0E7490` (`accent-ink`) no lugar do ciano, que não tem contraste sobre fundo claro. Tokens em `tailwind.config.js`.
 - Geist nos títulos principais e interface; Instrument Serif no nome e no título "Projetos selecionados".
 - Container máximo de 1440 px; padding de 24 px no celular e 80 px a partir de 768 px.
 - Bordas discretas e raio de 8 px nos novos controles; sem cards decorativos nos serviços.
@@ -44,12 +45,12 @@ Palco sticky de 100svh dentro de uma hero de 270svh (210svh abaixo de 768 px). O
 
 ## Sobre
 
-Única seção clara: fundo do próprio vídeo (#EEF1F5), tipografia escura (#111317), título em Instrument Serif e frases em Geist, rótulo em ciano escuro (#0E7490). O vídeo é o palco inteiro, sem a foto e sem véu sobre a imagem. A leitura vem do posicionamento no terço superior, medido nos frames, e de uma luz suave localizada atrás de cada grupo.
+Seção escura. O rosto de vidro (DitherVeil) começa pontilhado em duotone e abre as cores, a partir do rosto, conforme a apresentação avança. Título em Instrument Serif, frases em Geist, rótulo em ciano.
 
-1. Primeiro momento, à esquerda: "Sou o Rodolfo." e duas frases.
-2. Segundo momento, à direita (texto alinhado à esquerda): duas frases e a linha de fechamento.
+1. Primeiro momento, à esquerda do rosto: "Sou o Rodolfo." e duas frases. Rosto pontilhado.
+2. Segundo momento, à direita do rosto: duas frases e a linha de fechamento. Rosto em cores.
 
-Cada frase entra e sai com fade e deslocamento curto. Faixas curtas fazem a transição do preto para o claro e de volta. Em telas intermediárias, texto à esquerda e vídeo à direita; no celular, vídeo em cima e texto abaixo, na mesma área. Com movimento reduzido ou falha, poster e toda a copy de uma vez.
+Cada frase entra e sai com fade e deslocamento curto. No desktop com mouse, o cursor também revela as cores. Em telas intermediárias, texto à esquerda e rosto à direita; no celular, rosto em cima e texto abaixo, na mesma área. Com movimento reduzido, foto em cores e toda a copy de uma vez.
 
 ## Vídeo de serviços
 
@@ -69,11 +70,11 @@ A navegação contém Projetos, Serviços, Sobre e Contato. Menu compacto até 1
 
 O formulário usa a configuração existente `VITE_WEB3FORMS_KEY`. Sem chave, prepara uma mensagem no WhatsApp. Abrir o WhatsApp não equivale a enviar a mensagem: mostrar que ela está pronta e um link para continuar. Com chave, informar sucesso apenas após resposta positiva do serviço.
 
-A imagem ao lado do formulário é decorativa: pontilhada em duotone, revela as cores sob o cursor no desktop; no toque e em telas estreitas, as cores abrem a partir do rosto ao rolar para baixo e fecham ao subir. Com movimento reduzido, fica estática em cores. Sem moldura, sombra ou card; o fundo da imagem se funde ao preto da seção. No celular, o formulário vem antes da imagem. Detalhes técnicos e licença em `docs/hero-video.md`.
+Única seção clara da página, com faixas curtas do preto para o claro e de volta ao rodapé. O vídeo da mão, ao lado do formulário, acompanha a chegada à seção e termina com a mão estendida no fim da página. Sem moldura, sombra ou card: máscaras suaves assentam o quadro no fundo. No celular, o formulário vem antes do vídeo. Com movimento reduzido, poster. Detalhes técnicos em `docs/hero-video.md`.
 
 ## Stack e verificações
 
-React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. Os vídeos usam um controlador próprio (refs + requestAnimationFrame), sem biblioteca extra. A imagem do contato usa `ogl` (WebGL2), carregado sob demanda.
+React + TypeScript + Vite, Tailwind CSS, Framer Motion e React Router. Os vídeos usam um controlador próprio (refs + requestAnimationFrame), sem biblioteca extra. O rosto de "Sobre" usa `ogl` (WebGL2), carregado sob demanda.
 
 - `npm ci --no-audit --no-fund`
 - `npm run build`

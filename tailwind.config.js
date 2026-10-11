@@ -5,6 +5,10 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Light closing section (Fale comigo)
+        ink: '#111317',
+        paper: '#f5f7fa',
+        'accent-ink': '#0e7490',
         'on-error-container': '#ffdad6',
         'secondary-fixed': '#e9ddff',
         'tertiary-container': '#000000',

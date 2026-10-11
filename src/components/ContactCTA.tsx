@@ -1,7 +1,7 @@
 import { type FormEvent, useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 import Reveal from './Reveal'
-import ContactVisual from './ContactVisual'
+import ContactVideo from './ContactVideo'
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
 
@@ -28,7 +28,7 @@ export default function ContactCTA() {
   const { contact } = t
   const [status, setStatus] = useState<Status>('idle')
   const [whatsappURL, setWhatsappURL] = useState('')
-  const inputClass = 'w-full rounded-lg bg-black border border-white/20 px-4 py-3 text-white placeholder:text-white/55 text-[15px] focus:border-cyan-300 outline-none transition-colors'
+  const inputClass = 'w-full rounded-lg bg-white border border-ink/20 px-4 py-3 text-ink placeholder:text-ink/55 text-[15px] focus:border-accent-ink focus:ring-1 focus:ring-accent-ink outline-none transition-colors'
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -67,46 +67,47 @@ export default function ContactCTA() {
   }
 
   return (
-    <section id="contato" aria-labelledby="contact-title" className="px-6 md:px-20 py-20 md:py-28 border-t border-white/10">
-      <div className="contact-grid max-w-container-max mx-auto">
+    <section id="contato" aria-labelledby="contact-title" className="contact-section">
+      <div aria-hidden="true" className="contact-ramp contact-ramp--in" />
+      <div className="contact-grid max-w-container-max mx-auto px-6 md:px-20 py-12 md:py-20">
         <Reveal className="contact-intro">
           <p className="section-label mb-6">{contact.label}</p>
           <h2 id="contact-title" className="section-title">{contact.headline}</h2>
-          <p className="mt-6 max-w-md text-[17px] leading-relaxed text-white/70">{contact.body}</p>
+          <p className="mt-6 max-w-md text-[17px] leading-relaxed text-ink/75">{contact.body}</p>
           <a href={t.footer.social.whatsapp} target="_blank" rel="noopener noreferrer" className="primary-link mt-8">{contact.whatsapp}<span aria-hidden="true">↗</span></a>
         </Reveal>
         <Reveal delay={0.08} className="contact-form">
           {status === 'success' ? (
-            <p role="status" className="py-8 text-white/80">{contact.success}</p>
+            <p role="status" className="py-8 text-ink/80">{contact.success}</p>
           ) : (
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5" aria-busy={status === 'loading'}>
-              <p className="md:col-span-2 text-[14px] text-white/65">{contact.alternative}</p>
+              <p className="md:col-span-2 text-[14px] text-ink/70">{contact.alternative}</p>
               <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} aria-hidden="true" />
-              <label className="text-[13px] text-white/75 space-y-2">
+              <label className="text-[13px] text-ink/80 space-y-2">
                 <span className="block">{contact.name}</span>
                 <input required name="name" autoComplete="name" maxLength={120} className={inputClass} />
               </label>
-              <label className="text-[13px] text-white/75 space-y-2">
+              <label className="text-[13px] text-ink/80 space-y-2">
                 <span className="block">{contact.contact_field}</span>
                 <input required name="contact" maxLength={180} className={inputClass} />
               </label>
-              <label className="md:col-span-2 text-[13px] text-white/75 space-y-2">
+              <label className="md:col-span-2 text-[13px] text-ink/80 space-y-2">
                 <span className="block">{contact.project_type}</span>
                 <input name="type" maxLength={160} className={inputClass} />
               </label>
-              <label className="md:col-span-2 text-[13px] text-white/75 space-y-2">
+              <label className="md:col-span-2 text-[13px] text-ink/80 space-y-2">
                 <span className="block">{contact.message}</span>
                 <textarea rows={3} name="message" maxLength={3000} className={`${inputClass} resize-y`} />
               </label>
-              {status === 'error' && <p role="alert" className="md:col-span-2 text-[14px] text-red-300">{contact.error}</p>}
+              {status === 'error' && <p role="alert" className="md:col-span-2 text-[14px] text-[#b42318]">{contact.error}</p>}
               {whatsappURL && (
-                <div role="status" className="md:col-span-2 text-[14px] text-white/80 space-y-2">
+                <div role="status" className="md:col-span-2 text-[14px] text-ink/80 space-y-2">
                   <p>{contact.whatsapp_ready}</p>
-                  <a href={whatsappURL} target="_blank" rel="noopener noreferrer" className="inline-block underline underline-offset-4 text-cyan-300 py-2">{contact.whatsapp_continue} ↗</a>
+                  <a href={whatsappURL} target="_blank" rel="noopener noreferrer" className="inline-block underline underline-offset-4 text-accent-ink py-2">{contact.whatsapp_continue} ↗</a>
                 </div>
               )}
               <div className="md:col-span-2">
-                <button type="submit" disabled={status === 'loading'} className="px-5 py-3 border border-white/30 rounded-lg text-[14px] hover:bg-white hover:text-black transition-colors disabled:opacity-50 disabled:cursor-wait">
+                <button type="submit" disabled={status === 'loading'} className="px-5 py-3 border border-ink/35 rounded-lg text-[14px] text-ink hover:bg-ink hover:text-white transition-colors disabled:opacity-50 disabled:cursor-wait">
                   {status === 'loading' ? contact.sending : contact.submit}
                 </button>
               </div>
@@ -114,8 +115,9 @@ export default function ContactCTA() {
           )}
         </Reveal>
         {/* Decorative; its own grid area, so it never overlaps the link or the form. */}
-        <ContactVisual />
+        <ContactVideo />
       </div>
+      <div aria-hidden="true" className="contact-ramp contact-ramp--out" />
     </section>
   )
 }

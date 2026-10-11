@@ -5,17 +5,17 @@ import type { DitherVeilProps } from './DitherVeil'
 /** Photo by Maxim Berg on Unsplash (Unsplash License) — docs/hero-video.md. */
 const IMAGE = {
   // Original file referenced by the component's src (1400×1939), used by WebGL.
-  original: '/contact/dither-veil.jpg',
+  original: '/about/portrait.jpg',
   // Static copies: same photo, near-black background taken to #000 so the
   // frame disappears into the section (tones above 48/255 are untouched).
   // The 800 px one also feeds the effect on phones.
-  static: '/contact/dither-veil-static.webp',
-  staticSmall: '/contact/dither-veil-800.webp',
+  static: '/about/portrait-static.webp',
+  staticSmall: '/about/portrait-800.webp',
 }
-/** The reveal follows a pointer only on screens that hover with a fine pointer; elsewhere it follows the scroll. */
+/** The cursor reveal needs a screen that hovers with a fine pointer. */
 const POINTER_QUERY = '(hover: hover) and (pointer: fine) and (min-width: 768px)'
 const WIDE_QUERY = '(min-width: 768px)'
-/** Centre of the face in the photo (frame coordinates), where the scroll reveal opens. */
+/** Centre of the face in the photo (frame coordinates), where `reveal` opens. */
 const FACE: [number, number] = [0.52, 0.4]
 /** Load the WebGL chunk about one viewport before the section arrives. */
 const PRELOAD_MARGIN = '100% 0px'
@@ -24,13 +24,12 @@ const PRELOAD_MARGIN = '100% 0px'
 const radiusFor = (w: number, h: number) => Math.round(Math.min(180, Math.max(150, Math.min(w, h) * 0.3)))
 
 /**
- * Decorative image beside the contact form, DitherVeil (WebGL2, loaded on
- * approach). Desktop with a mouse: the cursor reveals the colours. Touch and
- * narrow screens: the colours open from the face while scrolling down and
- * close again on the way up. Reduced motion or any WebGL/image failure: the
- * static image in colour.
+ * The dotted face in "Sobre", DitherVeil (WebGL2, loaded on approach). The
+ * colours open with `reveal` (the section's progress); on a desktop with a
+ * mouse the cursor reveals them too. Reduced motion or any WebGL/image
+ * failure: the static photo in colour.
  */
-export default function ContactVisual({ className = '' }: { className?: string }) {
+export default function AboutPortrait({ reveal, className = '' }: { reveal: () => number; className?: string }) {
   const reducedMotion = usePrefersReducedMotion()
   const canHover = useMediaQuery(POINTER_QUERY)
   const wide = useMediaQuery(WIDE_QUERY)
@@ -39,7 +38,6 @@ export default function ContactVisual({ className = '' }: { className?: string }
   const [radius, setRadius] = useState(165)
   const frameRef = useRef<HTMLDivElement>(null)
   const animated = !reducedMotion && !fallback
-  const trigger = canHover ? 'pointer' : 'scroll'
 
   // Fetch the component (and ogl) only when the section approaches. The
   // position check backs up the observer, which can miss a jump made while the
@@ -82,29 +80,24 @@ export default function ContactVisual({ className = '' }: { className?: string }
 
   useEffect(() => {
     const frame = frameRef.current
-    if (!animated || trigger !== 'pointer' || !frame) return
+    if (!animated || !canHover || !frame) return
     const observer = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect
       setRadius(radiusFor(width, height))
     })
     observer.observe(frame)
     return () => observer.disconnect()
-  }, [animated, trigger])
+  }, [animated, canHover])
 
   const mode = animated ? (Veil ? 'webgl' : 'pending') : 'static'
   return (
-    <div
-      ref={frameRef}
-      aria-hidden="true"
-      className={`contact-visual ${className}`}
-      data-mode={mode}
-      data-trigger={animated ? trigger : undefined}
-    >
+    <div ref={frameRef} aria-hidden="true" className={`about-portrait ${className}`.trim()} data-mode={mode} data-pointer={animated && canHover ? 'true' : undefined}>
       {animated ? (
         Veil && (
           <Veil
             src={wide ? IMAGE.original : IMAGE.staticSmall}
-            trigger={trigger}
+            pointer={canHover}
+            reveal={reveal}
             focus={FACE}
             pattern="floyd"
             fit="contain"
@@ -125,13 +118,13 @@ export default function ContactVisual({ className = '' }: { className?: string }
         <img
           src={IMAGE.static}
           srcSet={`${IMAGE.staticSmall} 800w, ${IMAGE.static} 1400w`}
-          sizes="(min-width: 1024px) 34rem, 90vw"
+          sizes="(min-width: 1024px) 40rem, 90vw"
           alt=""
           width={1400}
           height={1939}
           loading="lazy"
           decoding="async"
-          className="contact-visual-img"
+          className="about-portrait-img"
         />
       )}
     </div>
